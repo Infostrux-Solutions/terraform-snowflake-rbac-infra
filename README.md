@@ -71,3 +71,48 @@ export SNOWFLAKE_PRIVATE_KEY'...'
 2. Update the `tfvars` file with any variable changes that may be required.
 3. Navigate to `GitHub Actions` and trigger `infra-plan-manual` to verify that the plan is showing what we want to deploy is expected.
 4. Again in  `GitHub Actions` trigger `infra-deploy-manual` to deploy the infrastructure to Snowflake.
+
+## Customization
+### WITH_GRANT_OPTION
+If you need to control the grant options on a resource by resource basis you can do this with the following configuration pattern. This can significantly increase the amount of code in the `.tfvars` files. This works exactly the same on databases, warehouses, schemas, tables, and views.
+```
+warehouses_and_roles = {
+  "INGEST_WH" = {
+    "USAGE" = {
+      "ROLES"             = ["INGESTION", "SYSADMIN"]
+      "WITH_GRANT_OPTION" = true
+    }
+
+    "MONITOR" = {
+      "ROLES"             = ["SYSADMIN"]
+      "WITH_GRANT_OPTION" = true
+    }
+
+    "MODIFY" = {
+      "ROLES"             = ["SYSADMIN"]
+      "WITH_GRANT_OPTION" = true
+    }
+
+    "OPERATE" = {
+      "ROLES"             = ["INGESTION", "SYSADMIN"]
+      "WITH_GRANT_OPTION" = true
+    }
+
+    "OWNERSHIP" = {
+      "ROLES"             = ["SYSADMIN"]
+      "WITH_GRANT_OPTION" = true
+    }
+  }
+}
+```
+
+### Inherit role permissions
+By default we are granting all environment level roles to the parent role as seen below, Ex. `DEV_DEVELOPER` (left), will be granted to the top level `DEVELOPER` (right) role. You can place any existing role name on the right hand side, the left side is reserved for the dynamically generated roles found [here](https://github.com/Infostrux-Solutions/terraform-snowflake-rbac-infra/blob/bc5a4d19fcf333d61aaf8f5cd73c08dc84d437c8/terraform/01-snowflake-roles/development.tfvars#L32). 
+ 
+```
+role_to_roles = {
+  "DEVELOPER"  = ["DEVELOPER"],
+  "ANALYST"    = ["ANALYST"],
+  "SYSADMIN"   = ["SYSADMIN"],
+}
+```
