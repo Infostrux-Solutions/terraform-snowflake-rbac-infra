@@ -107,7 +107,7 @@ warehouses_and_roles = {
 ```
 
 ### Inherit role permissions
-By default we are granting all environment level roles to the parent role as seen below, Ex. `DEV_DEVELOPER` (left), will be granted to the top level `DEVELOPER` (right) role. You can place any existing role name on the right hand side, the left side is reserved for the dynamically generated roles found [here](https://github.com/Infostrux-Solutions/terraform-snowflake-rbac-infra/blob/bc5a4d19fcf333d61aaf8f5cd73c08dc84d437c8/terraform/01-snowflake-roles/development.tfvars#L32). 
+By default we are granting environment level roles to the parent role as seen below, Ex. `DEV_DEVELOPER` (left), will be granted to the top level `DEVELOPER` (right) role. You can place any existing role name on the right hand side, the left side is reserved for the dynamically generated roles found [here](https://github.com/Infostrux-Solutions/terraform-snowflake-rbac-infra/blob/bc5a4d19fcf333d61aaf8f5cd73c08dc84d437c8/terraform/01-snowflake-roles/development.tfvars#L32). 
  
 ```
 role_to_roles = {
