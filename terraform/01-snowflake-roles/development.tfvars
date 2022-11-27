@@ -9,7 +9,7 @@ default_tags = {
   OWNER         = "matt@infostrux.com"
   ENVIRONMENT   = "Development"
   CREATED_USING = "Terraform"
-  SOURCE_CODE   = "data-terraform-snowflake-infrastructure"
+  SOURCE_CODE   = "terraform-snowflake-rbac-infra"
 }
 
 # Create tags
