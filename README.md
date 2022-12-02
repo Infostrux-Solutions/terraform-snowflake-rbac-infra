@@ -1,12 +1,47 @@
-# terraform-snowflake-rbac-infra
+# data-terraform-snowflake-infrastructure
 
 ## Prerequisites
 
 ### AWS Authentication Requirements
 
-Terraform needs credentials for connecting to the remote backend. Multiples configuration are available, and the AWS provides full documentation can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+Terraform needs credentials for connecting to the remote backend. Multiples configuration are available, and the AWS provides full documentation can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
 
-Whenever possible, it's best practices to used temporary credentials. However, user and access key can be used as part of a CI/CD solution when a SSO is not practical.
+Whenever possible, it's best practices to used temporary credentials. The most ideal approach when connecting to GitHub Actions would be to use the instructions found [here](https://benoitboure.com/securely-access-your-aws-resources-from-github-actions) to create a role that will be assumed by GitHub.
+
+Once the above is complete you must setup an environment in GitHub Settings (development, production) and add a secret to it `AWS_ROLE_ARN` with the role ARN created during the instructions above.
+
+A example policy that will be required by Terraform to store backend state below:
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObjectAcl",
+                "s3:GetObject",
+                "s3:GetEncryptionConfiguration",
+                "s3:DeleteObjectVersion",
+                "s3:GetObjectAttributes",
+                "s3:GetObjectVersionAcl",
+                "s3:GetBucketVersioning",
+                "s3:DeleteObject",
+                "s3:GetObjectVersionAttributes",
+                "s3:GetObjectVersion"
+            ],
+            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-east-2/*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-east-2"
+        }
+    ]
+}
+```
 
 <br/>
 
@@ -19,19 +54,22 @@ In Terraform, each provider needs credentials to manage resources on our behalf.
 - **private_key** - (required) A private key for using keypair authentication. Can be a source from SNOWFLAKE_PRIVATE_KEY environment variable.
 - **role** - (optional) Snowflake role to use for operations. If left unset, the user’s default role will be used. It can come from the SNOWFLAKE_ROLE environment variable.
 
-#### Snowflake User key Creation
+The account, username, and role can be configured in the terraform `.tfvars` file.
+
+<br/>
+
+### Snowflake User key Creation
 
 If your snowflake don't already have an SSH key associated with it, the following
 the command will ensure you are correctly set up.
 
 Only the ciphers aes-128-cbc, aes-128-gcm, aes-192-cbc, aes-192-gcm, aes-256-cbc, aes-256-gcm, and des-ede3-cbc are supported by the Snowflake Terraform provider.
 
-In your development environment, run the following command to generate an SSH key:
+In your development environment, run the following command to generate a key pair:
 
 ```bash
-OpenSSL genrsa -out snowflake_key 4096
-openssl rsa -in snowflake_key -pubout -out snowflake_key.pub
-openssl pkcs8 -topk8 -inform pem -in snowflake_key -outform PEM -v2 aes-256-cbc -out snowflake_key.p8
+openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out infx_terraform.p8 -nocrypt
+openssl rsa -in infx_terraform.p8 -pubout -out infx_terraform.pub
 ```
 
 The next step is to associate the public key with your snowflake user.
@@ -40,6 +78,8 @@ In the Snowflake user console, execute the following command and Exclude the pub
 
 ```SQL
 alter user INFX_TERRAFORM set rsa_public_key='MIIBIjANBgkqh...';
+grant role SYSADMIN to user INFX_TERRAFORM;
+grant role ACCOUNTADMIN to user INFX_TERRAFORM;
 ```
 
 You can execute a DESCRIBE USER command to verify the user’s public key.
@@ -48,11 +88,7 @@ You can execute a DESCRIBE USER command to verify the user’s public key.
 desc user INFX_TERRAFORM;
 ```
 
-on a mac/linux type shell, variables can be execute like this:
-
-```bash
-export SNOWFLAKE_PRIVATE_KEY'...'
-```
+The private key must be created as an GitHub environment secret with the name `SNOWFLAKE_PRIVATE_KEY`.
 
 <br/>
 

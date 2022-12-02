@@ -29,6 +29,9 @@ jobs:
         shell: bash
         working-directory: terraform/01-snowflake-roles
     concurrency: roles-deploy
+    permissions:
+      id-token: write # required to use OIDC authentication
+      contents: read # required to checkout the code from the repo
 
     steps:
     - uses: actions/checkout@v3
@@ -43,18 +46,12 @@ jobs:
         echo "${{ secrets.SNOWFLAKE_PRIVATE_KEY }}" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
 
-        # PER ENV
-        case "${{ github.event.inputs.targetEnvironment }}" in
-          "development")
-            echo "TF_VAR_aws_role_arn=arn:aws:iam::123456789123:role/cfl-GitHubActions" >> $GITHUB_ENV
-          ;;
-          "production")
-            echo "TF_VAR_aws_role_arn=arn:aws:iam::123456789123:role/cfl-GitHubActions" >> $GITHUB_ENV
-          ;;
-          *)
-            echo "Missed something"
-          ;;
-        esac
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        role-duration-seconds: 900
+        aws-region: us-east-2
 
     - name: install terraform
       uses: hashicorp/setup-terraform@v1.2.1
