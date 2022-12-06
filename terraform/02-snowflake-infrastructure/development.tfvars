@@ -62,6 +62,7 @@ dbs_and_roles = {
     "MODIFY"        = ["INGESTION", "DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
+    "OWNERSHIP"     = ["SYSADMIN"]
   }
 
   "INTEGRATE_INFX" = {
@@ -69,6 +70,7 @@ dbs_and_roles = {
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
+    "OWNERSHIP"     = ["SYSADMIN"]
   }
 
   "CLEAN_INFX" = {
@@ -76,6 +78,7 @@ dbs_and_roles = {
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
+    "OWNERSHIP"     = ["SYSADMIN"]
   }
 
   "NORMALIZE_INFX" = {
@@ -83,6 +86,7 @@ dbs_and_roles = {
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
+    "OWNERSHIP"     = ["SYSADMIN"]
   }
 
   "ANALYZE_INFX" = {
@@ -90,6 +94,7 @@ dbs_and_roles = {
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
+    "OWNERSHIP"     = ["SYSADMIN"]
   }
 }
 
