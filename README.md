@@ -31,13 +31,13 @@ A example policy that will be required by Terraform to store backend state below
                 "s3:GetObjectVersionAttributes",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-east-2/*"
+            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2/*"
         },
         {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-east-2"
+            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2"
         }
     ]
 }
