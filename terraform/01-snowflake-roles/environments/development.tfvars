@@ -17,7 +17,7 @@ tags = {
   OWNER             = ["matt@infostrux.com"]
   ENVIRONMENT       = ["Development", "Production", "QA", "Stage"]
   CREATED_USING     = ["Python", "Terraform", "dbt"]
-  SOURCE_CODE       = ["data-terraform-snowflake-infrastructure"]
+  SOURCE_CODE       = ["terraform-snowflake-rbac-infra"]
   WAREHOUSE_PURPOSE = ["Ingest", "Monitor", "Serve", "Transform"]
   DATA_LAYER        = ["Analyze", "Clean", "Ingest", "Integrate", "Normalize"]
 }
