@@ -8,7 +8,7 @@ locals {
         grant_option = try(roles_opt["WITH_GRANT_OPTION"], true)
         role = tolist([
           for role in try(roles_opt["ROLES"], roles_opt) :
-          upper(join("_", [var.environment, role]))
+          upper(join("_", [var.customer, var.environment, role]))
         ])
       }
     ]
@@ -19,6 +19,8 @@ resource "snowflake_database_grant" "database" {
   for_each = {
     for uni in local.dbs_role_list : uni.unique => uni
   }
+
+  provider = snowflake.tag_securityadmin
 
   database_name = snowflake_database.database[each.value.stage].id
 

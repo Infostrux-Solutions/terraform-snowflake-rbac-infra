@@ -47,14 +47,14 @@ jobs:
         echo "EOF" >> $GITHUB_ENV
 
     - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v1-node16
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
         role-duration-seconds: 900
         aws-region: us-east-2
 
     - name: install terraform
-      uses: hashicorp/setup-terraform@v1.2.1
+      uses: hashicorp/setup-terraform@v2.0.3
       with:
         terraform_version: 1.2.4
         terraform_wrapper: false
@@ -69,7 +69,7 @@ jobs:
 
     - name: Initialize Terraform
       run: |
-        terraform init -backend-config="backend-$ENVIRONMENT.tfvars"
+        terraform init -backend-config="./backends/backend-$ENVIRONMENT.tfvars"
 
     - name: Format terraform
       run: terraform fmt -check
@@ -79,7 +79,7 @@ jobs:
 
     - name: Plan terraform
       run: |
-        terraform plan --var-file=$ENVIRONMENT.tfvars -out=./output.tfplan
+        terraform plan --var-file=./environments/$ENVIRONMENT.tfvars -out=./output.tfplan
 
     # Publish output
     - name: Publish artifact

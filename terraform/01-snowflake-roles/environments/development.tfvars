@@ -14,12 +14,12 @@ default_tags = {
 
 # Create tags
 tags = {
-  OWNER               = ["matt@infostrux.com"]
-  ENVIRONMENT         = ["Development", "Production", "QA", "Stage"]
-  CREATED_USING       = ["Python", "Terraform", "dbt"]
-  SOURCE_CODE         = ["data-terraform-snowflake-infrastructure"]
-  WAREHOUSE_PURPOSE   = ["Ingest", "Monitor", "Serve", "Transform"]
-  DATA_LAYER          = ["Analyze", "Clean", "Ingest", "Integrate", "Normalize"]
+  OWNER             = ["matt@infostrux.com"]
+  ENVIRONMENT       = ["Development", "Production", "QA", "Stage"]
+  CREATED_USING     = ["Python", "Terraform", "dbt"]
+  SOURCE_CODE       = ["data-terraform-snowflake-infrastructure"]
+  WAREHOUSE_PURPOSE = ["Ingest", "Monitor", "Serve", "Transform"]
+  DATA_LAYER        = ["Analyze", "Clean", "Ingest", "Integrate", "Normalize"]
 }
 
 # Snowflake

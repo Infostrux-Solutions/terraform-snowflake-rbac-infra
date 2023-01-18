@@ -1,7 +1,7 @@
 resource "snowflake_database" "database" {
   for_each = var.dbs_and_roles
 
-  name    = upper(join("_", [var.environment, each.key]))
+  name    = upper(join("_", [var.customer, var.environment, each.key]))
   comment = "created by terraform"
 
   dynamic "tag" {

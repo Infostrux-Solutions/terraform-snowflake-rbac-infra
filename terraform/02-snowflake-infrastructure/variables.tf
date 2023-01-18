@@ -66,6 +66,12 @@ variable "dbs_and_roles" {
   description = "The first map is the database that will be created, the inner map is the permission we are assigning (grant), and the inner list are the roles we are granting access to the permission."
 }
 
+variable "create_schemas" {
+  type        = map(any)
+  description = "A mapping of existing databases and the schema to create in the existing db (Ex {\"EXISTING_DB\" = \"NEW_SCHEMA\"})."
+  default     = {}
+}
+
 variable "schemas_and_roles" {
   type        = map(map(any))
   description = "A mapping of schema permissions {map} to target roles [list]. (The outer most {map} is not currently used)."

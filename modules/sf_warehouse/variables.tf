@@ -28,6 +28,18 @@ variable "tags_db" {
 
 variable "tags_schema" {
   type        = string
-  description ="The schema to retrieve tags from."
+  description = "The schema to retrieve tags from."
   default     = "TAGS"
+}
+
+variable "min_cluster_count" {
+  type        = string
+  description = "The min cluster count to set for the warehouses."
+  default     = 1
+}
+
+variable "max_cluster_count" {
+  type        = string
+  description = "The max cluster count to set for the warehouses."
+  default     = 10
 }

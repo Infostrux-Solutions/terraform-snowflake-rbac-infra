@@ -8,7 +8,7 @@ locals {
         grant_option = try(roles_opt["WITH_GRANT_OPTION"], true)
         role = tolist([
           for role in try(roles_opt["ROLES"], roles_opt) :
-          upper(join("_", [var.environment, role]))
+          upper(join("_", [var.customer, var.environment, role]))
         ])
       }
     ]
@@ -19,6 +19,8 @@ resource "snowflake_warehouse_grant" "warehouse" {
   for_each = {
     for uni in local.warehouses_role_list : uni.unique => uni
   }
+
+  provider = snowflake.tag_securityadmin
 
   warehouse_name = module.sf_warehouse[each.value.stage].id
 

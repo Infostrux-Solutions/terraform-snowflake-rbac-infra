@@ -27,6 +27,22 @@ provider "snowflake" {
   region   = var.snowflake_cloud
 }
 
+provider "snowflake" {
+  alias    = "securityadmin"
+  role     = "SECURITYADMIN"
+  account  = var.snowflake_account
+  username = var.snowflake_username
+  region   = var.snowflake_cloud
+}
+
+provider "snowflake" {
+  alias    = "tag_securityadmin"
+  role     = "TAG_SECURITYADMIN"
+  account  = var.snowflake_account
+  username = var.snowflake_username
+  region   = var.snowflake_cloud
+}
+
 provider "aws" {
   region = var.region
 

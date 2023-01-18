@@ -9,7 +9,7 @@ locals {
         on_future    = try(roles_opt["ON_FUTURE"], true)
         role = tolist([
           for role in try(roles_opt["ROLES"], roles_opt) :
-          upper(join("_", [var.environment, role]))
+          upper(join("_", [var.customer, var.environment, role]))
         ])
       }
     ]
@@ -21,6 +21,8 @@ resource "snowflake_view_grant" "view" {
     for uni in local.views_role_list : uni.unique => uni
   }
 
+  provider = snowflake.tag_securityadmin
+
   database_name = snowflake_database.database[each.value.stage].id
 
   privilege = each.value.perm
@@ -29,4 +31,3 @@ resource "snowflake_view_grant" "view" {
   on_future         = each.value.on_future
   with_grant_option = each.value.grant_option
 }
-

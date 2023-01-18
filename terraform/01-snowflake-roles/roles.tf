@@ -13,14 +13,13 @@ module "sf_role" {
   for_each = toset(var.roles)
 
   providers = {
-    snowflake = snowflake.accountadmin
+    snowflake = snowflake.tag_securityadmin
   }
 
   source     = "../../modules/sf_role"
-  depends_on = [snowflake_tag.tag]
+  depends_on = [snowflake_tag.tag, snowflake_role_grants.tag_securityadmin]
 
-  name           = upper(join("_", [var.environment, each.value]))
-  grant_to_roles = upper(join("_", [var.environment, each.value]))
+  name = upper(join("_", [var.customer, var.environment, each.value]))
 
   tags = local.tags_list
 }
@@ -29,30 +28,33 @@ module "parent_sf_role" {
   for_each = toset(var.parent_roles)
 
   providers = {
-    snowflake = snowflake.accountadmin
+    snowflake = snowflake.tag_securityadmin
   }
 
   source     = "../../modules/sf_role"
-  depends_on = [snowflake_tag.tag]
+  depends_on = [snowflake_tag.tag, snowflake_role_grants.tag_securityadmin]
 
-  name           = upper(join("_", [each.value]))
-  grant_to_roles = upper(join("_", [each.value]))
+  name = upper(each.value)
 
   tags = local.tags_list
 }
 
-module "tag_admin" {
+resource "snowflake_role" "tag_admin" {
   count = length(var.tags) > 0 ? 1 : 0
 
-  providers = {
-    snowflake = snowflake.accountadmin
-  }
+  name = "TAG_ADMIN"
+
+  provider = snowflake.securityadmin
 
   depends_on = [snowflake_tag.tag]
+}
 
-  source         = "../../modules/sf_role"
-  name           = "TAG_ADMIN"
-  grant_to_roles = "TAG_ADMIN"
+resource "snowflake_role" "tag_securityadmin" {
+  count = length(var.tags) > 0 ? 1 : 0
 
-  tags = local.tags_list
+  name = "TAG_SECURITYADMIN"
+
+  provider = snowflake.securityadmin
+
+  depends_on = [snowflake_tag.tag]
 }

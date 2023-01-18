@@ -9,7 +9,7 @@ locals {
         on_future    = try(roles_opt["ON_FUTURE"], true)
         role = tolist([
           for role in try(roles_opt["ROLES"], roles_opt) :
-          upper(join("_", [var.environment, role]))
+          upper(join("_", [var.customer, var.environment, role]))
         ])
       }
     ]
@@ -20,6 +20,8 @@ resource "snowflake_schema_grant" "schema" {
   for_each = {
     for uni in local.schemas_role_list : uni.unique => uni
   }
+
+  provider = snowflake.tag_securityadmin
 
   database_name = snowflake_database.database[each.value.stage].id
 
@@ -35,6 +37,8 @@ resource "snowflake_schema_grant" "public_schema" {
   for_each = {
     for uni in local.schemas_role_list : uni.unique => uni
   }
+
+  provider = snowflake.tag_securityadmin
 
   database_name = snowflake_database.database[each.value.stage].id
   schema_name   = "PUBLIC"

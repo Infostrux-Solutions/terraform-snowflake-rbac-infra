@@ -54,6 +54,11 @@ warehouses_and_roles = {
   }
 }
 
+# Database name = Schema name (to create)
+create_schemas = {
+  #"INGEST_INFX" = "CLIENTS"
+}
+
 # Creates Databases and Role Permissions
 dbs_and_roles = {
 
@@ -65,28 +70,28 @@ dbs_and_roles = {
   }
 
   "INTEGRATE_INFX" = {
-    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER",  "SYSADMIN"]
+    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
   }
 
   "CLEAN_INFX" = {
-    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER",  "SYSADMIN"]
+    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
   }
 
   "NORMALIZE_INFX" = {
-    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER",  "SYSADMIN"]
+    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
   }
 
   "ANALYZE_INFX" = {
-    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER",  "SYSADMIN"]
+    "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
@@ -242,7 +247,7 @@ views_and_roles = {
 
 # Stage Role to Parent Roles
 role_to_roles = {
-  "DEVELOPER"  = ["DEVELOPER"],
-  "ANALYST"    = ["ANALYST"],
-  "SYSADMIN"   = ["SYSADMIN"],
+  "DEVELOPER" = ["DEVELOPER"],
+  "ANALYST"   = ["ANALYST"],
+  "SYSADMIN"  = ["SYSADMIN"],
 }

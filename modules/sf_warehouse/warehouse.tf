@@ -3,6 +3,9 @@ resource "snowflake_warehouse" "warehouse" {
   comment        = var.comment
   warehouse_size = var.warehouse_size
 
+  min_cluster_count = var.min_cluster_count
+  max_cluster_count = var.max_cluster_count
+  
   dynamic "tag" {
     for_each = var.tags
 
