@@ -97,13 +97,3 @@ resource "snowflake_role_grants" "tag_securityadmin" {
 
   enable_multiple_grants = true
 }
-
-resource "snowflake_account_grant" "create_integration" {
-  depends_on = [module.sf_role]
-
-  roles     = [upper(join("_", [var.customer, var.environment, "INTEGRATION"]))]
-  privilege = "CREATE INTEGRATION"
-
-  with_grant_option      = false
-  enable_multiple_grants = true
-}
