@@ -56,41 +56,41 @@ warehouses_and_roles = {
 
 # Database name = Schema name (to create)
 create_schemas = {
-  #"INGEST_INFX" = "CLIENTS"
+  #"INGEST" = "CLIENTS"
 }
 
 # Creates Databases and Role Permissions
 dbs_and_roles = {
 
-  "INGEST_INFX" = {
+  "INGEST" = {
     "USAGE"         = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["INGESTION", "DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
   }
 
-  "INTEGRATE_INFX" = {
+  "INTEGRATE" = {
     "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
   }
 
-  "CLEAN_INFX" = {
+  "CLEAN" = {
     "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
   }
 
-  "NORMALIZE_INFX" = {
+  "NORMALIZE" = {
     "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
     "MONITOR"       = ["SYSADMIN"]
   }
 
-  "ANALYZE_INFX" = {
+  "ANALYZE" = {
     "USAGE"         = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -101,7 +101,7 @@ dbs_and_roles = {
 # Creates Schema Role Permissions based on the stages of the database and not necessarily the schema
 schemas_and_roles = {
 
-  "INGEST_INFX" = {
+  "INGEST" = {
     "USAGE"            = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE TABLE"     = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE VIEW"      = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
@@ -113,7 +113,7 @@ schemas_and_roles = {
     "OWNERSHIP"        = ["SYSADMIN"]
   }
 
-  "INTEGRATE_INFX" = {
+  "INTEGRATE" = {
     "USAGE"            = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE TABLE"     = ["DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE VIEW"      = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -125,7 +125,7 @@ schemas_and_roles = {
     "OWNERSHIP"        = ["SYSADMIN"]
   }
 
-  "CLEAN_INFX" = {
+  "CLEAN" = {
     "USAGE"            = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE TABLE"     = ["DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE VIEW"      = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -137,7 +137,7 @@ schemas_and_roles = {
     "OWNERSHIP"        = ["SYSADMIN"]
   }
 
-  "NORMALIZE_INFX" = {
+  "NORMALIZE" = {
     "USAGE"            = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE TABLE"     = ["DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE VIEW"      = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -149,7 +149,7 @@ schemas_and_roles = {
     "OWNERSHIP"        = ["SYSADMIN"]
   }
 
-  "ANALYZE_INFX" = {
+  "ANALYZE" = {
     "USAGE"            = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE TABLE"     = ["DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE VIEW"      = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -166,7 +166,7 @@ schemas_and_roles = {
 ## Remove the DELETE and TRUNCATE access from DEVELOPER for PROD?
 tables_and_roles = {
 
-  "INGEST_INFX" = {
+  "INGEST" = {
     "SELECT"    = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "INSERT"    = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "UPDATE"    = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
@@ -175,7 +175,7 @@ tables_and_roles = {
     "OWNERSHIP" = ["SYSADMIN"]
   }
 
-  "INTEGRATE_INFX" = {
+  "INTEGRATE" = {
     "SELECT"    = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "INSERT"    = ["DBT", "DEVELOPER", "SYSADMIN"]
     "UPDATE"    = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -184,7 +184,7 @@ tables_and_roles = {
     "OWNERSHIP" = ["SYSADMIN"]
   }
 
-  "CLEAN_INFX" = {
+  "CLEAN" = {
     "SELECT"    = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "INSERT"    = ["DBT", "DEVELOPER", "SYSADMIN"]
     "UPDATE"    = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -193,7 +193,7 @@ tables_and_roles = {
     "OWNERSHIP" = ["SYSADMIN"]
   }
 
-  "NORMALIZE_INFX" = {
+  "NORMALIZE" = {
     "SELECT"    = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "INSERT"    = ["DBT", "DEVELOPER", "SYSADMIN"]
     "UPDATE"    = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -202,7 +202,7 @@ tables_and_roles = {
     "OWNERSHIP" = ["SYSADMIN"]
   }
 
-  "ANALYZE_INFX" = {
+  "ANALYZE" = {
     "SELECT"    = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "INSERT"    = ["DBT", "DEVELOPER", "SYSADMIN"]
     "UPDATE"    = ["DBT", "DEVELOPER", "SYSADMIN"]
@@ -214,31 +214,31 @@ tables_and_roles = {
 
 # View Role Permissions
 views_and_roles = {
-  "INGEST_INFX" = {
+  "INGEST" = {
     "SELECT"     = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "REFERENCES" = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "OWNERSHIP"  = ["SYSADMIN"]
   }
 
-  "INTEGRATE_INFX" = {
+  "INTEGRATE" = {
     "SELECT"     = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "REFERENCES" = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "OWNERSHIP"  = ["SYSADMIN"]
   }
 
-  "CLEAN_INFX" = {
+  "CLEAN" = {
     "SELECT"     = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "REFERENCES" = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "OWNERSHIP"  = ["SYSADMIN"]
   }
 
-  "NORMALIZE_INFX" = {
+  "NORMALIZE" = {
     "SELECT"     = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "REFERENCES" = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "OWNERSHIP"  = ["SYSADMIN"]
   }
 
-  "ANALYZE_INFX" = {
+  "ANALYZE" = {
     "SELECT"     = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "REFERENCES" = ["ANALYST", "DBT", "DEVELOPER", "SYSADMIN"]
     "OWNERSHIP"  = ["SYSADMIN"]
