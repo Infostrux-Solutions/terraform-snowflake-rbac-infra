@@ -55,6 +55,11 @@ variable "snowflake_cloud" {
   default     = ""
 }
 
+variable "snowflake_fivetran_password" {
+  type        = string
+  description = "The snowflake user password to set for fivetran ingestion."
+}
+
 # Resource, Roles and Permissions
 variable "warehouses_and_roles" {
   type        = map(map(any))
