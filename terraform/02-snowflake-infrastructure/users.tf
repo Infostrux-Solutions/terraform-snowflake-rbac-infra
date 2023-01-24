@@ -1,9 +1,5 @@
 
 resource "snowflake_user" "fivetran" {
-  providers = {
-    snowflake = snowflake.accountadmin
-  }
-
   name         = upper(join("_", [var.environment, "FIVETRAN"]))
   login_name   = upper(join("_", [var.environment, "FIVETRAN"]))
   password     = var.snowflake_fivetran_password
