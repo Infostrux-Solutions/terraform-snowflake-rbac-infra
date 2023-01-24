@@ -1,5 +1,7 @@
 
 resource "snowflake_user" "fivetran" {
+  provider = snowflake.tag_securityadmin
+  
   name         = upper(join("_", [var.environment, "FIVETRAN"]))
   login_name   = upper(join("_", [var.environment, "FIVETRAN"]))
   password     = var.snowflake_fivetran_password
