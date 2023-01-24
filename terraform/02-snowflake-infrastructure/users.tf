@@ -1,9 +1,6 @@
-/*
-## Example of creating a service user
+
 resource "snowflake_user" "fivetran" {
-  providers = {
-    snowflake = snowflake.accountadmin
-  }
+  provider = snowflake.tag_securityadmin
 
   name         = upper(join("_", [var.environment, "FIVETRAN"]))
   login_name   = upper(join("_", [var.environment, "FIVETRAN"]))
@@ -12,9 +9,8 @@ resource "snowflake_user" "fivetran" {
   comment      = "Created by terraform."
   disabled     = false
 
-  default_warehouse = upper(join("_", [var.environment, "DATALOADER"]))
+  default_warehouse = upper(join("_", [var.environment, "INGESTION"]))
   default_role      = upper(join("_", [var.environment, "SYSADMIN"]))
 
   must_change_password = false
 }
-*/
