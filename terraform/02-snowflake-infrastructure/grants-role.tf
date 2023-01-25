@@ -23,8 +23,7 @@ resource "snowflake_role_grants" "role" {
 resource "snowflake_role_grants" "fivetran" {
   provider = snowflake.tag_securityadmin
 
-  #role_name = upper(join("_", [var.customer, var.environment, "INGESTION"]))
-  role_name = "TEST"
+  role_name = upper(join("_", [var.customer, var.environment, "INGESTION"]))
   users     = [snowflake_user.fivetran.name]
 
   enable_multiple_grants = true
