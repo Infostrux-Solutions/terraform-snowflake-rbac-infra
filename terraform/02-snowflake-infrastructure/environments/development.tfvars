@@ -255,4 +255,5 @@ role_to_roles = {
   "DEVELOPER" = ["DEVELOPER"],
   "ANALYST"   = ["ANALYST"],
   "SYSADMIN"  = ["SYSADMIN"],
+  "INGESTION" = ["SYSADMIN"]
 }
