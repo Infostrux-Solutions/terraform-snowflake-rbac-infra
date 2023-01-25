@@ -19,3 +19,12 @@ resource "snowflake_role_grants" "role" {
 
   enable_multiple_grants = true
 }
+
+resource "snowflake_role_grants" "fivetran" {
+  provider   = snowflake.tag_securityadmin
+
+  role_name = join("", [var.customer, var.environment, "INGESTION"])
+  users     = [snowflake_user.fivetran.name]
+
+  enable_multiple_grants = true
+}
