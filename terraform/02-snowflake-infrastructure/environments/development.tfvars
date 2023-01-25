@@ -115,7 +115,7 @@ schemas_and_roles = {
     "CREATE STREAM"    = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE TASK"      = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "CREATE STAGE"     = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
-    "OWNERSHIP"        = ["SYSADMIN"]
+    "OWNERSHIP"        = ["INGESTION"]
   }
 
   "INTEGRATE" = {
@@ -177,7 +177,7 @@ tables_and_roles = {
     "UPDATE"    = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "DELETE"    = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "TRUNCATE"  = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
-    "OWNERSHIP" = ["SYSADMIN"]
+    "OWNERSHIP" = ["INGESTION"]
   }
 
   "INTEGRATE" = {
@@ -222,7 +222,7 @@ views_and_roles = {
   "INGEST" = {
     "SELECT"     = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "REFERENCES" = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
-    "OWNERSHIP"  = ["SYSADMIN"]
+    "OWNERSHIP"  = ["INGESTION"]
   }
 
   "INTEGRATE" = {
