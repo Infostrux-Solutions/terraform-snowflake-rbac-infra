@@ -66,8 +66,8 @@ dbs_and_roles = {
     "USAGE"         = ["ANALYST", "INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
     "MODIFY"        = ["INGESTION", "DBT", "SYSADMIN"]
     "CREATE SCHEMA" = ["INGESTION", "DBT", "DEVELOPER", "SYSADMIN"]
-    "MONITOR"       = ["SYSADMIN"]
-    "OWNERSHIP"     = ["SYSADMIN"]
+    "MONITOR"       = ["INGESTION", "SYSADMIN"]
+    "OWNERSHIP"     = ["INGESTION"]
   }
 
   "INTEGRATE" = {
