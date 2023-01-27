@@ -1,4 +1,4 @@
-terraform/02-snowflake-infrastructure/environments/production.tfvars# Common
+# Common
 customer    = "infx"
 domain      = "snowflake"
 environment = "prod"
