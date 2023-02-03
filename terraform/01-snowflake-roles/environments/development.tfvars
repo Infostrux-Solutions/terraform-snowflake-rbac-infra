@@ -26,7 +26,7 @@ tags = {
 snowflake_role     = "SYSADMIN"
 snowflake_account  = "aua12673"
 snowflake_username = "INFX_TERRAFORM"
-snowflake_cloud    = "us-east-1" # blank for us-west-2 
+snowflake_cloud    = "" # blank for us-west-2 
 
 # Roles
 roles = [
