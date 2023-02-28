@@ -22,7 +22,11 @@ snowflake_role           = "SYSADMIN"
 snowflake_account        = "aua12673"
 snowflake_username       = "INFX_TERRAFORM"
 snowflake_cloud          = "" # blank for us-west-2 
-snowflake_warehouse_size = "small"
+snowflake_warehouse_size = "xsmall"
+
+warehouse_auto_suspend = {
+  "INGEST_WH" = 120
+}
 
 # Creates Warehouses and Role Permissions
 warehouses_and_roles = {
