@@ -5,6 +5,7 @@ resource "snowflake_warehouse" "warehouse" {
 
   min_cluster_count = var.min_cluster_count
   max_cluster_count = var.max_cluster_count
+  auto_suspend      = var.warehouse_auto_suspend
   
   dynamic "tag" {
     for_each = var.tags

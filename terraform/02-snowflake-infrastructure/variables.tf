@@ -49,6 +49,11 @@ variable "snowflake_warehouse_size" {
   description = "The size of the Snowflake warehouse that we will be utilizing to run queries in the snowflake_account."
 }
 
+variable "warehouse_auto_suspend" {
+  type        = map(number)
+  description = "The auto_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake_account."
+}
+
 variable "snowflake_cloud" {
   type        = string
   description = "The region and cloud that is hosting Snowflake LEAVE BLANK FOR us-west-2 (us-east-1.aws)"

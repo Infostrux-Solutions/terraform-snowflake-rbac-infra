@@ -14,6 +14,12 @@ variable "warehouse_size" {
   description = "The size of the Snowflake warehouse that we will be utilizing to run queries."
 }
 
+variable "warehouse_auto_suspend" {
+  type        = number
+  description = "The auto_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries."
+  default     = 600
+}
+
 variable "tags" {
   type        = map(string)
   description = "A key/value map of all the tags to apply to the resources."
