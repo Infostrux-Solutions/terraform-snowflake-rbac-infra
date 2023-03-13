@@ -25,7 +25,7 @@ resource "snowflake_user" "datadog" {
   comment      = "Created by terraform."
   disabled     = false
 
-  default_warehouse = upper(join("_", [var.customer, var.environment, "INGEST_WH"]))
+  default_warehouse = upper(join("_", [var.customer, var.environment, "MONITORING_WH"]))
   default_role      = upper(join("_", [var.customer, var.environment, "MONITORING"]))
 
   must_change_password = false
