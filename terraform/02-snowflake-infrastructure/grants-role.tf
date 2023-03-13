@@ -28,7 +28,7 @@ resource "snowflake_role_grants" "fivetran" {
 
   enable_multiple_grants = true
 }
-  
+
 resource "snowflake_role_grants" "datadog" {
   provider = snowflake.tag_securityadmin
 
