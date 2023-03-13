@@ -60,10 +60,22 @@ variable "snowflake_cloud" {
   default     = ""
 }
 
+variable "create_fivetran_user" {
+  type        = bool
+  description = "Create the fivetran user (true|false)"
+  default     = false
+}
+
 variable "snowflake_fivetran_password" {
   type        = string
   description = "The snowflake user password to set for fivetran ingestion."
   default     = ""
+}
+
+variable "create_datadog_user" {
+  type        = bool
+  description = "Create the datadog user (true|false)"
+  default     = false
 }
 
 variable "snowflake_datadog_password" {

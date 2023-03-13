@@ -81,7 +81,5 @@ jobs:
 
     - name: Plan terraform
       run: |
-        echo "TF_VAR_snowflake_fivetran_password=${{ secrets.TF_VAR_SNOWFLAKE_FIVETRAN_PASSWORD }}" >> $GITHUB_ENV
-        echo "TF_VAR_snowflake_datadog_password=${{ secrets.TF_VAR_SNOWFLAKE_DATADOG_PASSWORD }}" >> $GITHUB_ENV
         terraform plan --var-file=./environments/$ENVIRONMENT.tfvars -out=./output.tfplan
 

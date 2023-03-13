@@ -1,6 +1,6 @@
 
 resource "snowflake_user" "fivetran" {
-  count = var.snowflake_fivetran_password != "" ? 1 : 0
+  count = var.create_fivetran_user ? 1 : 0
 
   provider = snowflake.tag_securityadmin
 
@@ -18,7 +18,7 @@ resource "snowflake_user" "fivetran" {
 }
 
 resource "snowflake_user" "datadog" {
-  count = var.snowflake_datadog_password != "" ? 1 : 0
+  count = var.create_datadog_user ? 1 : 0
 
   provider = snowflake.tag_securityadmin
 

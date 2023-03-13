@@ -21,7 +21,7 @@ resource "snowflake_role_grants" "role" {
 }
 
 resource "snowflake_role_grants" "fivetran" {
-  count = var.snowflake_fivetran_password != "" ? 1 : 0
+  count = var.create_fivetran_user ? 1 : 0
 
   provider = snowflake.tag_securityadmin
 
@@ -32,7 +32,7 @@ resource "snowflake_role_grants" "fivetran" {
 }
 
 resource "snowflake_role_grants" "datadog" {
-  count = var.snowflake_datadog_password != "" ? 1 : 0
+  count = var.create_datadog_user ? 1 : 0
 
   provider = snowflake.tag_securityadmin
 
