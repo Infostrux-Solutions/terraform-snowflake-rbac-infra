@@ -65,6 +65,11 @@ variable "snowflake_fivetran_password" {
   description = "The snowflake user password to set for fivetran ingestion."
 }
 
+variable "snowflake_datadog_password" {
+  type        = string
+  description = "The snowflake user password to set for datadog monitoring."
+}
+
 # Resource, Roles and Permissions
 variable "warehouses_and_roles" {
   type        = map(map(any))
