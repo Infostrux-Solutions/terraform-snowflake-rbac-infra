@@ -63,11 +63,13 @@ variable "snowflake_cloud" {
 variable "snowflake_fivetran_password" {
   type        = string
   description = "The snowflake user password to set for fivetran ingestion."
+  default     = ""
 }
 
 variable "snowflake_datadog_password" {
   type        = string
   description = "The snowflake user password to set for datadog monitoring."
+  default     = ""
 }
 
 # Resource, Roles and Permissions

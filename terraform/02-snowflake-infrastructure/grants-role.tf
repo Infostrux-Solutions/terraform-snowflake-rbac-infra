@@ -21,19 +21,23 @@ resource "snowflake_role_grants" "role" {
 }
 
 resource "snowflake_role_grants" "fivetran" {
+  count = var.snowflake_fivetran_password != "" ? 1 : 0
+
   provider = snowflake.tag_securityadmin
 
   role_name = upper(join("_", [var.customer, var.environment, "INGESTION"]))
-  users     = [snowflake_user.fivetran.name]
+  users     = [snowflake_user.fivetran[0].name]
 
   enable_multiple_grants = true
 }
 
 resource "snowflake_role_grants" "datadog" {
+  count = var.snowflake_datadog_password != "" ? 1 : 0
+
   provider = snowflake.tag_securityadmin
 
   role_name = upper(join("_", [var.customer, var.environment, "MONITORING"]))
-  users     = [snowflake_user.datadog.name]
+  users     = [snowflake_user.datadog[0].name]
 
   enable_multiple_grants = true
 }

@@ -1,5 +1,7 @@
 
 resource "snowflake_user" "fivetran" {
+  count = var.snowflake_fivetran_password != "" ? 1 : 0
+
   provider = snowflake.tag_securityadmin
 
   name         = upper(join("_", [var.customer, var.environment, "FIVETRAN"]))
@@ -16,6 +18,8 @@ resource "snowflake_user" "fivetran" {
 }
 
 resource "snowflake_user" "datadog" {
+  count = var.snowflake_datadog_password != "" ? 1 : 0
+
   provider = snowflake.tag_securityadmin
 
   name         = upper(join("_", [var.customer, var.environment, "DATADOG"]))
