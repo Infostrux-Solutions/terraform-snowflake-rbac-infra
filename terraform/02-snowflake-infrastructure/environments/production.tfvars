@@ -26,7 +26,8 @@ snowflake_cloud          = "" # blank for us-west-2
 snowflake_warehouse_size = "xsmall"
 
 warehouse_auto_suspend = {
-  "INGEST_WH" = 120
+  "INGEST_WH"     = 120
+  "MONITORING_WH" = 60
 }
 
 # Creates Warehouses and Role Permissions
