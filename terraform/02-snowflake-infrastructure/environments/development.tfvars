@@ -12,9 +12,10 @@ default_tags = {
 }
 
 warehouse_tags = {
-  "INGEST_WH"    = "Ingest"
-  "DEV_WH"       = "Transform"
-  "REPORTING_WH" = "Serve"
+  "INGEST_WH"     = "Ingest"
+  "DEV_WH"        = "Transform"
+  "REPORTING_WH"  = "Serve"
+  "MONITORING_WH" = "Monitoring"
 }
 
 # Snowflake
