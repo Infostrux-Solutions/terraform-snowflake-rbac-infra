@@ -25,6 +25,10 @@ snowflake_username       = "INFX_TERRAFORM"
 snowflake_cloud          = "" # blank for us-west-2 
 snowflake_warehouse_size = "xsmall"
 
+# User Creation
+create_fivetran_user = true
+create_datadog_user  = true
+
 warehouse_auto_suspend = {
   "INGEST_WH"     = 120
   "MONITORING_WH" = 60
