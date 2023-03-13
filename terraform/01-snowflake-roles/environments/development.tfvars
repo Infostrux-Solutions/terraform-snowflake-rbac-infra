@@ -19,7 +19,7 @@ tags = {
   CREATED_USING     = ["Python", "Terraform", "dbt"]
   SOURCE_CODE       = ["terraform-snowflake-rbac-infra"]
   WAREHOUSE_PURPOSE = ["Ingest", "Monitor", "Serve", "Transform"]
-  DATA_LAYER        = ["Analyze", "Clean", "Ingest", "Integrate", "Normalize"]
+  DATA_LAYER        = ["Analyze", "Clean", "Ingest", "Integrate", "Monitoring", "Normalize"]
 }
 
 # Snowflake
