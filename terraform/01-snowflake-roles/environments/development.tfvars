@@ -34,7 +34,8 @@ roles = [
   "ANALYST",
   "INGESTION",
   "DBT",
-  "SYSADMIN"
+  "SYSADMIN",
+  "MONITORING"
 ]
 
 # Only make this once per account, otherwise leave blank
