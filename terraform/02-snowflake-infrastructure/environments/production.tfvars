@@ -15,7 +15,7 @@ warehouse_tags = {
   "INGEST_WH"     = "Ingest"
   "DEV_WH"        = "Transform"
   "REPORTING_WH"  = "Serve"
-  "MONITORING_WH" = "Monitoring"
+  "MONITORING_WH" = "Monitor"
 }
 
 # Snowflake
