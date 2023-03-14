@@ -12,9 +12,10 @@ default_tags = {
 }
 
 warehouse_tags = {
-  "INGEST_WH"    = "Ingest"
-  "DEV_WH"       = "Transform"
-  "REPORTING_WH" = "Serve"
+  "INGEST_WH"     = "Ingest"
+  "DEV_WH"        = "Transform"
+  "REPORTING_WH"  = "Serve"
+  "MONITORING_WH" = "Monitor"
 }
 
 # Snowflake
@@ -25,7 +26,8 @@ snowflake_cloud          = "" # blank for us-west-2
 snowflake_warehouse_size = "xsmall"
 
 warehouse_auto_suspend = {
-  "INGEST_WH" = 120
+  "INGEST_WH"     = 120
+  "MONITORING_WH" = 60
 }
 
 # Creates Warehouses and Role Permissions
@@ -54,6 +56,14 @@ warehouses_and_roles = {
     "MONITOR"   = ["SYSADMIN"]
     "MODIFY"    = ["SYSADMIN"]
     "OPERATE"   = ["ANALYST", "SYSADMIN"]
+    "OWNERSHIP" = ["SYSADMIN"]
+  }
+
+  "MONITORING_WH" = {
+    "USAGE"     = ["MONITORING", "SYSADMIN"]
+    "MONITOR"   = ["MONITORING", "SYSADMIN"]
+    "MODIFY"    = ["SYSADMIN"]
+    "OPERATE"   = ["MONITORING", "SYSADMIN"]
     "OWNERSHIP" = ["SYSADMIN"]
   }
 }

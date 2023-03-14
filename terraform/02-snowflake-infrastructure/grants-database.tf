@@ -29,3 +29,10 @@ resource "snowflake_database_grant" "database" {
 
   with_grant_option = each.value.grant_option
 }
+
+resource "snowflake_database_grant" "datadog_imported_privileges" {
+  database_name = "SNOWFLAKE"
+
+  privilege = "IMPORTED PRIVILEGES"
+  roles     = [upper(join("_", [var.customer, var.environment, "MONITORING"]))]
+}
