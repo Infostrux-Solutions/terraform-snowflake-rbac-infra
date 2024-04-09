@@ -259,6 +259,33 @@ views_and_roles = {
   }
 }
 
+dynamic_tables_and_roles = {
+  "INGEST" = {
+    "SELECT"    = ["ANALYST", "DEVELOPER", "SYSADMIN"]
+    "OWNERSHIP" = ["SYSADMIN"]
+  }
+
+  "INTEGRATE" = {
+    "SELECT"    = ["ANALYST", "DEVELOPER", "SYSADMIN"]
+    "OWNERSHIP" = ["SYSADMIN"]
+  }
+
+  "CLEAN" = {
+    "SELECT"    = ["ANALYST", "DEVELOPER", "SYSADMIN"]
+    "OWNERSHIP" = ["SYSADMIN"]
+  }
+
+  "NORMALIZE" = {
+    "SELECT"    = ["ANALYST", "DEVELOPER", "SYSADMIN"]
+    "OWNERSHIP" = ["SYSADMIN"]
+  }
+
+  "ANALYZE" = {
+    "SELECT"    = ["ANALYST", "DEVELOPER", "SYSADMIN"]
+    "OWNERSHIP" = ["SYSADMIN"]
+  }
+}
+
 # Stage Role to Parent Roles
 role_to_roles = {
   "DEVELOPER" = ["DEVELOPER"],
