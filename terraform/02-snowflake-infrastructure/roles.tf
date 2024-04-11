@@ -27,24 +27,20 @@ resource "snowflake_grant_account_role" "role" {
   parent_role_name = each.value.parent
 }
 
-resource "snowflake_role_grants" "fivetran" {
+resource "snowflake_grant_account_role" "fivetran" {
   count = var.create_fivetran_user ? 1 : 0
 
   provider = snowflake.tag_securityadmin
 
   role_name = upper(join("_", [var.customer, var.environment, "INGESTION"]))
-  users     = [snowflake_user.fivetran[0].name]
-
-  enable_multiple_grants = true
+  user_name = snowflake_user.fivetran[0].name
 }
 
-resource "snowflake_role_grants" "datadog" {
+resource "snowflake_grant_account_role" "datadog" {
   count = var.create_datadog_user ? 1 : 0
 
   provider = snowflake.tag_securityadmin
 
   role_name = upper(join("_", [var.customer, var.environment, "MONITORING"]))
-  users     = [snowflake_user.datadog[0].name]
-
-  enable_multiple_grants = true
+  user_name = snowflake_user.datadog[0].name
 }
