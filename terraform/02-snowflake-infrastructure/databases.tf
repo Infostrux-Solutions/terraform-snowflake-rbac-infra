@@ -19,7 +19,7 @@ locals {
   database_grants_wo_ownership = flatten([
     for database, grants in local.databases : [
       for role, privilege in grants : {
-        unique    = join("_", [databases, trimspace(role)])
+        unique    = join("_", [database, trimspace(role)])
         database  = database
         privilege = setsubtract(privilege, ["ownership"])
         role      = role
