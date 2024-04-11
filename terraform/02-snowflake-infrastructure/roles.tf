@@ -1,23 +1,28 @@
 locals {
-  role_to_roles_list = flatten([
-    for out_role, roles in var.role_to_roles : {
-      role  = upper(join("_", [var.customer, var.environment, out_role]))
-      roles = roles
+  roles_yml = yamldecode(file("config/roles.yml"))
+
+  roles = {
+    for role, roles in local.roles_yml.roles : role => roles
+  }
+
+  role_grants = flatten([
+    for role, parent in local.roles : {
+      unique = join("_", [role, parent])
+      role   = role
+      parent = parent
     }
   ])
 }
 
-resource "snowflake_role_grants" "role" {
+resource "snowflake_grant_account_role" "role" {
   for_each = {
-    for uni in local.role_to_roles_list : uni.role => uni
+    for uni in local.role_grants : uni.unique => uni
   }
 
   provider = snowflake.tag_securityadmin
 
-  role_name = each.value.role
-  roles     = each.value.roles
-
-  enable_multiple_grants = true
+  role_name        = each.value.role
+  parent_role_name = each.value.parent
 }
 
 resource "snowflake_role_grants" "fivetran" {

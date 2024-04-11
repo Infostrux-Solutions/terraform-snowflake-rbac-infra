@@ -1,0 +1,91 @@
+tables:
+  ingest:
+    analyst:
+      - select
+    ingestion:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+      - ownership
+    developer:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+    sysadmin:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+
+  integrate:
+    analyst:
+      - select
+    developer:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+    sysadmin:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+      - ownership
+
+  clean:
+    analyst:
+      - select
+    developer:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+    sysadmin:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+      - ownership
+
+  normalize:
+    analyst:
+      - select
+    developer:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+    sysadmin:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+      - ownership
+
+  analyze:
+    analyst:
+      - select
+    developer:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+    sysadmin:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+      - ownership

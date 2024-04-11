@@ -1,0 +1,51 @@
+warehouses:
+  ingest:
+    sysadmin:
+      - usage
+      - monitor
+      - modify
+      - operate
+      - ownership
+    monitoring:
+      - monitor
+    ingestion: 
+      - usage
+      - operate
+
+  dev:
+    sysadmin:
+      - usage
+      - monitor
+      - modify
+      - operate
+      - ownership
+    developer:
+      - usage
+      - operate
+    monitoring:
+      - monitor
+
+  reporting:
+    sysadmin:
+      - usage
+      - monitor
+      - modify
+      - operate
+      - ownership
+    analyst: 
+      - usage
+      - operate
+    monitoring:
+      - monitor
+
+  monitoring:
+    sysadmin:
+      - usage
+      - monitor
+      - modify
+      - operate
+      - ownership
+    monitoring:
+      - usage
+      - monitor
+      - operate

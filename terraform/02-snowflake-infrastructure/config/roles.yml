@@ -1,0 +1,9 @@
+roles:
+  analyst:
+    - analyst
+  ingestion:
+    - sysadmin
+  developer:
+    - developer
+  sysadmin:
+    - sysadmin

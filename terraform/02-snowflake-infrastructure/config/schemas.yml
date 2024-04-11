@@ -1,0 +1,124 @@
+schemas:
+  ingest:
+    analyst:
+      - usage
+    ingestion:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+      - ownership
+    developer:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+    sysadmin:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+
+  integrate:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+    sysadmin:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+      - ownership
+
+  clean:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+    sysadmin:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+      - ownership
+
+  normalize:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+    sysadmin:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+      - ownership
+
+  analyze:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+    sysadmin:
+      - usage
+      - create table
+      - create view
+      - create function
+      - create procedure
+      - create stream
+      - create task
+      - create stage
+      - ownership
