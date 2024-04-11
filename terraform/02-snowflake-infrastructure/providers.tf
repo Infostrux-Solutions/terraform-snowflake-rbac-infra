@@ -9,18 +9,20 @@ terraform {
 
 # Primary provider
 provider "snowflake" {
-  role     = var.snowflake_role
-  account  = var.snowflake_account
-  username = var.snowflake_username
-  region   = var.snowflake_cloud
+  role          = var.snowflake_role
+  account       = var.snowflake_account
+  username      = var.snowflake_username
+  region        = var.snowflake_cloud
+  authenticator = "JWT"
 }
 
 provider "snowflake" {
-  alias    = "tag_securityadmin"
-  role     = "TAG_SECURITYADMIN"
-  account  = var.snowflake_account
-  username = var.snowflake_username
-  region   = var.snowflake_cloud
+  alias         = "tag_securityadmin"
+  role          = "TAG_SECURITYADMIN"
+  account       = var.snowflake_account
+  username      = var.snowflake_username
+  region        = var.snowflake_cloud
+  authenticator = "JWT"
 }
 
 provider "aws" {
