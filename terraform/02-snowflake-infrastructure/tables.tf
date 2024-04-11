@@ -2,14 +2,14 @@ locals {
   table_yml = yamldecode(file("config/tables.yml"))
 
   tables = {
-    for table, grants in local.table_yml.tables : table => grants
+    for database, grants in local.table_yml.tables : table => grants
   }
 
   table_grants = flatten([
-    for table, grants in local.tables : [
+    for database, grants in local.tables : [
       for role, privilege in grants : {
-        unique    = join("_", [table, trimspace(role)])
-        table     = table
+        unique    = join("_", [database, trimspace(role)])
+        database  = database
         privilege = privilege
         role      = role
       }
@@ -17,10 +17,10 @@ locals {
   ])
 
   table_grants_wo_ownership = flatten([
-    for table, grants in local.tables : [
+    for database, grants in local.tables : [
       for role, privilege in grants : {
-        unique    = join("_", [table, trimspace(role)])
-        table     = table
+        unique    = join("_", [database, trimspace(role)])
+        database  = database
         privilege = setsubtract(privilege, ["ownership"])
         role      = role
       }

@@ -6,10 +6,10 @@ locals {
   }
 
   view_grants = flatten([
-    for view, grants in local.views : [
+    for database, grants in local.views : [
       for role, privilege in grants : {
-        unique    = join("_", [view, trimspace(role)])
-        view      = view
+        unique    = join("_", [database, trimspace(role)])
+        database  = database
         privilege = privilege
         role      = role
       }
@@ -17,10 +17,10 @@ locals {
   ])
 
   view_grants_wo_ownership = flatten([
-    for view, grants in local.views : [
+    for database, grants in local.views : [
       for role, privilege in grants : {
-        unique    = join("_", [view, trimspace(role)])
-        view      = view
+        unique    = join("_", [database, trimspace(role)])
+        database  = database
         privilege = setsubtract(privilege, ["ownership"])
         role      = role
       }

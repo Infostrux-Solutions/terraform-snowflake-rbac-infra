@@ -2,14 +2,14 @@ locals {
   schema_yml = yamldecode(file("config/schemas.yml"))
 
   schemas = {
-    for schema, grants in local.schema_yml.schemas : schema => grants
+    for database, grants in local.schema_yml.schemas : database => grants
   }
 
   schema_grants = flatten([
-    for schema, grants in local.schemas : [
+    for database, grants in local.schemas : [
       for role, privilege in grants : {
-        unique    = join("_", [schema, trimspace(role)])
-        schema    = schema
+        unique    = join("_", [database, trimspace(role)])
+        database  = database
         privilege = privilege
         role      = role
       }
@@ -17,10 +17,10 @@ locals {
   ])
 
   schema_grants_wo_ownership = flatten([
-    for schema, grants in local.schemas : [
+    for database, grants in local.schemas : [
       for role, privilege in grants : {
-        unique    = join("_", [schema, trimspace(role)])
-        schema    = schema
+        unique    = join("_", [database, trimspace(role)])
+        database  = database
         privilege = setsubtract(privilege, ["ownership"])
         role      = role
       }
