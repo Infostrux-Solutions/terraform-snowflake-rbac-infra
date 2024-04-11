@@ -19,7 +19,7 @@ locals {
   view_grants_wo_ownership = flatten([
     for view, grants in local.views : [
       for role, privilege in grants : {
-        unique    = join("_", [views, trimspace(role)])
+        unique    = join("_", [view, trimspace(role)])
         view      = view
         privilege = setsubtract(privilege, ["ownership"])
         role      = role

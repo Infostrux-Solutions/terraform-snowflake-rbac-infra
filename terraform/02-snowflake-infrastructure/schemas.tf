@@ -19,7 +19,7 @@ locals {
   schema_grants_wo_ownership = flatten([
     for schema, grants in local.schemas : [
       for role, privilege in grants : {
-        unique    = join("_", [schemas, trimspace(role)])
+        unique    = join("_", [schema, trimspace(role)])
         schema    = schema
         privilege = setsubtract(privilege, ["ownership"])
         role      = role

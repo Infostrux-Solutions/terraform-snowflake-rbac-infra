@@ -1,4 +1,4 @@
-schemas:
+views:
   ingest:
     analyst:
       - select

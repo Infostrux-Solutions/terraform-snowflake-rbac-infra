@@ -6,11 +6,13 @@ locals {
   }
 
   role_grants = flatten([
-    for role, parent in local.roles : {
-      unique = join("_", [role, parent])
-      role   = role
-      parent = parent
-    }
+    for role, parents in local.roles : [
+      for parent in parents : {
+        unique = join("_", [role, parent])
+        role   = role
+        parent = parent
+      }
+    ]
   ])
 }
 
