@@ -2,7 +2,7 @@ locals {
   table_yml = yamldecode(file("config/tables.yml"))
 
   tables = {
-    for database, grants in local.table_yml.tables : table => grants
+    for database, grants in local.table_yml.tables : database => grants
   }
 
   table_grants = flatten([

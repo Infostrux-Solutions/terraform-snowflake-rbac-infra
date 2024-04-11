@@ -2,7 +2,7 @@ locals {
   view_yml = yamldecode(file("config/views.yml"))
 
   views = {
-    for view, grants in local.view_yml.views : view => grants
+    for database, grants in local.view_yml.views : database => grants
   }
 
   view_grants = flatten([
