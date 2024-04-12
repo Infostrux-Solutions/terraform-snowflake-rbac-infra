@@ -8,7 +8,7 @@ locals {
   role_grants = flatten([
     for role, parents in local.roles : [
       for parent in parents : {
-        unique = join("_", [role, parent])
+        unique = upper(join("_", [role, parent]))
         role   = upper(join("_", [var.customer, var.environment, role]))
         parent = parent
       }
@@ -21,7 +21,7 @@ resource "snowflake_grant_account_role" "role" {
     for uni in local.role_grants : uni.unique => uni
   }
 
-  provider = snowflake.accountadmin
+  provider = snowflake.securityadmin
 
   role_name        = each.value.role
   parent_role_name = each.value.parent
