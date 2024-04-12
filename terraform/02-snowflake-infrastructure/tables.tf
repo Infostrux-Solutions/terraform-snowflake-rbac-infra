@@ -51,7 +51,7 @@ resource "snowflake_grant_ownership" "dynamic_tables" {
   }
 
   provider = snowflake.securityadmin
-  
+
   account_role_name = each.value.role
   on {
     future {
