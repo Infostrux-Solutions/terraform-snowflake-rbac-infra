@@ -8,9 +8,9 @@ locals {
   role_grants = flatten([
     for role, parents in local.roles : [
       for parent in parents : {
-        unique = upper(join("_", [role, parent]))
+        unique = join("_", [role, parent])
         role   = upper(join("_", [var.customer, var.environment, role]))
-        parent = parent
+        parent = upper(parent)
       }
     ]
   ])
