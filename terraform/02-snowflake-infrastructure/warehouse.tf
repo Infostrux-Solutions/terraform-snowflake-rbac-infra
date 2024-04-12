@@ -51,7 +51,7 @@ resource "snowflake_grant_privileges_to_account_role" "warehouse" {
     object_name = snowflake_warehouse.warehouse[each.value.warehouse].id
   }
 }
-/*
+
 resource "snowflake_grant_ownership" "warehouse" {
   for_each = {
     for uni in local.warehouse_grants : uni.unique => uni if contains(uni.privilege, "ownership")
@@ -59,11 +59,9 @@ resource "snowflake_grant_ownership" "warehouse" {
 
   provider = snowflake.securityadmin
 
-  account_role_name   = each.value.role
-  outbound_privileges = "REVOKE"
+  account_role_name = each.value.role
   on {
     object_type = "WAREHOUSE"
     object_name = snowflake_warehouse.warehouse[each.value.warehouse].id
   }
 }
-*/
