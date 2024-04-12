@@ -12,7 +12,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {
 resource "snowflake_grant_privileges_to_account_role" "tag_secadmin_usage" {
   provider = snowflake.securityadmin
 
-  account_role_name = ssnowflake_role.tag_securityadmin[0].name
+  account_role_name = snowflake_role.tag_securityadmin[0].name
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
@@ -34,7 +34,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage_create" {
 resource "snowflake_grant_privileges_to_account_role" "tag_secadmin_usage_create" {
   provider = snowflake.securityadmin
 
-  account_role_name = ssnowflake_role.tag_securityadmin[0].name
+  account_role_name = snowflake_role.tag_securityadmin[0].name
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
@@ -90,8 +90,8 @@ resource "snowflake_grant_account_role" "tag_securityadmin" {
   count = length(var.tags) > 0 ? 1 : 0
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_database_grant.tag_admin_usage, snowflake_schema_grant.tag_admin_usage, snowflake_account_grant.tag_admin_apply, snowflake_role_grants.tag_admin]
+  depends_on = [snowflake_grant_privileges_to_account_role.tag_secadmin_usage, snowflake_grant_privileges_to_account_role.tag_secadmin_usage_create, snowflake_grant_privileges_to_account_role.tag_secadmin_apply, snowflake_grant_account_role.tag_secadmin]
 
-  role_name = snowflake_role.tag_admin[0].name
+  role_name = snowflake_role.tag_securityadmin[0].name
   user_name = [var.snowflake_username]
 }
