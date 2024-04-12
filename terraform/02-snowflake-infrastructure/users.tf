@@ -2,7 +2,7 @@
 resource "snowflake_user" "fivetran" {
   count = var.create_fivetran_user ? 1 : 0
 
-  provider = snowflake.tag_securityadmin
+  provider = snowflake.securityadmin
 
   name         = upper(join("_", [var.customer, var.environment, "FIVETRAN"]))
   login_name   = upper(join("_", [var.customer, var.environment, "FIVETRAN"]))
@@ -20,7 +20,7 @@ resource "snowflake_user" "fivetran" {
 resource "snowflake_user" "datadog" {
   count = var.create_datadog_user ? 1 : 0
 
-  provider = snowflake.tag_securityadmin
+  provider = snowflake.securityadmin
 
   name         = upper(join("_", [var.customer, var.environment, "DATADOG"]))
   login_name   = upper(join("_", [var.customer, var.environment, "DATADOG"]))

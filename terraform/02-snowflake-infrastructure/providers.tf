@@ -12,16 +12,14 @@ provider "snowflake" {
   role          = var.snowflake_role
   account       = var.snowflake_account
   user          = var.snowflake_username
-  region        = var.snowflake_cloud
   authenticator = "JWT"
 }
 
 provider "snowflake" {
-  alias         = "tag_securityadmin"
-  role          = "TAG_SECURITYADMIN"
+  alias         = "SECURITYADMIN"
+  role          = "SECURITYADMIN"
   account       = var.snowflake_account
   user          = var.snowflake_username
-  region        = var.snowflake_cloud
   authenticator = "JWT"
 }
 

@@ -42,6 +42,8 @@ resource "snowflake_grant_privileges_to_account_role" "warehouse" {
     for uni in local.warehouse_grants_wo_ownership : uni.unique => uni
   }
 
+  provider = snowflake.securityadmin
+
   account_role_name = each.value.role
   privileges        = each.value.privilege
   on_account_object {
@@ -54,6 +56,8 @@ resource "snowflake_grant_ownership" "warehouse" {
   for_each = {
     for uni in local.warehouse_grants : uni.unique => uni if contains(uni.privilege, "ownership")
   }
+
+  provider = snowflake.securityadmin
 
   account_role_name = each.value.role
   on {

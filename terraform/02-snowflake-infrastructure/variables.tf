@@ -54,12 +54,6 @@ variable "warehouse_auto_suspend" {
   description = "The auto_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake_account."
 }
 
-variable "snowflake_cloud" {
-  type        = string
-  description = "The region and cloud that is hosting Snowflake LEAVE BLANK FOR us-west-2 (us-east-1.aws)"
-  default     = ""
-}
-
 variable "create_fivetran_user" {
   type        = bool
   description = "Create the fivetran user (true|false)"

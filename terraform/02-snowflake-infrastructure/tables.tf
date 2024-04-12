@@ -33,6 +33,8 @@ resource "snowflake_grant_privileges_to_account_role" "dynamic_tables" {
     for uni in local.table_grants_wo_ownership : uni.unique => uni
   }
 
+  provider = snowflake.securityadmin
+
   account_role_name = each.value.role
   privileges        = each.value.privilege
   on_schema_object {
@@ -48,6 +50,8 @@ resource "snowflake_grant_ownership" "dynamic_tables" {
     for uni in local.table_grants : uni.unique => uni
   }
 
+  provider = snowflake.securityadmin
+  
   account_role_name = each.value.role
   on {
     future {
