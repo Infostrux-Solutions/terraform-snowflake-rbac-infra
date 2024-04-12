@@ -6,7 +6,6 @@ views:
     ingestion:
       - select
       - references
-      - ownership
     developer:
       - select
       - references
@@ -24,7 +23,6 @@ views:
     sysadmin:
       - select
       - references
-      - ownership
 
   clean:
     analyst:
@@ -36,7 +34,6 @@ views:
     sysadmin:
       - select
       - references
-      - ownership
 
   normalize:
     analyst:
@@ -48,7 +45,6 @@ views:
     sysadmin:
       - select
       - references
-      - ownership
 
   analyze:
     analyst:
@@ -60,4 +56,3 @@ views:
     sysadmin:
       - select
       - references
-      - ownership

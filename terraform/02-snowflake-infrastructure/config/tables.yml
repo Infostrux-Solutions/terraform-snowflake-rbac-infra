@@ -8,7 +8,7 @@ tables:
       - update
       - delete
       - truncate
-      - ownership
+
     developer:
       - select
       - insert
@@ -37,7 +37,6 @@ tables:
       - update
       - delete
       - truncate
-      - ownership
 
   clean:
     analyst:
@@ -54,7 +53,6 @@ tables:
       - update
       - delete
       - truncate
-      - ownership
 
   normalize:
     analyst:
@@ -71,7 +69,6 @@ tables:
       - update
       - delete
       - truncate
-      - ownership
 
   analyze:
     analyst:
@@ -88,4 +85,3 @@ tables:
       - update
       - delete
       - truncate
-      - ownership
