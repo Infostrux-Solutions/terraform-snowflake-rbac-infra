@@ -50,6 +50,8 @@ resource "snowflake_grant_privileges_to_account_role" "database" {
     object_type = "DATABASE"
     object_name = snowflake_database.database[each.value.database].id
   }
+
+  depends_on = [snowflake_grant_account_role.role]
 }
 
 resource "snowflake_grant_ownership" "database" {
@@ -65,4 +67,6 @@ resource "snowflake_grant_ownership" "database" {
     object_type = "DATABASE"
     object_name = snowflake_database.database[each.value.database].id
   }
+
+  depends_on = [snowflake_grant_account_role.role]
 }
