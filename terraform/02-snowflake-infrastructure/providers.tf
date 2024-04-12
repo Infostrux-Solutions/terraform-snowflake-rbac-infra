@@ -16,7 +16,7 @@ provider "snowflake" {
 }
 
 provider "snowflake" {
-  alias         = "SECURITYADMIN"
+  alias         = "securityadmin"
   role          = "SECURITYADMIN"
   account       = var.snowflake_account
   user          = var.snowflake_username
