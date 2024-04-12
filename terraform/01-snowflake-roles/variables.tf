@@ -45,12 +45,6 @@ variable "snowflake_username" {
   description = "The name of the Snowflake user that we will be utilizing to deploy into the snowflake_account."
 }
 
-variable "snowflake_cloud" {
-  type        = string
-  description = "The region and cloud that is hosting Snowflake LEAVE BLANK FOR us-west-2 (us-east-1.aws)"
-  default     = ""
-}
-
 # Roles
 variable "roles" {
   type        = list(string)

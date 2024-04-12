@@ -1,6 +1,6 @@
 resource "snowflake_database" "tags" {
   count = length(var.tags) > 0 ? 1 : 0
 
-  name    = "DB_TAGS"
+  name    = "GOVERNANCE"
   comment = "created by terraform"
 }

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     snowflake = {
       source  = "Snowflake-Labs/snowflake"
-      version = "0.40.0"
+      version = "0.88.0"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -13,34 +13,23 @@ terraform {
 
 # Primary provider
 provider "snowflake" {
-  role     = var.snowflake_role
-  account  = var.snowflake_account
-  username = var.snowflake_username
-  region   = var.snowflake_cloud
+  role    = var.snowflake_role
+  account = var.snowflake_account
+  user    = var.snowflake_username
 }
 
 provider "snowflake" {
-  alias    = "accountadmin"
-  role     = "ACCOUNTADMIN"
-  account  = var.snowflake_account
-  username = var.snowflake_username
-  region   = var.snowflake_cloud
+  alias   = "accountadmin"
+  role    = "ACCOUNTADMIN"
+  account = var.snowflake_account
+  user    = var.snowflake_username
 }
 
 provider "snowflake" {
-  alias    = "securityadmin"
-  role     = "SECURITYADMIN"
-  account  = var.snowflake_account
-  username = var.snowflake_username
-  region   = var.snowflake_cloud
-}
-
-provider "snowflake" {
-  alias    = "tag_securityadmin"
-  role     = "TAG_SECURITYADMIN"
-  account  = var.snowflake_account
-  username = var.snowflake_username
-  region   = var.snowflake_cloud
+  alias   = "securityadmin"
+  role    = "SECURITYADMIN"
+  account = var.snowflake_account
+  user    = var.snowflake_username
 }
 
 provider "aws" {
