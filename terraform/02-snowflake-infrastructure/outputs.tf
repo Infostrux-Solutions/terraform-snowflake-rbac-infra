@@ -9,3 +9,7 @@ output "warehouse_names" {
     for wh in snowflake_warehouse.warehouse : wh.name
   ]
 }
+
+output "grants_debug" {
+  value = local.warehouse_grants_wo_ownership
+}
