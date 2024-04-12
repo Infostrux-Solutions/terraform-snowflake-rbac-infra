@@ -41,7 +41,7 @@ resource "snowflake_grant_privileges_to_account_role" "schema" {
     future_schemas_in_database = snowflake_database.database[each.value.database].id
   }
 }
-
+/*
 resource "snowflake_grant_ownership" "schema" {
   for_each = {
     for uni in local.database_grants : uni.unique => uni if contains(uni.privilege, "ownership")
@@ -58,3 +58,4 @@ resource "snowflake_grant_ownership" "schema" {
     }
   }
 }
+*/

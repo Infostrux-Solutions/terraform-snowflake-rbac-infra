@@ -28,7 +28,7 @@ locals {
   ])
 }
 
-resource "snowflake_grant_privileges_to_account_role" "dynamic_views" {
+resource "snowflake_grant_privileges_to_account_role" "views" {
   for_each = {
     for uni in local.view_grants_wo_ownership : uni.unique => uni
   }
@@ -44,8 +44,8 @@ resource "snowflake_grant_privileges_to_account_role" "dynamic_views" {
     }
   }
 }
-
-resource "snowflake_grant_ownership" "dynamic_views" {
+/*
+resource "snowflake_grant_ownership" "views" {
   for_each = {
     for uni in local.view_grants : uni.unique => uni
   }
@@ -61,3 +61,4 @@ resource "snowflake_grant_ownership" "dynamic_views" {
     }
   }
 }
+*/

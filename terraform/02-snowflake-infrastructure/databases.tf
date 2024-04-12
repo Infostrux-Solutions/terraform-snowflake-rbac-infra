@@ -53,7 +53,7 @@ resource "snowflake_grant_privileges_to_account_role" "database" {
 
   depends_on = [snowflake_grant_account_role.role]
 }
-
+/*
 resource "snowflake_grant_ownership" "database" {
   for_each = {
     for uni in local.database_grants : uni.unique => uni if contains(uni.privilege, "ownership")
@@ -70,3 +70,4 @@ resource "snowflake_grant_ownership" "database" {
 
   depends_on = [snowflake_grant_account_role.role]
 }
+*/
