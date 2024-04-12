@@ -9,7 +9,7 @@ locals {
     for role, parents in local.roles : [
       for parent in parents : {
         unique = join("_", [role, parent])
-        role   = role
+        role   = upper(join("_", [var.customer, var.environment, role]))
         parent = parent
       }
     ]
