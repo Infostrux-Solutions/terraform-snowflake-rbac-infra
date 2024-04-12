@@ -53,8 +53,7 @@ resource "snowflake_grant_ownership" "tables" {
 
   provider = snowflake.securityadmin
 
-  account_role_name   = each.value.role
-  outbound_privileges = "REVOKE"
+  account_role_name = each.value.role
   on {
     future {
       object_type_plural = "TABLES"

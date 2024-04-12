@@ -51,7 +51,6 @@ resource "snowflake_grant_privileges_to_account_role" "database" {
     object_type = "DATABASE"
     object_name = snowflake_database.database[each.value.database].id
   }
-
 }
 
 resource "snowflake_grant_ownership" "database" {
@@ -59,14 +58,12 @@ resource "snowflake_grant_ownership" "database" {
     for uni in local.database_grants : uni.unique => uni if contains(uni.privilege, "ownership")
   }
 
-  provider = snowflake.securityadmin
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_account_role.role]
 
-  account_role_name   = each.value.role
-  outbound_privileges = "REVOKE"
+  account_role_name = each.value.role
   on {
     object_type = "DATABASE"
     object_name = snowflake_database.database[each.value.database].id
   }
-
-  depends_on = [snowflake_grant_account_role.role]
 }
