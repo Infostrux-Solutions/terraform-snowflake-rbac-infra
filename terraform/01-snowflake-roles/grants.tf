@@ -75,13 +75,3 @@ resource "snowflake_grant_account_role" "tag_secadmin" {
   role_name        = snowflake_role.tag_securityadmin[0].name
   parent_role_name = "SECURITYADMIN"
 }
-
-resource "snowflake_grant_privileges_to_account_role" "tag_secadmin_exec" {
-  count = length(var.tags) > 0 ? 1 : 0
-
-  provider = snowflake.accountadmin
-
-  privileges        = ["EXECUTE TASK"]
-  account_role_name = "SYSADMIN"
-  on_account        = true
-}
