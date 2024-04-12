@@ -10,7 +10,7 @@ locals {
       for role, privilege in grants : {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
-        privilege = privilege
+        privilege = upper(privilege)
         role      = upper(join("_", [var.customer, var.environment, role]))
       }
     ]
@@ -21,7 +21,7 @@ locals {
       for role, privilege in grants : {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
-        privilege = sort(setsubtract(upper(privilege), ["OWNERSHIP"]))
+        privilege = sort(setsubtract(privilege, ["OWNERSHIP"]))
         role      = upper(join("_", [var.customer, var.environment, role]))
       }
     ]
