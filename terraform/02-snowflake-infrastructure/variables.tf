@@ -118,6 +118,11 @@ variable "views_and_roles" {
   description = "A mapping of the view permissions {map} to the target roles [list]. (The outer most {map} is not currently used)."
 }
 
+variable "dynamic_tables_and_roles" {
+  type        = map(map(any))
+  description = "A mapping of the dynamic tables permissions {map} to the target roles [list]. (The outer most {map} is not currently used)."
+}
+
 variable "role_to_roles" {
   type        = map(list(string))
   description = "A mapping of the roles created for each stage (Ex. DEV_INGEST_SYSADMIN) and the role(s) to inherit their permissions (Ex. SYSADMIN)."
