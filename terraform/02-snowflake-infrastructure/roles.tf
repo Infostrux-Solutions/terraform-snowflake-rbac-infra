@@ -21,7 +21,7 @@ resource "snowflake_grant_account_role" "role" {
     for uni in local.role_grants : uni.unique => uni
   }
 
-  provider = snowflake.securityadmin
+  provider = snowflake.accountadmin
 
   role_name        = each.value.role
   parent_role_name = each.value.parent
