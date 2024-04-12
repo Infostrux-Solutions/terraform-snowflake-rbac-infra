@@ -53,7 +53,7 @@ resource "snowflake_grant_ownership" "dynamic_views" {
   provider = snowflake.securityadmin
 
   account_role_name   = each.value.role
-  outbound_privileges = "COPY"
+  outbound_privileges = "REVOKE"
   on {
     future {
       object_type_plural = "VIEWS"

@@ -60,7 +60,7 @@ resource "snowflake_grant_ownership" "warehouse" {
   provider = snowflake.securityadmin
 
   account_role_name   = each.value.role
-  outbound_privileges = "COPY"
+  outbound_privileges = "REVOKE"
   on {
     object_type = "WAREHOUSE"
     object_name = snowflake_warehouse.warehouse[each.value.warehouse].id
