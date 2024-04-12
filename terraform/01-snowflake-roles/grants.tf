@@ -85,13 +85,3 @@ resource "snowflake_grant_privileges_to_account_role" "tag_secadmin_exec" {
   account_role_name = "SYSADMIN"
   on_account        = true
 }
-
-resource "snowflake_grant_account_role" "tag_securityadmin" {
-  count = length(var.tags) > 0 ? 1 : 0
-
-  provider   = snowflake.securityadmin
-  depends_on = [snowflake_grant_privileges_to_account_role.tag_secadmin_usage, snowflake_grant_privileges_to_account_role.tag_secadmin_usage_create, snowflake_grant_privileges_to_account_role.tag_secadmin_apply, snowflake_grant_account_role.tag_secadmin]
-
-  role_name = snowflake_role.tag_securityadmin[0].name
-  user_name = [var.snowflake_username]
-}
