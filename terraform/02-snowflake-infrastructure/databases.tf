@@ -42,7 +42,8 @@ resource "snowflake_grant_privileges_to_account_role" "database" {
     for uni in local.database_grants_wo_ownership : uni.unique => uni
   }
 
-  provider = snowflake.securityadmin
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_account_role.role, snowflake_grant_ownership.database]
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
@@ -51,9 +52,8 @@ resource "snowflake_grant_privileges_to_account_role" "database" {
     object_name = snowflake_database.database[each.value.database].id
   }
 
-  depends_on = [snowflake_grant_account_role.role]
 }
-/*
+
 resource "snowflake_grant_ownership" "database" {
   for_each = {
     for uni in local.database_grants : uni.unique => uni if contains(uni.privilege, "ownership")
@@ -70,4 +70,3 @@ resource "snowflake_grant_ownership" "database" {
 
   depends_on = [snowflake_grant_account_role.role]
 }
-*/

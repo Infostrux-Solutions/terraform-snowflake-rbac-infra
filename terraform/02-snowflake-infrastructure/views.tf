@@ -33,7 +33,8 @@ resource "snowflake_grant_privileges_to_account_role" "views" {
     for uni in local.view_grants_wo_ownership : uni.unique => uni
   }
 
-  provider = snowflake.securityadmin
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_ownership.views]
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
@@ -44,7 +45,7 @@ resource "snowflake_grant_privileges_to_account_role" "views" {
     }
   }
 }
-/*
+
 resource "snowflake_grant_ownership" "views" {
   for_each = {
     for uni in local.view_grants : uni.unique => uni
@@ -52,8 +53,7 @@ resource "snowflake_grant_ownership" "views" {
 
   provider = snowflake.securityadmin
 
-  account_role_name   = each.value.role
-  outbound_privileges = "REVOKE"
+  account_role_name = each.value.role
   on {
     future {
       object_type_plural = "VIEWS"
@@ -61,4 +61,3 @@ resource "snowflake_grant_ownership" "views" {
     }
   }
 }
-*/

@@ -33,7 +33,8 @@ resource "snowflake_grant_privileges_to_account_role" "tables" {
     for uni in local.table_grants_wo_ownership : uni.unique => uni
   }
 
-  provider = snowflake.securityadmin
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_ownership.tables]
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
@@ -44,7 +45,7 @@ resource "snowflake_grant_privileges_to_account_role" "tables" {
     }
   }
 }
-/*
+
 resource "snowflake_grant_ownership" "tables" {
   for_each = {
     for uni in local.table_grants : uni.unique => uni
@@ -61,4 +62,3 @@ resource "snowflake_grant_ownership" "tables" {
     }
   }
 }
-*/

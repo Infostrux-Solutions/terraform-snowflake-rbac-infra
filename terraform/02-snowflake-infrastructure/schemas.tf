@@ -33,7 +33,8 @@ resource "snowflake_grant_privileges_to_account_role" "schema" {
     for uni in local.schema_grants_wo_ownership : uni.unique => uni
   }
 
-  provider = snowflake.securityadmin
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_ownership.schema]
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
@@ -41,7 +42,7 @@ resource "snowflake_grant_privileges_to_account_role" "schema" {
     future_schemas_in_database = snowflake_database.database[each.value.database].id
   }
 }
-/*
+
 resource "snowflake_grant_ownership" "schema" {
   for_each = {
     for uni in local.database_grants : uni.unique => uni if contains(uni.privilege, "ownership")
@@ -58,4 +59,3 @@ resource "snowflake_grant_ownership" "schema" {
     }
   }
 }
-*/
