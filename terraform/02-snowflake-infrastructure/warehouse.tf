@@ -10,7 +10,7 @@ locals {
       for role, privilege in grants : {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
-        privilege = upper(privilege)
+        privilege = [for p in privilege : upper(p)]
         role      = upper(join("_", [var.customer, var.environment, role]))
       }
     ]
