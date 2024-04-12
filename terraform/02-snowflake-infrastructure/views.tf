@@ -21,7 +21,7 @@ locals {
       for role, privilege in grants : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
-        privilege = setsubtract(privilege, ["ownership"])
+        privilege = sort(setsubtract(privilege, ["ownership"]))
         role      = upper(join("_", [var.customer, var.environment, role]))
       }
     ]
