@@ -43,7 +43,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_secadmin_usage_create
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_admin_apply" {
-  provider = snowflake.securityadmin
+  provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
   account_role_name = snowflake_role.tag_admin[0].name
@@ -51,7 +51,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_apply" {
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_secadmin_apply" {
-  provider = snowflake.securityadmin
+  provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
   account_role_name = snowflake_role.tag_securityadmin[0].name
@@ -79,7 +79,7 @@ resource "snowflake_grant_account_role" "tag_secadmin" {
 resource "snowflake_grant_privileges_to_account_role" "tag_secadmin_exec" {
   count = length(var.tags) > 0 ? 1 : 0
 
-  provider = snowflake.securityadmin
+  provider = snowflake.accountadmin
 
   privileges        = ["EXECUTE TASK"]
   account_role_name = "SYSADMIN"

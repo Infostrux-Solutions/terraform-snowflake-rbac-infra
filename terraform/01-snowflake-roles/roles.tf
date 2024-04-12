@@ -13,7 +13,7 @@ resource "snowflake_role" "roles" {
   for_each = toset(var.roles)
   provider = snowflake.securityadmin
 
-  name    = upper(each.value)
+  name    = upper(join("_", [var.customer, var.environment, each.value]))
   comment = "created by terraform"
 }
 
