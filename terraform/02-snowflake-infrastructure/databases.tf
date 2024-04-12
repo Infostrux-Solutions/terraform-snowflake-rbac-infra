@@ -33,6 +33,8 @@ resource "snowflake_database" "database" {
 
   name    = upper(join("_", [var.customer, var.environment, each.key]))
   comment = "created by terraform"
+
+  depends_on = [snowflake_grant_account_role.role]
 }
 
 resource "snowflake_grant_privileges_to_account_role" "database" {
