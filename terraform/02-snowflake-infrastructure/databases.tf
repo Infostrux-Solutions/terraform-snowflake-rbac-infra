@@ -57,7 +57,8 @@ resource "snowflake_grant_ownership" "database" {
 
   provider = snowflake.securityadmin
 
-  account_role_name = each.value.role
+  account_role_name   = each.value.role
+  outbound_privileges = "COPY"
   on {
     object_type = "DATABASE"
     object_name = snowflake_database.database[each.value.database].id

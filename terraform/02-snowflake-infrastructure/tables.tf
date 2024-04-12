@@ -52,7 +52,8 @@ resource "snowflake_grant_ownership" "dynamic_tables" {
 
   provider = snowflake.securityadmin
 
-  account_role_name = each.value.role
+  account_role_name   = each.value.role
+  outbound_privileges = "COPY"
   on {
     future {
       object_type_plural = "TABLES"
