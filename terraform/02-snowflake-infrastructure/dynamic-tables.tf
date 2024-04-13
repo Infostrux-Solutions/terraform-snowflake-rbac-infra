@@ -28,7 +28,7 @@ locals {
   ]))
 }
 
-resource "snowflake_grant_privileges_to_account_role" "dynamic_tables" {
+resource "snowflake_grant_privileges_to_account_role" "future_dynamic_tables" {
   for_each = {
     for uni in local.dynamic_table_grants_wo_ownership : uni.unique => uni
   }
@@ -45,6 +45,25 @@ resource "snowflake_grant_privileges_to_account_role" "dynamic_tables" {
     }
   }
 }
+
+resource "snowflake_grant_privileges_to_account_role" "all_dynamic_tables" {
+  for_each = {
+    for uni in local.dynamic_table_grants_wo_ownership : uni.unique => uni
+  }
+
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_ownership.dynamic_tables]
+
+  account_role_name = each.value.role
+  privileges        = each.value.privilege
+  on_schema_object {
+    all {
+      object_type_plural = "DYNAMIC TABLES"
+      in_database        = snowflake_database.database[each.value.database].id
+    }
+  }
+}
+
 
 resource "snowflake_grant_ownership" "dynamic_tables" {
   for_each = {
