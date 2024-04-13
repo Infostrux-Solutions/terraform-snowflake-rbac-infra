@@ -28,7 +28,7 @@ locals {
   ]))
 }
 
-resource "snowflake_grant_privileges_to_account_role" "views" {
+resource "snowflake_grant_privileges_to_account_role" "future_views" {
   for_each = {
     for uni in local.view_grants_wo_ownership : uni.unique => uni
   }
@@ -40,6 +40,24 @@ resource "snowflake_grant_privileges_to_account_role" "views" {
   privileges        = each.value.privilege
   on_schema_object {
     future {
+      object_type_plural = "VIEWS"
+      in_database        = snowflake_database.database[each.value.database].id
+    }
+  }
+}
+
+resource "snowflake_grant_privileges_to_account_role" "all_views" {
+  for_each = {
+    for uni in local.view_grants_wo_ownership : uni.unique => uni
+  }
+
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_ownership.views]
+
+  account_role_name = each.value.role
+  privileges        = each.value.privilege
+  on_schema_object {
+    all {
       object_type_plural = "VIEWS"
       in_database        = snowflake_database.database[each.value.database].id
     }

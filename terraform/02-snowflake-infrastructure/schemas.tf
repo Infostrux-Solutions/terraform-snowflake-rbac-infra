@@ -48,6 +48,9 @@ resource "snowflake_grant_privileges_to_account_role" "all_schemas" {
     for uni in local.schema_grants_wo_ownership : uni.unique => uni
   }
 
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_grant_ownership.views]
+
   account_role_name = each.value.role
   privileges        = each.value.privilege
   on_schema {
