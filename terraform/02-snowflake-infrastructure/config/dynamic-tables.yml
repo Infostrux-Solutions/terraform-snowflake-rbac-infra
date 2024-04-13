@@ -4,25 +4,25 @@ tables:
       - select
     ingestion:
       - select
-      - usage
+      - operate
       - ownership
     developer:
       - select
-      - usage
+      - operate
     sysadmin:
       - select
-      - usage
+      - operate
 
   integrate:
     analyst:
       - select
-      - usage
+      - operate
     developer:
       - select
-      - usage
+      - operate
     sysadmin:
       - select
-      - usage
+      - operate
       - ownership
 
   clean:
@@ -30,10 +30,10 @@ tables:
       - select
     developer:
       - select
-      - usage
+      - operate
     sysadmin:
       - select
-      - usage
+      - operate
       - ownership
 
   normalize:
@@ -41,11 +41,11 @@ tables:
       - select
     developer:
       - select
-      - usage
+      - operate
       - truncate
     sysadmin:
       - select
-      - usage
+      - operate
       - ownership
 
   analyze:
@@ -53,8 +53,8 @@ tables:
       - select
     developer:
       - select
-      - usage
+      - operate
     sysadmin:
       - select
-      - usage
+      - operate
       - ownership
