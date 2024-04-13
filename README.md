@@ -1,4 +1,4 @@
-# data-terraform-snowflake-infrastructure
+# terraform-snowflake-rbac-infra
 
 ## Prerequisites
 
