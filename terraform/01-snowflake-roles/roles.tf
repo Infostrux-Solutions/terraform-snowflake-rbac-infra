@@ -14,7 +14,7 @@ resource "snowflake_role" "roles" {
   provider = snowflake.securityadmin
 
   name    = upper(join("_", [var.customer, var.environment, each.value]))
-  comment = "created by terraform"
+  comment = var.comment
 }
 
 resource "snowflake_role" "parent_roles" {
@@ -22,7 +22,7 @@ resource "snowflake_role" "parent_roles" {
   provider = snowflake.securityadmin
 
   name    = upper(each.value)
-  comment = "created by terraform"
+  comment = var.comment
 }
 
 resource "snowflake_role" "tag_admin" {

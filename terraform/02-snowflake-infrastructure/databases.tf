@@ -32,7 +32,7 @@ resource "snowflake_database" "database" {
   for_each = local.databases
 
   name    = upper(join("_", [var.customer, var.environment, each.key]))
-  comment = "created by terraform"
+  comment = var.comment
 
   depends_on = [snowflake_grant_account_role.role]
 }

@@ -29,6 +29,12 @@ variable "warehouse_tags" {
   type        = map(string)
 }
 
+variable "comment" {
+  description = "Comment to apply to all resources."
+  type        = string
+  default     = "Created by terraform"
+}
+
 # Snowflake
 variable "snowflake_role" {
   type        = string

@@ -3,5 +3,5 @@ resource "snowflake_schema" "tags" {
 
   database = snowflake_database.tags[0].id
   name     = "TAGS"
-  comment  = "created by terraform"
+  comment  = var.comment
 }

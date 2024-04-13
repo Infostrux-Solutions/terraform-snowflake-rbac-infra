@@ -32,7 +32,7 @@ resource "snowflake_warehouse" "warehouse" {
   for_each = local.warehouses
 
   name           = upper(join("_", [var.customer, var.environment, each.key]))
-  comment        = "created by terraform"
+  comment        = var.comment
   warehouse_size = var.snowflake_warehouse_size
   auto_suspend   = try(var.warehouse_auto_suspend[each.key], 600)
 }
