@@ -57,6 +57,9 @@ The private key must be created as an GitHub environment secret with the name `S
 
 <br/>
 
+## Configure Infrastructure
+Most infrastrure changes should take place in the `terraform/02-snowflake-infrastructure/config` directory.
+
 ## Deployment
 
 ### 01 - Deploy Roles
