@@ -3,7 +3,7 @@ locals {
     for database in snowflake_database.database : [
       for tag, value in var.default_tags : {
         key       = upper(join("_", [database, tag]))
-        database  = upper(join("_", [local.object_prefix, database]))
+        database  = database.name
         tag_name  = "GOVERNANCE.TAGS.${tag}"
         tag_value = value
       }
@@ -13,6 +13,7 @@ locals {
     for warehouse in snowflake_warehouse.warehouse : [
       for tag, value in var.default_tags : {
         key       = upper(join("_", [warehouse, tag]))
+        warehouse = warehouse.name
         tag_name  = "GOVERNANCE.TAGS.${tag}"
         tag_value = value
       }
@@ -24,8 +25,6 @@ resource "snowflake_tag_association" "database_tags" {
   for_each = {
     for unique in local.database_tags : unique.key => unique
   }
-
-  depends_on = [snowflake_database.database]
 
   object_identifier {
     name = each.value.database
@@ -41,7 +40,7 @@ resource "snowflake_tag_association" "warehouse_tags" {
   }
 
   object_identifier {
-    name = module.sf_warehouse[each.value.stage].id
+    name = each.value.warehouse
   }
   object_type = "WAREHOUSE"
   tag_id      = each.value.tag_name
