@@ -1,5 +1,7 @@
 roles:
+  # Child role
   analyst:
+    # Parent role
     - analyst
   ingestion:
     - sysadmin
