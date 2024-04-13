@@ -42,7 +42,6 @@ tables:
     developer:
       - select
       - operate
-      - truncate
     sysadmin:
       - select
       - operate
