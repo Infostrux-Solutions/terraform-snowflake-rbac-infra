@@ -8,7 +8,7 @@ The infrastructure stack deploys snowflake databases, warehouses, and grants bas
 <br>
 Terraform needs credentials for connecting to the remote backend. Multiples configuration are available, and the AWS provides full documentation can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
 
-Whenever possible, it's best practices to used temporary credentials. The most ideal approach when connecting to GitHub Actions would be to use the instructions found [here](https://benoitboure.com/securely-access-your-aws-resources-from-github-actions) to create a role that will be assumed by GitHub.
+Whenever possible, it's best practices to used temporary credentials. The most ideal approach when connecting to GitHub Actions would be to use the instructions found <a href="https://benoitboure.com/securely-access-your-aws-resources-from-github-actions">Here</a> to create a role that will be assumed by GitHub.
 
 Once the above is complete you must setup an environment in GitHub Settings (development, production) and add a secret to it `AWS_ROLE_ARN` with the role ARN created during the instructions above.
 </details>
