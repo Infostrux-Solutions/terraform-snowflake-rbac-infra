@@ -1,5 +1,6 @@
 locals {
-  database_yml = yamldecode(file("config/databases.yml"))
+  object_prefix = join("_", [var.customer, var.environment])
+  database_yml  = yamldecode(file("config/databases.yml"))
 
   databases = {
     for database, grants in local.database_yml.databases : database => grants
@@ -11,7 +12,7 @@ locals {
         unique    = join("_", [database, trimspace(role)])
         database  = database
         privilege = privilege
-        role      = upper(join("_", [var.customer, var.environment, role]))
+        role      = upper(join("_", [local.object_prefix, role]))
       }
     ]
   ])
@@ -22,7 +23,7 @@ locals {
         unique    = join("_", [database, trimspace(role)])
         database  = database
         privilege = sort([for p in setsubtract(privilege, ["ownership"]) : upper(p)])
-        role      = upper(join("_", [var.customer, var.environment, role]))
+        role      = upper(join("_", [local.object_prefix, role]))
       }
     ]
   ])
@@ -31,7 +32,7 @@ locals {
 resource "snowflake_database" "database" {
   for_each = local.databases
 
-  name    = upper(join("_", [var.customer, var.environment, each.key]))
+  name    = upper(join("_", [local.object_prefix, each.key]))
   comment = var.comment
 
   depends_on = [snowflake_grant_account_role.role]

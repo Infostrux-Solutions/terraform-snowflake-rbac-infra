@@ -6,6 +6,6 @@ resource "snowflake_tag" "tag" {
   database = snowflake_database.tags[0].name
   schema   = snowflake_schema.tags[0].name
 
-  comment        = "created by terraform"
+  comment        = var.comment
   allowed_values = each.value
 }

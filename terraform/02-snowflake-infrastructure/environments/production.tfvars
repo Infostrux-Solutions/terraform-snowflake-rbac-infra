@@ -11,13 +11,6 @@ default_tags = {
   SOURCE_CODE   = "terraform-snowflake-rbac-infra"
 }
 
-warehouse_tags = {
-  "INGEST_WH"     = "Ingest"
-  "DEV_WH"        = "Transform"
-  "REPORTING_WH"  = "Serve"
-  "MONITORING_WH" = "Monitor"
-}
-
 # Snowflake
 snowflake_role           = "SYSADMIN"
 snowflake_account        = "aua12673"

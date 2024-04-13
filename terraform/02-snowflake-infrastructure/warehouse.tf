@@ -11,7 +11,7 @@ locals {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
         privilege = privilege
-        role      = upper(join("_", [var.customer, var.environment, role]))
+        role      = upper(join("_", [local.object_prefix, role]))
       }
     ]
   ])
@@ -22,7 +22,7 @@ locals {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
         privilege = sort([for p in setsubtract(privilege, ["ownership"]) : upper(p)])
-        role      = upper(join("_", [var.customer, var.environment, role]))
+        role      = upper(join("_", [local.object_prefix, role]))
       }
     ]
   ])
@@ -31,7 +31,7 @@ locals {
 resource "snowflake_warehouse" "warehouse" {
   for_each = local.warehouses
 
-  name           = upper(join("_", [var.customer, var.environment, each.key]))
+  name           = upper(join("_", [local.object_prefix, each.key]))
   comment        = var.comment
   warehouse_size = var.snowflake_warehouse_size
   auto_suspend   = try(var.warehouse_auto_suspend[each.key], 600)

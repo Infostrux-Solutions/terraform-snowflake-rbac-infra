@@ -1,6 +1,6 @@
 locals {
-  fivetran_username = upper(join("_", [var.customer, var.environment, "FIVETRAN"]))
-  datadog_username  = upper(join("_", [var.customer, var.environment, "DATADOG"]))
+  fivetran_username = upper(join("_", [local.object_prefix, "FIVETRAN"]))
+  datadog_username  = upper(join("_", [local.object_prefix, "DATADOG"]))
 }
 
 resource "snowflake_user" "fivetran" {
@@ -15,8 +15,8 @@ resource "snowflake_user" "fivetran" {
   comment      = var.comment
   disabled     = false
 
-  default_warehouse = upper(join("_", [var.customer, var.environment, "INGEST_WH"]))
-  default_role      = upper(join("_", [var.customer, var.environment, "INGESTION"]))
+  default_warehouse = upper(join("_", [local.object_prefix, "INGEST_WH"]))
+  default_role      = upper(join("_", [local.object_prefix, "INGESTION"]))
 
   must_change_password = false
 }
@@ -33,8 +33,8 @@ resource "snowflake_user" "datadog" {
   comment      = var.comment
   disabled     = false
 
-  default_warehouse = upper(join("_", [var.customer, var.environment, "MONITORING_WH"]))
-  default_role      = upper(join("_", [var.customer, var.environment, "MONITORING"]))
+  default_warehouse = upper(join("_", [local.object_prefix, "MONITORING_WH"]))
+  default_role      = upper(join("_", [local.object_prefix, "MONITORING"]))
 
   must_change_password = false
 }

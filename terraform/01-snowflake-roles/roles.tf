@@ -1,4 +1,6 @@
 locals {
+  object_prefix = join("_", [var.customer, var.environment])
+
   tags_list = flatten([
     for key, value in var.default_tags : {
       name     = key
@@ -13,7 +15,7 @@ resource "snowflake_role" "roles" {
   for_each = toset(var.roles)
   provider = snowflake.securityadmin
 
-  name    = upper(join("_", [var.customer, var.environment, each.value]))
+  name    = upper(join("_", [local.object_prefix, each.value]))
   comment = var.comment
 }
 

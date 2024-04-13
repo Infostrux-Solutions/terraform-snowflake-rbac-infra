@@ -24,11 +24,6 @@ variable "default_tags" {
   type        = map(string)
 }
 
-variable "warehouse_tags" {
-  description = "Warehouse specific tags for Snowflake resources."
-  type        = map(string)
-}
-
 variable "comment" {
   description = "Comment to apply to all resources."
   type        = string

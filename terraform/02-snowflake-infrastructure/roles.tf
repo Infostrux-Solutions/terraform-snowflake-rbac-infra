@@ -9,7 +9,7 @@ locals {
     for role, parents in local.roles : [
       for parent in parents : {
         unique = join("_", [role, parent])
-        role   = upper(join("_", [var.customer, var.environment, role]))
+        role   = upper(join("_", [local.object_prefix, role]))
         parent = upper(parent)
       }
     ]
@@ -32,7 +32,7 @@ resource "snowflake_grant_account_role" "fivetran" {
 
   provider = snowflake.securityadmin
 
-  role_name = upper(join("_", [var.customer, var.environment, "INGESTION"]))
+  role_name = upper(join("_", [local.object_prefix, "INGESTION"]))
   user_name = snowflake_user.fivetran[0].name
 }
 
@@ -41,6 +41,6 @@ resource "snowflake_grant_account_role" "datadog" {
 
   provider = snowflake.securityadmin
 
-  role_name = upper(join("_", [var.customer, var.environment, "MONITORING"]))
+  role_name = upper(join("_", [local.object_prefix, "MONITORING"]))
   user_name = snowflake_user.datadog[0].name
 }
