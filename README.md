@@ -10,41 +10,6 @@ Whenever possible, it's best practices to used temporary credentials. The most i
 
 Once the above is complete you must setup an environment in GitHub Settings (development, production) and add a secret to it `AWS_ROLE_ARN` with the role ARN created during the instructions above.
 
-A example policy that will be required by Terraform to store backend state below:
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject",
-                "s3:GetObjectAcl",
-                "s3:GetObject",
-                "s3:GetEncryptionConfiguration",
-                "s3:DeleteObjectVersion",
-                "s3:GetObjectAttributes",
-                "s3:GetObjectVersionAcl",
-                "s3:GetBucketVersioning",
-                "s3:DeleteObject",
-                "s3:GetObjectVersionAttributes",
-                "s3:GetObjectVersion"
-            ],
-            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2/*"
-        },
-        {
-            "Sid": "VisualEditor1",
-            "Effect": "Allow",
-            "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2"
-        }
-    ]
-}
-```
-
-<br/>
-
 ### Snowflake Authentication provider requirements
 
 In Terraform, each provider needs credentials to manage resources on our behalf. In the case of the Snowflake provider, the following environment variables are required:
@@ -107,48 +72,3 @@ The private key must be created as an GitHub environment secret with the name `S
 2. Update the `tfvars` file with any variable changes that may be required.
 3. Navigate to `GitHub Actions` and trigger `infra-plan-manual` to verify that the plan is showing what we want to deploy is expected.
 4. Again in  `GitHub Actions` trigger `infra-deploy-manual` to deploy the infrastructure to Snowflake.
-
-## Customization
-### WITH_GRANT_OPTION
-If you need to control the grant options on a resource by resource basis you can do this with the following configuration pattern. This can significantly increase the amount of code in the `.tfvars` files. This works exactly the same on databases, warehouses, schemas, tables, and views.
-```
-warehouses_and_roles = {
-  "INGEST_WH" = {
-    "USAGE" = {
-      "ROLES"             = ["INGESTION", "SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "MONITOR" = {
-      "ROLES"             = ["SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "MODIFY" = {
-      "ROLES"             = ["SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "OPERATE" = {
-      "ROLES"             = ["INGESTION", "SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "OWNERSHIP" = {
-      "ROLES"             = ["SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-  }
-}
-```
-
-### Inherit role permissions
-By default we are granting environment level roles to the parent role as seen below, Ex. `DEV_DEVELOPER` (left), will be granted to the top level `DEVELOPER` (right) role. You can place any existing role name on the right hand side, the left side is reserved for the dynamically generated roles found [here](https://github.com/Infostrux-Solutions/terraform-snowflake-rbac-infra/blob/bc5a4d19fcf333d61aaf8f5cd73c08dc84d437c8/terraform/01-snowflake-roles/development.tfvars#L32). 
- 
-```
-role_to_roles = {
-  "DEVELOPER"  = ["DEVELOPER"],
-  "ANALYST"    = ["ANALYST"],
-  "SYSADMIN"   = ["SYSADMIN"],
-}
-```
