@@ -11,6 +11,7 @@ schemas:
       - create stream
       - create task
       - create stage
+      - ownership
     developer:
       - usage
       - create table
@@ -51,6 +52,7 @@ schemas:
       - create stream
       - create task
       - create stage
+      - ownership
 
   clean:
     analyst:
@@ -73,6 +75,7 @@ schemas:
       - create stream
       - create task
       - create stage
+      - ownership
 
   normalize:
     analyst:
@@ -95,6 +98,7 @@ schemas:
       - create stream
       - create task
       - create stage
+      - ownership
 
   analyze:
     analyst:
@@ -117,3 +121,4 @@ schemas:
       - create stream
       - create task
       - create stage
+      - ownership
