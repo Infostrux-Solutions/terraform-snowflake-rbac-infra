@@ -48,7 +48,7 @@ resource "snowflake_grant_privileges_to_account_role" "tables" {
 
 resource "snowflake_grant_ownership" "tables" {
   for_each = {
-    for uni in local.table_grants : uni.unique => uni if contains(uni.privilege, "ownership")
+    for uni in distinct(local.table_grants) : uni.unique => uni if contains(uni.privilege, "ownership")
   }
 
   provider   = snowflake.securityadmin
