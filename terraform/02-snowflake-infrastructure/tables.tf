@@ -5,6 +5,17 @@ locals {
     for database, grants in local.table_yml.tables : database => grants
   }
 
+  table_grants = flatten([
+    for database, grants in local.tables : [
+      for role, privilege in grants : {
+        unique    = join("_", [database, trimspace(role)])
+        database  = database
+        privilege = privilege
+        role      = upper(join("_", [var.customer, var.environment, role]))
+      }
+    ]
+  ])
+
   table_grants_wo_ownership = flatten([
     for database, grants in local.tables : [
       for role, privilege in grants : {
@@ -37,7 +48,7 @@ resource "snowflake_grant_privileges_to_account_role" "tables" {
 
 resource "snowflake_grant_ownership" "tables" {
   for_each = {
-    for uni in local.database_grants : uni.unique => uni if contains(uni.privilege, "ownership")
+    for uni in local.table_grants : uni.unique => uni if contains(uni.privilege, "ownership")
   }
 
   provider   = snowflake.securityadmin
