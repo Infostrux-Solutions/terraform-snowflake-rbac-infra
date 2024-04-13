@@ -28,7 +28,7 @@ locals {
   ]))
 }
 
-resource "snowflake_grant_privileges_to_account_role" "schema" {
+resource "snowflake_grant_privileges_to_account_role" "future_schemas" {
   for_each = {
     for uni in local.schema_grants_wo_ownership : uni.unique => uni
   }
@@ -40,6 +40,18 @@ resource "snowflake_grant_privileges_to_account_role" "schema" {
   privileges        = each.value.privilege
   on_schema {
     future_schemas_in_database = snowflake_database.database[each.value.database].id
+  }
+}
+
+resource "snowflake_grant_privileges_to_account_role" "all_schemas" {
+  for_each = {
+    for uni in local.schema_grants_wo_ownership : uni.unique => uni
+  }
+
+  account_role_name = each.value.role
+  privileges        = each.value.privilege
+  on_schema {
+    all_schemas_in_database = snowflake_database.database[each.value.database].id
   }
 }
 
