@@ -1,4 +1,5 @@
 # terraform-snowflake-rbac-infra
+The infrastructure stack deploys snowflake databases, warehouses, and grants based on the configuration in the `terraform/02-snowflake-infrastructure/config` directory.
 
 ## Prerequisites
 
@@ -56,9 +57,6 @@ desc user INFX_TERRAFORM;
 The private key must be created as an GitHub environment secret with the name `SNOWFLAKE_PRIVATE_KEY`.
 
 <br/>
-
-## Configure Infrastructure
-Most infrastrure changes should take place in the `terraform/02-snowflake-infrastructure/config` directory.
 
 ## Deployment
 
