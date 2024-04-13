@@ -3,16 +3,20 @@ The infrastructure stack deploys snowflake databases, warehouses, and grants bas
 
 ## Prerequisites
 
-### AWS Authentication Requirements
-
+<details>
+<summary>AWS Authentication Requirements</summary>
+<br>
 Terraform needs credentials for connecting to the remote backend. Multiples configuration are available, and the AWS provides full documentation can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
 
 Whenever possible, it's best practices to used temporary credentials. The most ideal approach when connecting to GitHub Actions would be to use the instructions found [here](https://benoitboure.com/securely-access-your-aws-resources-from-github-actions) to create a role that will be assumed by GitHub.
 
 Once the above is complete you must setup an environment in GitHub Settings (development, production) and add a secret to it `AWS_ROLE_ARN` with the role ARN created during the instructions above.
+</details>
+<br/>
 
-### Snowflake Authentication provider requirements
-
+<details>
+<summary>Snowflake Authentication provider requirements</summary>
+<br>
 In Terraform, each provider needs credentials to manage resources on our behalf. In the case of the Snowflake provider, the following environment variables are required:
 
 - **account** - (required) Both the name and the region (ex:corp.us-east-1). It can also come from the SNOWFLAKE_ACCOUNT environment variable.
@@ -21,11 +25,12 @@ In Terraform, each provider needs credentials to manage resources on our behalf.
 - **role** - (optional) Snowflake role to use for operations. If left unset, the user’s default role will be used. It can come from the SNOWFLAKE_ROLE environment variable.
 
 The account, username, and role can be configured in the terraform `.tfvars` file.
-
+</details>
 <br/>
 
-### Snowflake User key Creation
-
+<details>
+<summary>Snowflake User key Creation</summary>
+<br>
 If your snowflake don't already have an SSH key associated with it, the following
 the command will ensure you are correctly set up.
 
@@ -55,7 +60,7 @@ desc user INFX_TERRAFORM;
 ```
 
 The private key must be created as an GitHub environment secret with the name `SNOWFLAKE_PRIVATE_KEY`.
-
+</details>
 <br/>
 
 ## Deployment
