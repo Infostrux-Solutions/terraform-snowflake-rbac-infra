@@ -30,11 +30,11 @@ locals {
 
 resource "snowflake_grant_privileges_to_account_role" "dynamic_tables" {
   for_each = {
-    for uni in local.table_grants_wo_ownership : uni.unique => uni
+    for uni in local.dynamic_table_grants_wo_ownership : uni.unique => uni
   }
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_grant_ownership.tables]
+  depends_on = [snowflake_grant_ownership.dynamic_tables]
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
@@ -48,7 +48,7 @@ resource "snowflake_grant_privileges_to_account_role" "dynamic_tables" {
 
 resource "snowflake_grant_ownership" "dynamic_tables" {
   for_each = {
-    for uni in local.table_grants : uni.unique => uni if contains(uni.privilege, "ownership")
+    for uni in local.dynamic_table_grants : uni.unique => uni if contains(uni.privilege, "ownership")
   }
 
   provider   = snowflake.securityadmin
