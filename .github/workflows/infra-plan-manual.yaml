@@ -2,7 +2,7 @@ name: Plan Snowflake Infra
 on:
   workflow_dispatch:
     inputs:
-      targetEnvironment:
+      environment:
         type: choice
         description: Plan to
         options: 
@@ -45,7 +45,7 @@ jobs:
   Plan:
     name: Plan Terraform
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.targetEnvironment }}
+    environment: ${{ github.event.inputs.environment }}
     defaults:
       run:
         shell: bash
@@ -63,7 +63,7 @@ jobs:
         # ALL ENVS
         echo "TF_LOG=${{ github.event.inputs.logDebug }}" >> $GITHUB_ENV
         echo "BACKEND_ENCRYPT=true" >> $GITHUB_ENV
-        echo "ENVIRONMENT=${{ github.event.inputs.targetEnvironment }}" >> $GITHUB_ENV
+        echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
         echo "TF_VAR_snowflake_fivetran_password=${{ secrets.SNOWFLAKE_FIVETRAN_PASSWORD }}" >> $GITHUB_ENV
         echo "TF_VAR_snowflake_datadog_password=${{ secrets.SNOWFLAKE_DATADOG_PASSWORD }}" >> $GITHUB_ENV
         echo "SNOWFLAKE_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
