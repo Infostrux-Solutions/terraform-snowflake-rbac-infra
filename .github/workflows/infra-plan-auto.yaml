@@ -3,15 +3,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   ci-infrastructure:
     name: 'Dev'
     concurrency: ci-infrastructure
     uses: ./.github/workflows/infra-plan-manual.yaml
+    permissions:
+      id-token: write
+      contents: read
     with:
       targetEnvironment: development
       alwaysApplyGrants: false
