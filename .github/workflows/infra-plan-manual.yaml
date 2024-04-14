@@ -1,7 +1,5 @@
 name: Plan Snowflake Infra
 on:
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
     inputs:
       targetEnvironment:
