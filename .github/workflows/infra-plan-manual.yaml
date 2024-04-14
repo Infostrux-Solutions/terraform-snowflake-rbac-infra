@@ -10,6 +10,14 @@ on:
         - production
         required: true
         default: 'development'
+      alwaysApplyGrants:
+        type: choice
+        description: Re-run the grants on all objects in databases (When adding roles after objects already exist)
+        options: 
+        - true
+        - false
+        required: true
+        default: 'false'
       logDebug:
         type: choice
         description: TF_LOG debug level
