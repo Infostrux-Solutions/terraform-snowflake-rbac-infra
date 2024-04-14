@@ -1,0 +1,17 @@
+name: Plan Infrastructure on PR
+on:
+  pull_request:
+    types: [opened, reopened]
+    paths:
+      - 'terraform/02-snowflake-infrastructure/**'
+
+jobs:
+  ci-infrastructure:
+    name: 'Dev'
+    concurrency: ci-infrastructure
+    uses: ./.github/workflows/infra-plan-manual.yaml
+    with:
+      targetEnvironment: development
+      alwaysApplyGrants: false
+      logDebug: OFF
+    secrets: inherit

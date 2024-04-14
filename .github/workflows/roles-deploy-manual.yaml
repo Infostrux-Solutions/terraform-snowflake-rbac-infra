@@ -81,7 +81,6 @@ jobs:
       run: |
         terraform plan --var-file=./environments/$ENVIRONMENT.tfvars -out=./output.tfplan
 
-    # Publish output
     - name: Publish artifact
       uses: actions/upload-artifact@v4.3.1
       with:

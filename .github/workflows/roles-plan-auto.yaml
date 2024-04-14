@@ -1,0 +1,16 @@
+name: Plan Roles on PR
+on:
+  pull_request:
+    types: [opened, reopened]
+    paths:
+      - 'terraform/01-snowflake-roles/**'
+
+jobs:
+  ci-roles:
+    name: 'Dev'
+    concurrency: ci-roles
+    uses: ./.github/workflows/roles-plan-manual.yaml
+    with:
+      targetEnvironment: development
+      logDebug: OFF
+    secrets: inherit
