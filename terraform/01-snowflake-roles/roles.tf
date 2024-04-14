@@ -28,7 +28,7 @@ resource "snowflake_role" "roles" {
 
   provider = snowflake.securityadmin
 
-  name    = upper(join("_", [local.object_prefix, each.value.role]))
+  name    = upper(join("_", [local.object_prefix, each.key]))
   comment = var.comment
 }
 
