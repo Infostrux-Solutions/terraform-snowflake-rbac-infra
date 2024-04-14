@@ -33,7 +33,7 @@ resource "snowflake_role" "roles" {
 }
 
 resource "snowflake_role" "parent_roles" {
-  for_each = local.parent_roles
+  for_each = toset(local.parent_roles)
   provider = snowflake.securityadmin
 
   name    = upper(each.value)
