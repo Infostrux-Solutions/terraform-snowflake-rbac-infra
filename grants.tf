@@ -31,7 +31,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
-    object_name = snowflake_database.tags[0].name
+    object_name = try(snowflake_database.tags[0].name, var.governance_database_name)
   }
 }
 
@@ -42,7 +42,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_usage" 
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
-    object_name = snowflake_database.tags[0].name
+    object_name = try(snowflake_database.tags[0].name, var.governance_database_name)
   }
 }
 
@@ -53,7 +53,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage_create" {
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
-    schema_name = "\"${snowflake_database.tags[0].name}\".\"${snowflake_schema.tags[0].name}\""
+    schema_name = "\"${try(snowflake_database.tags[0].name, var.governance_database_name)}\".\"${try(snowflake_schema.tags[0].name, var.tags_schema_name)}\""
   }
 }
 
@@ -64,7 +64,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_usage_c
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
-    schema_name = "\"${snowflake_database.tags[0].name}\".\"${snowflake_schema.tags[0].name}\""
+    schema_name = "\"${try(snowflake_database.tags[0].name, var.governance_database_name)}\".\"${try(snowflake_schema.tags[0].name, var.tags_schema_name)}\""
   }
 }
 
