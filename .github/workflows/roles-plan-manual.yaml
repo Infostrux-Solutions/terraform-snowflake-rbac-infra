@@ -34,7 +34,7 @@ jobs:
       contents: read # required to checkout the code from the repo
 
     steps:
-    - uses: actions/checkout@v4.11
+    - uses: actions/checkout@v4.1.1
 
     - name: Set terraform environment variables
       run: |

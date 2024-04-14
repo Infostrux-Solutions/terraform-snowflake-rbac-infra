@@ -37,7 +37,7 @@ jobs:
       contents: read # required to checkout the code from the repo
 
     steps:
-    - uses: actions/checkout@v4.11
+    - uses: actions/checkout@v4.1.1
 
     - name: Destroy confirmation
       run: if [ "${{ github.event.inputs.confirmDestroy }}" != "I WANT TO DESTROY EVERYTHING" ]; then exit 1; fi
