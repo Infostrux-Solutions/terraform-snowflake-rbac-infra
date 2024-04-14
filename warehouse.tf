@@ -29,7 +29,8 @@ locals {
 }
 
 resource "snowflake_warehouse" "warehouse" {
-  for_each = local.warehouses
+  for_each   = local.warehouses
+  depends_on = [snowflake_role.roles, snowflake_role.parent_roles]
 
   name           = upper(join("_", [local.object_prefix, each.key]))
   comment        = var.comment

@@ -30,7 +30,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: terraform/02-snowflake-infrastructure
+        working-directory: ./
     concurrency: infra-destroy
     permissions:
       id-token: write # required to use OIDC authentication

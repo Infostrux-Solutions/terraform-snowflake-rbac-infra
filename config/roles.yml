@@ -9,3 +9,5 @@ roles:
     - developer
   sysadmin:
     - sysadmin
+  monitoring:
+    - monitoring
