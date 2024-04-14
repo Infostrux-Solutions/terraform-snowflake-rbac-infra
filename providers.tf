@@ -4,6 +4,10 @@ terraform {
       source  = "Snowflake-Labs/snowflake"
       version = "0.88.0"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
   }
 }
 
