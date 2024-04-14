@@ -16,12 +16,3 @@ default_tags = {
 snowflake_role     = "SYSADMIN"
 snowflake_account  = "aua12673"
 snowflake_username = "INFX_TERRAFORM"
-
-# Roles
-roles = [
-  "DEVELOPER",
-  "ANALYST",
-  "INGESTION",
-  "DBT",
-  "SYSADMIN"
-]

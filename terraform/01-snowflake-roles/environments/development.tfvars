@@ -4,6 +4,8 @@ domain      = "snowflake"
 environment = "dev"
 region      = "us-east-2"
 
+create_parent_roles = true
+
 # Tag values
 default_tags = {
   OWNER         = "matt@infostrux.com"
@@ -26,19 +28,3 @@ tags = {
 snowflake_role     = "SYSADMIN"
 snowflake_account  = "aua12673"
 snowflake_username = "INFX_TERRAFORM"
-
-# Roles
-roles = [
-  "DEVELOPER",
-  "ANALYST",
-  "INGESTION",
-  "DBT",
-  "SYSADMIN",
-  "MONITORING"
-]
-
-# Only make this once per account, otherwise leave blank
-parent_roles = [
-  "DEVELOPER",
-  "ANALYST"
-]

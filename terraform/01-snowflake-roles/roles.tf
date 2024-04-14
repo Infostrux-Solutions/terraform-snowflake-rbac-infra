@@ -1,6 +1,18 @@
 locals {
   object_prefix = join("_", [var.customer, var.environment])
 
+  roles = {
+    for role, roles in local.roles_yml.roles : role => roles
+  }
+
+  parent_roles = distinct(flatten([
+    for role, parent_roles in local.roles : [
+      for parent_role in parent_roles : [
+        var.create_parent_roles ? upper(parent_role) : null
+      ]
+    ]
+  ]))
+
   tags_list = flatten([
     for key, value in var.default_tags : {
       name     = key
@@ -12,15 +24,16 @@ locals {
 }
 
 resource "snowflake_role" "roles" {
-  for_each = toset(var.roles)
+  for_each = local.roles
+
   provider = snowflake.securityadmin
 
-  name    = upper(join("_", [local.object_prefix, each.value]))
+  name    = upper(join("_", [local.object_prefix, each.value.role]))
   comment = var.comment
 }
 
 resource "snowflake_role" "parent_roles" {
-  for_each = toset(var.parent_roles)
+  for_each = local.parent_roles
   provider = snowflake.securityadmin
 
   name    = upper(each.value)

@@ -1,3 +1,28 @@
+locals {
+  roles_yml = yamldecode(file("config/roles.yml"))
+
+  role_grants = flatten([
+    for role, parents in local.roles : [
+      for parent in parents : {
+        unique = join("_", [role, parent])
+        role   = upper(join("_", [local.object_prefix, role]))
+        parent = upper(parent)
+      }
+    ]
+  ])
+}
+
+resource "snowflake_grant_account_role" "role" {
+  for_each = {
+    for uni in local.role_grants : uni.unique => uni
+  }
+
+  provider = snowflake.securityadmin
+
+  role_name        = each.value.role
+  parent_role_name = each.value.parent
+}
+
 resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {
   provider = snowflake.securityadmin
 

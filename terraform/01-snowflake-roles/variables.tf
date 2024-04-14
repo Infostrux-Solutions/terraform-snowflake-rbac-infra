@@ -51,14 +51,8 @@ variable "snowflake_username" {
   description = "The name of the Snowflake user that we will be utilizing to deploy into the snowflake_account."
 }
 
-# Roles
-variable "roles" {
-  type        = list(string)
-  description = "A list of the roles that we would like to create."
-}
-
-variable "parent_roles" {
-  type        = list(string)
-  description = "A list of the parent roles that we would like to create."
-  default     = []
+variable "create_parent_roles" {
+  type        = bool
+  description = "Whether or not you want to create the parent roles (for production deployment only)"
+  default     = false
 }
