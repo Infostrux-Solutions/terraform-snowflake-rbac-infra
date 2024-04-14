@@ -62,7 +62,7 @@ jobs:
     - name: install terraform
       uses: hashicorp/setup-terraform@v3.0.0
       with:
-        terraform_version: 1.2.4
+        terraform_version: 1.8.0
         terraform_wrapper: false
 
     - name: Debug info
