@@ -53,6 +53,8 @@ resource "snowflake_tag_association" "database_tags" {
     for unique in local.database_tags : unique.key => unique
   }
 
+  depends_on = [snowflake_tag.tag]
+
   object_identifier {
     name = each.value.database
   }
@@ -65,6 +67,8 @@ resource "snowflake_tag_association" "warehouse_tags" {
   for_each = {
     for unique in local.warehouse_tags : unique.key => unique
   }
+
+  depends_on = [snowflake_tag.tag]
 
   object_identifier {
     name = each.value.warehouse

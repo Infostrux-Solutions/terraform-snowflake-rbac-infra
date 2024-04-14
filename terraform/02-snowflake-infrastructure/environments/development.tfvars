@@ -4,6 +4,8 @@ domain      = "snowflake"
 environment = "dev"
 region      = "us-east-2"
 
+create_parent_roles = true
+
 default_tags = {
   OWNER         = "matt@infostrux.com"
   ENVIRONMENT   = "Development"
