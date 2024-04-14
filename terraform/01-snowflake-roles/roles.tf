@@ -5,13 +5,13 @@ locals {
     for role, roles in local.roles_yml.roles : role => roles
   }
 
-  parent_roles = distinct(flatten([
+  parent_roles = compact(distinct(flatten([
     for role, parent_roles in local.roles : [
       for parent_role in setsubtract(parent_roles, ["sysadmin"]) : [
-        var.create_parent_roles ? parent_role : ""
+        var.create_parent_roles ? parent_role : null
       ]
     ]
-  ]))
+  ])))
 
   tags_list = flatten([
     for key, value in var.default_tags : {
