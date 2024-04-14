@@ -9,7 +9,7 @@ jobs:
     concurrency: ci-infrastructure
     uses: ./.github/workflows/infra-plan-manual.yaml
     with:
-      environment: development
+      targetEnvironment: development
       alwaysApplyGrants: false
       logDebug: OFF
     secrets: inherit
