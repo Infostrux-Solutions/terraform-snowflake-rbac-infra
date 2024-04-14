@@ -28,7 +28,7 @@ on:
         default: 'OFF'
   workflow_call:
     inputs:
-      environment:
+      targetEnvironment:
         required: true
         type: string
         default: development
