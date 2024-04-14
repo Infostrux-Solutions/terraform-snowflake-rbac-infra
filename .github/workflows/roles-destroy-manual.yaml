@@ -37,7 +37,7 @@ jobs:
       contents: read # required to checkout the code from the repo
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.11
 
     - name: Destroy confirmation
       run: if [ "${{ github.event.inputs.confirmDestroy }}" != "I WANT TO DESTROY EVERYTHING" ]; then exit 1; fi
@@ -53,14 +53,14 @@ jobs:
         echo "EOF" >> $GITHUB_ENV
 
     - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1-node16
+      uses: aws-actions/configure-aws-credentials@v4.0.2
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
         role-duration-seconds: 900
         aws-region: us-east-2
 
     - name: install terraform
-      uses: hashicorp/setup-terraform@v2.0.3
+      uses: hashicorp/setup-terraform@v3.0.0
       with:
         terraform_version: 1.2.4
         terraform_wrapper: false
