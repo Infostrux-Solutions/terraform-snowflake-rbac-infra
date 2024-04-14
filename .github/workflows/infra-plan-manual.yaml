@@ -26,6 +26,20 @@ on:
         - 'OFF'
         required: true
         default: 'OFF'
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: development
+      alwaysApplyGrants:
+        required: true
+        type: string
+        default: false
+      logDebug:
+        required: true
+        type: string
+        default: OFF
 
 jobs:
   Plan:
