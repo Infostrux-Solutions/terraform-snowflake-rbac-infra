@@ -1,6 +1,4 @@
 locals {
-  object_prefix = join("_", [var.customer, var.environment])
-
   roles = {
     for role, roles in local.roles_yml.roles : role => roles
   }
