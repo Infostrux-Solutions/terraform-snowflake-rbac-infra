@@ -4,7 +4,7 @@ locals {
       for tag, value in var.default_tags : {
         key       = upper(join("_", [database.name, tag]))
         database  = database.name
-        tag_name  = "${snowflake_database.tags[0].name}.${snowflake_schema.tags[0].name}.${tag}"
+        tag_name  = try("${snowflake_database.tags[0].name}.${snowflake_schema.tags[0].name}.${tag}", "${var.governance_database_name}.${var.tags_schema_name}.${tag}")
         tag_value = value
       }
     ]
@@ -14,7 +14,7 @@ locals {
       for tag, value in var.default_tags : {
         key       = upper(join("_", [warehouse.name, tag]))
         warehouse = warehouse.name
-        tag_name  = "${snowflake_database.tags[0].name}.${snowflake_schema.tags[0].name}.${tag}"
+        tag_name  = try("${snowflake_database.tags[0].name}.${snowflake_schema.tags[0].name}.${tag}", "${var.governance_database_name}.${var.tags_schema_name}.${tag}")
         tag_value = value
       }
     ]
@@ -24,7 +24,7 @@ locals {
 resource "snowflake_database" "tags" {
   count = length(var.tags) > 0 ? 1 : 0
 
-  name    = "GOVERNANCE"
+  name    = var.governance_database_name
   comment = var.comment
 }
 
@@ -32,7 +32,7 @@ resource "snowflake_schema" "tags" {
   count = length(var.tags) > 0 ? 1 : 0
 
   database = snowflake_database.tags[0].id
-  name     = "TAGS"
+  name     = var.tags_schema_name
   comment  = var.comment
 }
 

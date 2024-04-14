@@ -36,6 +36,18 @@ variable "comment" {
   default     = "Created by terraform"
 }
 
+variable "governance_database_name" {
+  description = "Name to set for governance database."
+  type        = string
+  default     = "GOVERNANCE"
+}
+
+variable "tags_schema_name" {
+  description = "Name to set for tags schema."
+  type        = string
+  default     = "TAGS"
+}
+
 # Snowflake
 variable "snowflake_role" {
   type        = string
