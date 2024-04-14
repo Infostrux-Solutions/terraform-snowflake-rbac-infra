@@ -4,7 +4,7 @@ domain      = "snowflake"
 environment = "dev"
 region      = "us-east-2"
 
-create_parent_roles = false
+create_parent_roles = true
 
 # Tag values
 default_tags = {
