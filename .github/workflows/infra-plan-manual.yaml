@@ -14,8 +14,8 @@ on:
         type: choice
         description: Re-run all grants
         options: 
-        - true
         - false
+        - true
         required: true
         default: 'false'
       logDebug:
