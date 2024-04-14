@@ -8,7 +8,7 @@ locals {
   parent_roles = distinct(flatten([
     for role, parent_roles in local.roles : [
       for parent_role in setsubtract(parent_roles, ["sysadmin"]) : [
-        var.create_parent_roles ? parent_role : null
+        var.create_parent_roles ? parent_role : ""
       ]
     ]
   ]))
