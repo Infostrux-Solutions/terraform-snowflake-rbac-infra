@@ -30,12 +30,11 @@ locals {
 }
 
 resource "snowflake_database" "database" {
-  for_each = local.databases
+  for_each   = local.databases
+  depends_on = [snowflake_grant_account_role.role, snowflake_role.roles, snowflake_role.parent_roles]
 
   name    = upper(join("_", [local.object_prefix, each.key]))
   comment = var.comment
-
-  depends_on = [snowflake_grant_account_role.role]
 }
 
 resource "snowflake_grant_privileges_to_account_role" "database" {

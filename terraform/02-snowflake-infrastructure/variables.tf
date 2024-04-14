@@ -24,6 +24,12 @@ variable "default_tags" {
   type        = map(string)
 }
 
+variable "tags" {
+  description = "Tags and their allowed values for all Snowflake resources."
+  type        = map(list(string))
+  default     = {}
+}
+
 variable "comment" {
   description = "Comment to apply to all resources."
   type        = string
@@ -84,5 +90,11 @@ variable "snowflake_datadog_password" {
 variable "always_apply" {
   type        = bool
   description = "Toggle to always apply on all objects. Used for when there are changes to the grants that need to be retroatively granted to roles."
+  default     = false
+}
+
+variable "create_parent_roles" {
+  type        = bool
+  description = "Whether or not you want to create the parent roles (for production deployment only)"
   default     = false
 }

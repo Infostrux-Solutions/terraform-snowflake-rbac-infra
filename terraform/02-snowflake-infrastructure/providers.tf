@@ -16,6 +16,14 @@ provider "snowflake" {
 }
 
 provider "snowflake" {
+  alias         = "accountadmin"
+  role          = "ACCOUNTADMIN"
+  account       = var.snowflake_account
+  user          = var.snowflake_username
+  authenticator = "JWT"
+}
+
+provider "snowflake" {
   alias         = "securityadmin"
   role          = "SECURITYADMIN"
   account       = var.snowflake_account

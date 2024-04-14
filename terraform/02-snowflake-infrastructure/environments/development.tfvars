@@ -11,6 +11,16 @@ default_tags = {
   SOURCE_CODE   = "terraform-snowflake-rbac-infra"
 }
 
+# Create tags
+tags = {
+  OWNER             = ["matt@infostrux.com"]
+  ENVIRONMENT       = ["Development", "Production", "QA", "Stage"]
+  CREATED_USING     = ["Python", "Terraform", "dbt"]
+  SOURCE_CODE       = ["terraform-snowflake-rbac-infra"]
+  WAREHOUSE_PURPOSE = ["Ingest", "Monitor", "Serve", "Transform"]
+  DATA_LAYER        = ["Analyze", "Clean", "Ingest", "Integrate", "Normalize"]
+}
+
 # Snowflake
 snowflake_role           = "SYSADMIN"
 snowflake_account        = "aua12673"

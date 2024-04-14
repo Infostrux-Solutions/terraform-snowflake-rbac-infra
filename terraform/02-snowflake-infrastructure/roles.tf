@@ -1,30 +1,61 @@
 locals {
-  roles_yml = yamldecode(file("config/roles.yml"))
+  object_prefix = join("_", [var.customer, var.environment])
 
   roles = {
     for role, roles in local.roles_yml.roles : role => roles
   }
 
-  role_grants = flatten([
-    for role, parents in local.roles : [
-      for parent in parents : {
-        unique = join("_", [role, parent])
-        role   = upper(join("_", [local.object_prefix, role]))
-        parent = upper(parent)
-      }
+  parent_roles = compact(distinct(flatten([
+    for role, parent_roles in local.roles : [
+      for parent_role in setsubtract(parent_roles, ["sysadmin"]) : [
+        var.create_parent_roles ? parent_role : null
+      ]
     ]
+  ])))
+
+  tags_list = flatten([
+    for key, value in var.default_tags : {
+      name     = key
+      value    = value
+      database = try(snowflake_database.tags[0].name, "GOVERNANCE")
+      schema   = try(snowflake_schema.tags[0].name, "TAGS")
+    }
   ])
 }
 
-resource "snowflake_grant_account_role" "role" {
-  for_each = {
-    for uni in local.role_grants : uni.unique => uni
-  }
+resource "snowflake_role" "roles" {
+  for_each = local.roles
 
   provider = snowflake.securityadmin
 
-  role_name        = each.value.role
-  parent_role_name = each.value.parent
+  name    = upper(join("_", [local.object_prefix, each.key]))
+  comment = var.comment
+}
+
+resource "snowflake_role" "parent_roles" {
+  for_each = toset(local.parent_roles)
+  provider = snowflake.securityadmin
+
+  name    = upper(each.value)
+  comment = var.comment
+}
+
+resource "snowflake_role" "tag_admin" {
+  count    = length(var.tags) > 0 ? 1 : 0
+  provider = snowflake.securityadmin
+
+  name = "TAG_ADMIN"
+
+  depends_on = [snowflake_tag.tag]
+}
+
+resource "snowflake_role" "tag_securityadmin" {
+  count    = length(var.tags) > 0 ? 1 : 0
+  provider = snowflake.securityadmin
+
+  name = "TAG_SECURITYADMIN"
+
+  depends_on = [snowflake_tag.tag]
 }
 
 resource "snowflake_grant_account_role" "fivetran" {
