@@ -12,7 +12,7 @@ on:
         default: 'development'
       alwaysApplyGrants:
         type: choice
-        description: Re-run the grants on all objects in databases (When adding roles after objects already exist)
+        description: Re-run all grants
         options: 
         - true
         - false
