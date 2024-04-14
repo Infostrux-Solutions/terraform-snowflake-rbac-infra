@@ -4,7 +4,7 @@ locals {
       for tag, value in var.default_tags : {
         key       = upper(join("_", [database.name, tag]))
         database  = database.name
-        tag_name  = "${snowflake_database.tags.name}.${snowflake_schema.tags.name}.${tag}"
+        tag_name  = "${snowflake_database.tags[0].name}.${snowflake_schema.tags[0].name}.${tag}"
         tag_value = value
       }
     ]
@@ -14,7 +14,7 @@ locals {
       for tag, value in var.default_tags : {
         key       = upper(join("_", [warehouse.name, tag]))
         warehouse = warehouse.name
-        tag_name  = "${snowflake_database.tags.name}.${snowflake_schema.tags.name}.${tag}"
+        tag_name  = "${snowflake_database.tags[0].name}.${snowflake_schema.tags[0].name}.${tag}"
         tag_value = value
       }
     ]
