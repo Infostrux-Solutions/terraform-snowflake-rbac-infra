@@ -80,6 +80,12 @@ jobs:
       run: terraform validate
 
     - name: Plan terraform
+      if: github.event.inputs.alwaysApplyGrants == 'false'
       run: |
         terraform plan --var-file=./environments/$ENVIRONMENT.tfvars -out=./output.tfplan
+
+    - name: Plan terraform (always apply)
+      if: github.event.inputs.alwaysApplyGrants == 'true'
+      run: |
+        terraform plan --var-file=./environments/$ENVIRONMENT.tfvars -var always_apply=true -out=./output.tfplan
 

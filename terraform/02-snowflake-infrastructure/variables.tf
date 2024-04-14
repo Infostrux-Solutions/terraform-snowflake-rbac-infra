@@ -80,3 +80,9 @@ variable "snowflake_datadog_password" {
   default     = ""
   sensitive   = true
 }
+
+variable "always_apply" {
+  type        = bool
+  description = "Toggle to always apply on all objects. Used for when there are changes to the grants that need to be retroatively granted to roles."
+  default     = false
+}

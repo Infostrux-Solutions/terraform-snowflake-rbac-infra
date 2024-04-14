@@ -56,6 +56,7 @@ resource "snowflake_grant_privileges_to_account_role" "all_views" {
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
+  always_apply      = var.always_apply
   on_schema_object {
     all {
       object_type_plural = "VIEWS"
