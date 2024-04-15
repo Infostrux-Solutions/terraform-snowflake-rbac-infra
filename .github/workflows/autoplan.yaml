@@ -14,5 +14,4 @@ jobs:
       targetEnvironment: development
       alwaysApplyGrants: false
       logDebug: OFF
-      environment: development
     secrets: inherit
