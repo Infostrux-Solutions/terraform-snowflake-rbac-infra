@@ -1,4 +1,4 @@
-name: Plan Snowflake Infrastructure (Auto)
+name: Plan Snowflake Infra (Auto)
 on:
   pull_request:
     branches:
@@ -7,7 +7,6 @@ jobs:
   ci-infrastructure:
     name: 'Dev'
     uses: ./.github/workflows/plan.yaml
-    environment: development
     permissions:
       id-token: write # required to use OIDC authentication
       contents: read # required to checkout the code from the repo
@@ -15,4 +14,5 @@ jobs:
       targetEnvironment: development
       alwaysApplyGrants: false
       logDebug: OFF
+      environment: development
     secrets: inherit
