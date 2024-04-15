@@ -65,16 +65,7 @@ The private key must be created as an GitHub environment secret with the name `S
 
 ## Deployment
 
-### 01 - Deploy Roles
-
 1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required).
 2. Update the `tfvars` file with any variable changes that may be required.
-3. Navigate to `GitHub Actions` and trigger `roles-plan-manual` to verify that the plan is showing what we want to deploy is expected.
-4. Again in  `GitHub Actions` trigger `roles-deploy-manual` to deploy the infrastructure to Snowflake.
-
-### 02 - Deploy Infrastructure
-
-1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required).
-2. Update the `tfvars` file with any variable changes that may be required.
-3. Navigate to `GitHub Actions` and trigger `infra-plan-manual` to verify that the plan is showing what we want to deploy is expected.
-4. Again in  `GitHub Actions` trigger `infra-deploy-manual` to deploy the infrastructure to Snowflake.
+3. Navigate to `GitHub Actions` and trigger ` Plan Snowflake Infra` to verify that the plan is showing what we want to deploy is expected.
+4. Again in  `GitHub Actions` trigger ` Deploy Snowflake Infra` to deploy the infrastructure to Snowflake.
