@@ -27,7 +27,7 @@ resource "snowflake_grant_account_role" "role" {
 resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {
   provider = snowflake.securityadmin
 
-  account_role_name = snowflake_role.tag_admin[0].name
+  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
@@ -38,7 +38,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {
 resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_usage" {
   provider = snowflake.securityadmin
 
-  account_role_name = snowflake_role.tag_securityadmin[0].name
+  account_role_name = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
@@ -49,7 +49,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_usage" 
 resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage_create" {
   provider = snowflake.securityadmin
 
-  account_role_name = snowflake_role.tag_admin[0].name
+  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
@@ -60,7 +60,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage_create" {
 resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_usage_create" {
   provider = snowflake.securityadmin
 
-  account_role_name = snowflake_role.tag_securityadmin[0].name
+  account_role_name = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
@@ -72,7 +72,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_apply" {
   provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
-  account_role_name = snowflake_role.tag_admin[0].name
+  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
   on_account        = true
 }
 
@@ -80,7 +80,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_apply" 
   provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
-  account_role_name = snowflake_role.tag_securityadmin[0].name
+  account_role_name = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
   on_account        = true
 }
 
@@ -89,7 +89,7 @@ resource "snowflake_grant_account_role" "tag_admin" {
 
   provider = snowflake.securityadmin
 
-  role_name        = snowflake_role.tag_admin[0].name
+  role_name        = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
   parent_role_name = "SYSADMIN"
 }
 
@@ -98,6 +98,6 @@ resource "snowflake_grant_account_role" "tag_securityadmin" {
 
   provider = snowflake.securityadmin
 
-  role_name        = snowflake_role.tag_securityadmin[0].name
+  role_name        = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
   parent_role_name = "SECURITYADMIN"
 }
