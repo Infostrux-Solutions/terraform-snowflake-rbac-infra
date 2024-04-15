@@ -38,7 +38,6 @@ resource "snowflake_grant_privileges_to_account_role" "future_schemas" {
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
-  always_apply      = var.always_apply
   on_schema {
     future_schemas_in_database = snowflake_database.database[each.value.database].id
   }
@@ -54,6 +53,7 @@ resource "snowflake_grant_privileges_to_account_role" "all_schemas" {
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
+  always_apply      = var.always_apply
   on_schema {
     all_schemas_in_database = snowflake_database.database[each.value.database].id
   }
