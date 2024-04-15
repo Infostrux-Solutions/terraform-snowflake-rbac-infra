@@ -61,7 +61,6 @@ desc user INFX_TERRAFORM;
 
 The private key must be created as an GitHub environment secret with the name `SNOWFLAKE_PRIVATE_KEY`.
 </details>
-<br/>
 
 ## Deployment
 
