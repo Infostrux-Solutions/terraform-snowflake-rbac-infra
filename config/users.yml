@@ -1,0 +1,21 @@
+users:
+  dev: # environments
+    - jhon
+    - sarah
+  prod:
+    - mehdi
+  all:
+    - matt
+
+####### or
+## users that are connected to env
+
+users:
+  jhon:
+  - dev
+  sarah:
+  - dev
+  mehdi:
+  - prod
+  matt:
+  - dev
