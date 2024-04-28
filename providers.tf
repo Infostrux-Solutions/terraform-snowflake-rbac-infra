@@ -35,6 +35,14 @@ provider "snowflake" {
   authenticator = "JWT"
 }
 
+provider "snowflake" {
+  alias         = "useradmin"
+  role          = "USERADMIN"
+  account       = var.snowflake_account
+  user          = var.snowflake_username
+  authenticator = "JWT"
+}
+
 provider "aws" {
   region = var.region
 

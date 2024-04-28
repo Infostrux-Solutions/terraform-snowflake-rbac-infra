@@ -6,7 +6,7 @@ locals {
 resource "snowflake_user" "fivetran" {
   count = var.create_fivetran_user ? 1 : 0
 
-  provider = snowflake.securityadmin
+  provider = snowflake.useradmin
 
   name         = local.fivetran_username
   login_name   = local.fivetran_username
@@ -24,7 +24,7 @@ resource "snowflake_user" "fivetran" {
 resource "snowflake_user" "datadog" {
   count = var.create_datadog_user ? 1 : 0
 
-  provider = snowflake.securityadmin
+  provider = snowflake.useradmin
 
   name         = local.datadog_username
   login_name   = local.datadog_username
