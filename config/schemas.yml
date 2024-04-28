@@ -1,5 +1,5 @@
 schemas:
-  ingest:
+  raw:
     analyst:
       - usage
     ingestion:
@@ -33,7 +33,7 @@ schemas:
       - create task
       - create stage
 
-  integrate:
+  prepare:
     analyst:
       - usage
     developer:
@@ -58,7 +58,7 @@ schemas:
       - ownership
       - create dynamic table
 
-  clean:
+  normalize:
     analyst:
       - usage
     developer:
@@ -83,7 +83,7 @@ schemas:
       - create dynamic table
       - ownership
       
-  normalize:
+  integrate:
     analyst:
       - usage
     developer:

@@ -1,5 +1,5 @@
 databases:
-  ingest:
+  raw:
     analyst:
       - usage
     ingestion:
@@ -17,21 +17,7 @@ databases:
       - create schema
       - monitor
 
-  integrate:
-    analyst:
-      - usage
-    developer:
-      - usage
-      - modify
-      - create schema
-    sysadmin:
-      - usage
-      - modify
-      - create schema
-      - monitor
-      - ownership
-
-  clean:
+  prepare:
     analyst:
       - usage
     developer:
@@ -46,6 +32,20 @@ databases:
       - ownership
 
   normalize:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - modify
+      - create schema
+    sysadmin:
+      - usage
+      - modify
+      - create schema
+      - monitor
+      - ownership
+
+  integrate:
     analyst:
       - usage
     developer:

@@ -1,5 +1,5 @@
 views:
-  ingest:
+  raw:
     analyst:
       - select
       - references
@@ -14,19 +14,7 @@ views:
       - select
       - references
 
-  integrate:
-    analyst:
-      - select
-      - references
-    developer:
-      - select
-      - references
-    sysadmin:
-      - select
-      - references
-      - ownership
-
-  clean:
+  prepare:
     analyst:
       - select
       - references
@@ -39,6 +27,18 @@ views:
       - ownership
 
   normalize:
+    analyst:
+      - select
+      - references
+    developer:
+      - select
+      - references
+    sysadmin:
+      - select
+      - references
+      - ownership
+
+  integrate:
     analyst:
       - select
       - references

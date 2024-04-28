@@ -1,5 +1,5 @@
 tables:
-  ingest:
+  raw:
     analyst:
       - select
     ingestion:
@@ -23,24 +23,7 @@ tables:
       - delete
       - truncate
 
-  integrate:
-    analyst:
-      - select
-    developer:
-      - select
-      - insert
-      - update
-      - delete
-      - truncate
-    sysadmin:
-      - select
-      - insert
-      - update
-      - delete
-      - truncate
-      - ownership
-
-  clean:
+  prepare:
     analyst:
       - select
     developer:
@@ -58,6 +41,23 @@ tables:
       - ownership
 
   normalize:
+    analyst:
+      - select
+    developer:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+    sysadmin:
+      - select
+      - insert
+      - update
+      - delete
+      - truncate
+      - ownership
+
+  integrate:
     analyst:
       - select
     developer:

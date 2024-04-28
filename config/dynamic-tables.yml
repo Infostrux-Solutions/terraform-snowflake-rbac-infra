@@ -1,5 +1,5 @@
 tables:
-  ingest:
+  raw:
     analyst:
       - select
     ingestion:
@@ -13,21 +13,10 @@ tables:
       - select
       - operate
 
-  integrate:
+  prepare:
     analyst:
       - select
       - operate
-    developer:
-      - select
-      - operate
-    sysadmin:
-      - select
-      - operate
-      - ownership
-
-  clean:
-    analyst:
-      - select
     developer:
       - select
       - operate
@@ -37,6 +26,17 @@ tables:
       - ownership
 
   normalize:
+    analyst:
+      - select
+    developer:
+      - select
+      - operate
+    sysadmin:
+      - select
+      - operate
+      - ownership
+
+  integrate:
     analyst:
       - select
     developer:
