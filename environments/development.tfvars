@@ -1,5 +1,5 @@
 # Common
-customer    = "infx"
+project     = "marketing"
 domain      = "snowflake"
 environment = "dev"
 region      = "us-east-2"

@@ -1,5 +1,5 @@
 locals {
-  object_prefix = join("_", [var.customer, var.environment])
+  object_prefix = join("_", [var.environment, var.project])
   database_yml  = yamldecode(file("config/databases.yml"))
 
   databases = {

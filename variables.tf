@@ -1,7 +1,7 @@
 # Common
-variable "customer" {
+variable "project" {
   type        = string
-  description = "The name of the customer, for naming and tagging purposes."
+  description = "The name of the project, for naming and tagging purposes."
 }
 
 variable "domain" {
