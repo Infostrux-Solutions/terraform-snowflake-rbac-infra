@@ -1,0 +1,13 @@
+roles:
+  # Child role
+  analyst:
+    # Parent role
+    - analyst
+  ingestion:
+    - sysadmin
+  developer:
+    - developer
+  sysadmin:
+    - sysadmin
+  monitoring:
+    - monitoring

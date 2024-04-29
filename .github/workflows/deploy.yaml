@@ -1,0 +1,95 @@
+name: Deploy Snowflake Infra
+on:
+  workflow_dispatch:
+    inputs:
+      targetEnvironment:
+        type: choice
+        description: Deploy to
+        options: 
+        - development
+        - production
+        required: true
+        default: 'development'
+      alwaysApplyGrants:
+        type: choice
+        description: Re-run all grants
+        options: 
+        - false
+        - true
+        required: true
+        default: 'false'
+      logDebug:
+        type: choice
+        description: TF_LOG debug level
+        options:
+        - TRACE
+        - 'OFF'
+        required: true
+        default: 'OFF'
+
+jobs:
+  Deploy:
+    name: Deploy Terraform
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.targetEnvironment }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./
+    concurrency: infra-deploy
+    permissions:
+      id-token: write # required to use OIDC authentication
+      contents: read # required to checkout the code from the repo
+
+    steps:
+    - uses: actions/checkout@v4.1.1
+
+    - name: Set terraform environment variables
+      run: |
+        # ALL ENVS
+        echo "TF_LOG=${{ github.event.inputs.logDebug }}" >> $GITHUB_ENV
+        echo "BACKEND_ENCRYPT=true" >> $GITHUB_ENV
+        echo "ENVIRONMENT=${{ github.event.inputs.targetEnvironment }}" >> $GITHUB_ENV
+        echo "TF_VAR_snowflake_fivetran_password=${{ secrets.SNOWFLAKE_FIVETRAN_PASSWORD }}" >> $GITHUB_ENV
+        echo "TF_VAR_snowflake_datadog_password=${{ secrets.SNOWFLAKE_DATADOG_PASSWORD }}" >> $GITHUB_ENV
+        echo "SNOWFLAKE_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+        echo "${{ secrets.SNOWFLAKE_PRIVATE_KEY }}" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v4.0.2
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        role-duration-seconds: 900
+        aws-region: us-east-2
+
+    - name: install terraform
+      uses: hashicorp/setup-terraform@v3.0.0
+      with:
+        terraform_version: 1.8.0
+        terraform_wrapper: false
+
+    - name: Initialize Terraform
+      run: |
+        terraform init -backend-config="./backends/backend-$ENVIRONMENT.tfvars"
+
+    - name: Format terraform
+      run: terraform fmt -check
+
+    - name: Validate terraform
+      run: terraform validate
+
+    - name: Plan terraform
+      run: |
+        terraform plan --var-file=./environments/$ENVIRONMENT.tfvars -var always_apply=${{ github.event.inputs.alwaysApplyGrants }} -out=./output.tfplan
+
+    - name: Publish artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: terraform-plan-file
+        path: ./output.tfplan
+
+    - name: Apply terraform
+      run: |
+        terraform apply -auto-approve ./output.tfplan
+

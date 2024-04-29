@@ -1,0 +1,74 @@
+databases:
+  raw:
+    analyst:
+      - usage
+    ingestion:
+      - usage
+      - modify
+      - create schema
+      - ownership
+      - monitor
+    developer:
+      - usage
+      - create schema
+    sysadmin:
+      - usage
+      - modify
+      - create schema
+      - monitor
+
+  prepare:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - modify
+      - create schema
+    sysadmin:
+      - usage
+      - modify
+      - create schema
+      - monitor
+      - ownership
+
+  normalize:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - modify
+      - create schema
+    sysadmin:
+      - usage
+      - modify
+      - create schema
+      - monitor
+      - ownership
+
+  integrate:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - modify
+      - create schema
+    sysadmin:
+      - usage
+      - modify
+      - create schema
+      - monitor
+      - ownership
+
+  analyze:
+    analyst:
+      - usage
+    developer:
+      - usage
+      - modify
+      - create schema
+    sysadmin:
+      - usage
+      - modify
+      - create schema
+      - monitor
+      - ownership

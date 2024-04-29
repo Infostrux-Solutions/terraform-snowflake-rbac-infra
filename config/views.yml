@@ -1,0 +1,63 @@
+views:
+  raw:
+    analyst:
+      - select
+      - references
+    ingestion:
+      - select
+      - references
+      - ownership
+    developer:
+      - select
+      - references
+    sysadmin:
+      - select
+      - references
+
+  prepare:
+    analyst:
+      - select
+      - references
+    developer:
+      - select
+      - references
+    sysadmin:
+      - select
+      - references
+      - ownership
+
+  normalize:
+    analyst:
+      - select
+      - references
+    developer:
+      - select
+      - references
+    sysadmin:
+      - select
+      - references
+      - ownership
+
+  integrate:
+    analyst:
+      - select
+      - references
+    developer:
+      - select
+      - references
+    sysadmin:
+      - select
+      - references
+      - ownership
+
+  analyze:
+    analyst:
+      - select
+      - references
+    developer:
+      - select
+      - references
+    sysadmin:
+      - select
+      - references
+      - ownership

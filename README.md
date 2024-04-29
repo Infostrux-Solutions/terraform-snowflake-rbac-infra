@@ -1,52 +1,22 @@
-# data-terraform-snowflake-infrastructure
+# terraform-snowflake-rbac-infra
+The infrastructure stack deploys snowflake databases, warehouses, and grants based on the configuration in the `./config` directory.
 
 ## Prerequisites
 
-### AWS Authentication Requirements
-
+<details>
+<summary>AWS Authentication Requirements</summary>
+<br>
 Terraform needs credentials for connecting to the remote backend. Multiples configuration are available, and the AWS provides full documentation can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
 
-Whenever possible, it's best practices to used temporary credentials. The most ideal approach when connecting to GitHub Actions would be to use the instructions found [here](https://benoitboure.com/securely-access-your-aws-resources-from-github-actions) to create a role that will be assumed by GitHub.
+Whenever possible, it's best practices to used temporary credentials. The most ideal approach when connecting to GitHub Actions would be to use the instructions found <a href="https://benoitboure.com/securely-access-your-aws-resources-from-github-actions">here</a> to create a role that will be assumed by GitHub.
 
 Once the above is complete you must setup an environment in GitHub Settings (development, production) and add a secret to it `AWS_ROLE_ARN` with the role ARN created during the instructions above.
-
-A example policy that will be required by Terraform to store backend state below:
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject",
-                "s3:GetObjectAcl",
-                "s3:GetObject",
-                "s3:GetEncryptionConfiguration",
-                "s3:DeleteObjectVersion",
-                "s3:GetObjectAttributes",
-                "s3:GetObjectVersionAcl",
-                "s3:GetBucketVersioning",
-                "s3:DeleteObject",
-                "s3:GetObjectVersionAttributes",
-                "s3:GetObjectVersion"
-            ],
-            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2/*"
-        },
-        {
-            "Sid": "VisualEditor1",
-            "Effect": "Allow",
-            "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2"
-        }
-    ]
-}
-```
-
+</details>
 <br/>
 
-### Snowflake Authentication provider requirements
-
+<details>
+<summary>Snowflake Authentication provider requirements</summary>
+<br>
 In Terraform, each provider needs credentials to manage resources on our behalf. In the case of the Snowflake provider, the following environment variables are required:
 
 - **account** - (required) Both the name and the region (ex:corp.us-east-1). It can also come from the SNOWFLAKE_ACCOUNT environment variable.
@@ -55,11 +25,12 @@ In Terraform, each provider needs credentials to manage resources on our behalf.
 - **role** - (optional) Snowflake role to use for operations. If left unset, the user’s default role will be used. It can come from the SNOWFLAKE_ROLE environment variable.
 
 The account, username, and role can be configured in the terraform `.tfvars` file.
-
+</details>
 <br/>
 
-### Snowflake User key Creation
-
+<details>
+<summary>Snowflake User key Creation</summary>
+<br>
 If your snowflake don't already have an SSH key associated with it, the following
 the command will ensure you are correctly set up.
 
@@ -89,66 +60,11 @@ desc user INFX_TERRAFORM;
 ```
 
 The private key must be created as an GitHub environment secret with the name `SNOWFLAKE_PRIVATE_KEY`.
-
-<br/>
+</details>
 
 ## Deployment
 
-### 01 - Deploy Roles
-
 1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required).
 2. Update the `tfvars` file with any variable changes that may be required.
-3. Navigate to `GitHub Actions` and trigger `roles-plan-manual` to verify that the plan is showing what we want to deploy is expected.
-4. Again in  `GitHub Actions` trigger `roles-deploy-manual` to deploy the infrastructure to Snowflake.
-
-### 02 - Deploy Infrastructure
-
-1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required).
-2. Update the `tfvars` file with any variable changes that may be required.
-3. Navigate to `GitHub Actions` and trigger `infra-plan-manual` to verify that the plan is showing what we want to deploy is expected.
-4. Again in  `GitHub Actions` trigger `infra-deploy-manual` to deploy the infrastructure to Snowflake.
-
-## Customization
-### WITH_GRANT_OPTION
-If you need to control the grant options on a resource by resource basis you can do this with the following configuration pattern. This can significantly increase the amount of code in the `.tfvars` files. This works exactly the same on databases, warehouses, schemas, tables, and views.
-```
-warehouses_and_roles = {
-  "INGEST_WH" = {
-    "USAGE" = {
-      "ROLES"             = ["INGESTION", "SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "MONITOR" = {
-      "ROLES"             = ["SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "MODIFY" = {
-      "ROLES"             = ["SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "OPERATE" = {
-      "ROLES"             = ["INGESTION", "SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-
-    "OWNERSHIP" = {
-      "ROLES"             = ["SYSADMIN"]
-      "WITH_GRANT_OPTION" = true
-    }
-  }
-}
-```
-
-### Inherit role permissions
-By default we are granting environment level roles to the parent role as seen below, Ex. `DEV_DEVELOPER` (left), will be granted to the top level `DEVELOPER` (right) role. You can place any existing role name on the right hand side, the left side is reserved for the dynamically generated roles found [here](https://github.com/Infostrux-Solutions/terraform-snowflake-rbac-infra/blob/bc5a4d19fcf333d61aaf8f5cd73c08dc84d437c8/terraform/01-snowflake-roles/development.tfvars#L32). 
- 
-```
-role_to_roles = {
-  "DEVELOPER"  = ["DEVELOPER"],
-  "ANALYST"    = ["ANALYST"],
-  "SYSADMIN"   = ["SYSADMIN"],
-}
-```
+3. Navigate to `GitHub Actions` and trigger ` Plan Snowflake Infra` to verify that the plan is showing what we want to deploy is expected.
+4. Again in  `GitHub Actions` trigger ` Deploy Snowflake Infra` to deploy the infrastructure to Snowflake.
