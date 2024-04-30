@@ -64,6 +64,7 @@ resource "snowflake_grant_account_role" "datadog" {
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_database" {
+  count    = length(var.tags) > 0 ? 1 : 0
   provider = snowflake.securityadmin
 
   account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
