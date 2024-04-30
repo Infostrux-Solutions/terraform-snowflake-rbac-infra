@@ -12,7 +12,7 @@ locals {
       for role in grants : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
-        privilege = sort([for p in local.permissions_yml.permissions.database[role].databases : upper(p)]) 
+        privilege = sort([for p in local.permissions_yml.permissions.database[role].databases : upper(p)])
         role      = upper(join("_", [local.object_prefix, database, role]))
       }
     ]

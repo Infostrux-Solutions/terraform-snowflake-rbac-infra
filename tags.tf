@@ -9,7 +9,7 @@ locals {
       }
     ]
   ])
-  
+
   warehouse_tags = flatten([
     for warehouse in snowflake_warehouse.warehouse : [
       for tag, value in var.default_tags : {

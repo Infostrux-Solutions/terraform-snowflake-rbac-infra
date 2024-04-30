@@ -47,7 +47,7 @@ resource "snowflake_grant_account_role" "account_role" {
 resource "snowflake_grant_account_role" "fivetran" {
   count = var.create_fivetran_user ? 1 : 0
 
-  provider   = snowflake.securityadmin
+  provider = snowflake.securityadmin
 
   role_name = snowflake_role.environment_role["ingestion"].name
   user_name = snowflake_user.fivetran[0].name

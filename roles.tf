@@ -52,7 +52,7 @@ resource "snowflake_role" "environment_role" {
 }
 
 resource "snowflake_role" "account_role" {
-  for_each = local.account_roles_wo_sysadmin 
+  for_each = local.account_roles_wo_sysadmin
   provider = snowflake.securityadmin
 
   name    = upper(each.key)

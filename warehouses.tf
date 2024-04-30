@@ -10,7 +10,7 @@ locals {
       for role, privilege in grants : {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
-        privilege = sort([for p in privilege : upper(p)]) 
+        privilege = sort([for p in privilege : upper(p)])
         role      = upper(join("_", [local.object_prefix, role]))
       }
     ]
@@ -32,7 +32,7 @@ resource "snowflake_grant_privileges_to_account_role" "warehouse" {
     for uni in local.warehouse_grants : uni.unique => uni
   }
 
-  provider   = snowflake.securityadmin
+  provider = snowflake.securityadmin
 
   account_role_name = each.value.role
   privileges        = each.value.privilege
