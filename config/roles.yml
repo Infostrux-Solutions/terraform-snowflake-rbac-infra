@@ -15,7 +15,7 @@ environment_roles:
     - raw_rw
   sysadmin:
     - raw_rw
-    - dataloader
+    - ingestion
     - developer
   monitoring:
     - analyst
