@@ -1,5 +1,5 @@
 # terraform-snowflake-rbac-infra
-The infrastructure stack deploys snowflake databases, warehouses, and grants based on the configuration in the `./config` directory.
+The infrastructure stack deploys snowflake databases, warehouses, and grants based on the configuration in the `./config` directory. See `Configuration` below.
 
 ## Prerequisites
 
@@ -76,5 +76,5 @@ The private key must be created as an GitHub environment secret with the name `S
 
 1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required).
 2. Update the `tfvars` file with any variable changes that may be required.
-3. Navigate to `GitHub Actions` and trigger ` Plan Snowflake Infra` to verify that the plan is showing what we want to deploy is expected.
-4. Again in  `GitHub Actions` trigger ` Deploy Snowflake Infra` to deploy the infrastructure to Snowflake.
+3. Navigate to `GitHub Actions` and trigger `Plan Snowflake Infra` to verify that the plan is showing what we want to deploy is expected.
+4. Again in  `GitHub Actions` trigger `Deploy Snowflake Infra` to deploy the infrastructure to Snowflake.
