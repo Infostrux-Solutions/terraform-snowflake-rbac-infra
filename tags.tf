@@ -63,7 +63,7 @@ resource "snowflake_tag_association" "database_tags" {
   tag_id      = each.value.tag_name
   tag_value   = each.value.tag_value
 }
-/*
+
 resource "snowflake_tag_association" "warehouse_tags" {
   for_each = {
     for unique in local.warehouse_tags : unique.key => unique
@@ -78,4 +78,3 @@ resource "snowflake_tag_association" "warehouse_tags" {
   tag_id      = each.value.tag_name
   tag_value   = each.value.tag_value
 }
-*/

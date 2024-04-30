@@ -32,8 +32,7 @@ resource "snowflake_grant_privileges_to_account_role" "database" {
     for uni in local.database_grants : uni.unique => uni
   }
 
-  provider   = snowflake.securityadmin
-  depends_on = [snowflake_grant_account_role.environment_role, snowflake_role.access_role]
+  provider = snowflake.securityadmin
 
   account_role_name = each.value.role
   privileges        = each.value.privilege

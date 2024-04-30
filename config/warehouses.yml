@@ -1,10 +1,10 @@
 warehouses:
   ingest:
-    monitoring:
-      - monitor
     ingestion: 
       - usage
       - operate
+    monitoring:
+      - monitor
 
   developer:
     developer:
