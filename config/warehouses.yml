@@ -1,5 +1,5 @@
 warehouses:
-  ingest:
+  ingestion:
     ingestion: 
       - usage
       - operate
