@@ -7,7 +7,7 @@ permissions:
         - usage
       tables:
         - select
-      dynamic-tables:
+      dynamic_tables:
         - select
       views:
         - select
