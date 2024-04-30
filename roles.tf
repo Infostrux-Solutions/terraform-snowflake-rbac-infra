@@ -1,6 +1,4 @@
 locals {
-  roles_yml = yamldecode(file("config/roles.yml"))
-
   environment_roles = {
     for role, roles in local.roles_yml.environment_roles : role => roles
   }

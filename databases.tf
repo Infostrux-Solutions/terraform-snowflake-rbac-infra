@@ -1,8 +1,4 @@
 locals {
-  object_prefix   = join("_", [var.environment, var.project])
-  database_yml    = yamldecode(file("config/databases.yml"))
-  permissions_yml = yamldecode(file("config/permissions.yml"))
-
   databases = {
     for database, grants in local.database_yml.databases : database => grants
   }

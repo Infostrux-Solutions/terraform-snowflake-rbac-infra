@@ -1,6 +1,4 @@
 locals {
-  warehouse_yml = yamldecode(file("config/warehouses.yml"))
-
   warehouses = {
     for warehouse, grants in local.warehouse_yml.warehouses : warehouse => grants
   }
