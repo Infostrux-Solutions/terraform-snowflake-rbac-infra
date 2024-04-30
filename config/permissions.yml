@@ -1,0 +1,41 @@
+permissions:
+  database:
+    r:
+      databases:
+        - usage
+      schemas:
+        - usage
+      tables:
+        - select
+      dynamic-tables:
+        - select
+      views:
+        - select
+    rw:
+      databases:
+        - usage
+        - modify
+        - create schema
+        - monitor
+      schemas:
+        - usage
+        - create table
+        - create view
+        - create function
+        - create procedure
+        - create stream
+        - create task
+        - create stage
+        - create dynamic table
+      tables:
+        - select
+        - insert
+        - update
+        - delete
+        - truncate
+      dynamic-tables:
+        - select
+        - operate
+      views:
+        - select
+        - references

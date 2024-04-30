@@ -1,11 +1,5 @@
 warehouses:
   ingest:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
     monitoring:
       - monitor
     ingestion: 
@@ -13,12 +7,6 @@ warehouses:
       - operate
 
   developer:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
     developer:
       - usage
       - operate
@@ -26,12 +14,6 @@ warehouses:
       - monitor
 
   reporting:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
     analyst: 
       - usage
       - operate
@@ -39,12 +21,6 @@ warehouses:
       - monitor
 
   monitoring:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
     monitoring:
       - usage
       - monitor

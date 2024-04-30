@@ -1,15 +1,25 @@
 locals {
-  roles = {
-    for role, roles in local.roles_yml.roles : role => roles
+  roles_yml = yamldecode(file("config/roles.yml"))
+
+  environment_roles = {
+    for role, roles in local.roles_yml.environment_roles : role => roles
   }
 
-  parent_roles = compact(distinct(flatten([
-    for role, parent_roles in local.roles : [
-      for parent_role in setsubtract(parent_roles, ["sysadmin"]) : [
-        var.create_parent_roles ? parent_role : null
-      ]
+  account_roles = {
+    for role, roles in local.roles_yml.account_roles : role => roles
+  }
+
+  account_roles_wo_sysadmin = {
+    for role, roles in local.account_roles : role => roles if !contains([role], "sysadmin")
+  }
+
+  access_roles = distinct(flatten([
+    for parent, children in local.environment_roles : [
+      for child in setsubtract(children, [for role, roles in local.environment_roles : role]) : {
+        child = child
+      }
     ]
-  ])))
+  ]))
 
   tags_list = flatten([
     for key, value in var.default_tags : {
@@ -21,8 +31,19 @@ locals {
   ])
 }
 
-resource "snowflake_role" "roles" {
-  for_each = local.roles
+resource "snowflake_role" "access_role" {
+  for_each = {
+    for uni in local.access_roles : uni.child => uni
+  }
+
+  provider = snowflake.securityadmin
+
+  name    = upper(join("_", [local.object_prefix, each.value.child]))
+  comment = var.comment
+}
+
+resource "snowflake_role" "environment_role" {
+  for_each = local.environment_roles
 
   provider = snowflake.securityadmin
 
@@ -30,11 +51,11 @@ resource "snowflake_role" "roles" {
   comment = var.comment
 }
 
-resource "snowflake_role" "parent_roles" {
-  for_each = toset(local.parent_roles)
+resource "snowflake_role" "account_role" {
+  for_each = local.account_roles_wo_sysadmin 
   provider = snowflake.securityadmin
 
-  name    = upper(each.value)
+  name    = upper(each.key)
   comment = var.comment
 }
 
@@ -54,22 +75,4 @@ resource "snowflake_role" "tag_securityadmin" {
   name = "TAG_SECURITYADMIN"
 
   depends_on = [snowflake_tag.tag]
-}
-
-resource "snowflake_grant_account_role" "fivetran" {
-  count = var.create_fivetran_user ? 1 : 0
-
-  provider = snowflake.securityadmin
-
-  role_name = upper(join("_", [local.object_prefix, "INGESTION"]))
-  user_name = snowflake_user.fivetran[0].name
-}
-
-resource "snowflake_grant_account_role" "datadog" {
-  count = var.create_datadog_user ? 1 : 0
-
-  provider = snowflake.securityadmin
-
-  role_name = upper(join("_", [local.object_prefix, "MONITORING"]))
-  user_name = snowflake_user.datadog[0].name
 }

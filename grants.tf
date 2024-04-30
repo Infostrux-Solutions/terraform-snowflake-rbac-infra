@@ -1,27 +1,66 @@
 locals {
-  roles_yml = yamldecode(file("config/roles.yml"))
+  environment_role_grants = flatten([
+    for parent, children in local.environment_roles : [
+      for child in children : {
+        unique = join("_", [parent, child])
+        parent = upper(join("_", [local.object_prefix, parent]))
+        child  = upper(join("_", [local.object_prefix, child]))
+      }
+    ]
+  ])
 
-  role_grants = flatten([
-    for role, parents in local.roles : [
-      for parent in parents : {
-        unique = join("_", [role, parent])
-        role   = upper(join("_", [local.object_prefix, role]))
+  account_role_grants = flatten([
+    for parent, children in local.account_roles : [
+      for child in children : {
+        unique = join("_", [parent, child])
         parent = upper(parent)
+        child  = upper(join("_", [local.object_prefix, child]))
       }
     ]
   ])
 }
 
-resource "snowflake_grant_account_role" "role" {
+resource "snowflake_grant_account_role" "environment_role" {
   for_each = {
-    for uni in local.role_grants : uni.unique => uni
+    for uni in local.environment_role_grants : uni.unique => uni
   }
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.roles, snowflake_role.parent_roles]
+  depends_on = [snowflake_role.environment_role, snowflake_role.account_role]
 
-  role_name        = each.value.role
+  role_name        = each.value.child
   parent_role_name = each.value.parent
+}
+
+resource "snowflake_grant_account_role" "account_role" {
+  for_each = {
+    for uni in local.account_role_grants : uni.unique => uni
+  }
+
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_role.environment_role, snowflake_role.account_role]
+
+  role_name        = each.value.child
+  parent_role_name = each.value.parent
+}
+
+resource "snowflake_grant_account_role" "fivetran" {
+  count = var.create_fivetran_user ? 1 : 0
+
+  provider   = snowflake.securityadmin
+
+  role_name = snowflake_role.environment_role["ingestion"].name
+  user_name = snowflake_user.fivetran[0].name
+}
+
+resource "snowflake_grant_account_role" "datadog" {
+  count = var.create_datadog_user ? 1 : 0
+
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_role.environment_role]
+
+  role_name = snowflake_role.environment_role["monitoring"].name
+  user_name = snowflake_user.datadog[0].name
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {

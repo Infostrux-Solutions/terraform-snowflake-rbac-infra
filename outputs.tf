@@ -1,29 +1,35 @@
-output "database_names" {
+output "databases" {
   value = [
     for database in snowflake_database.database : database.name
   ]
 }
 
-output "warehouse_names" {
+output "warehouses" {
   value = [
     for warehouse in snowflake_warehouse.warehouse : warehouse.name
   ]
 }
 
-output "roles" {
+output "environment_roles" {
   value = [
-    for role in snowflake_role.roles : role.name
+    for role in snowflake_role.environment_role : role.name
   ]
 }
 
-output "parent_roles" {
+output "environment_role_grants" {
   value = [
-    for role in snowflake_role.parent_roles : role.name
+    for role in snowflake_grant_account_role.environment_role : join("", [role.role_name, " ▶ ", role.parent_role_name])
   ]
 }
 
-output "role_grants" {
+output "account_roles" {
   value = [
-    for role in snowflake_grant_account_role.role : join("", [role.role_name, " ▶ ", role.parent_role_name])
+    for role in snowflake_role.account_role : role.name
+  ]
+}
+
+output "account_role_grants" {
+  value = [
+    for role in snowflake_grant_account_role.account_role : join("", [role.role_name, " ▶ ", role.parent_role_name])
   ]
 }
