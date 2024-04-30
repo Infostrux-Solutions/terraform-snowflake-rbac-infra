@@ -62,6 +62,16 @@ desc user INFX_TERRAFORM;
 The private key must be created as an GitHub environment secret with the name `SNOWFLAKE_PRIVATE_KEY`.
 </details>
 
+## Configuration
+
+| File                    | Description |
+| ----------------------- | ------------- |
+| config/roles.yml        | The roles file is used to grant access roles to the environment functional roles (`environment_roles`) as well as to grant the environment functional roles to the top level account roles. (`account_roles`). |
+| config/permissions.yml  | The permissions file is used to specify the grants that are to be assigned to the corresponding environment access roles, it is a lookup for the object level grants.                                          |
+| config/databases.yml    | The databases file is used to specify the databases to be created and the environment access roles that should be created under each database.                                                                 |
+| config/warehouses.yml   | The warehouses file is used to specify the warehouses to be created, as well as the environment functional role permissions to be granted to the warehouse.                                                    |
+
+
 ## Deployment
 
 1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required).
