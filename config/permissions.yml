@@ -33,7 +33,7 @@ permissions:
         - update
         - delete
         - truncate
-      dynamic-tables:
+      dynamic_tables:
         - select
         - operate
       views:
