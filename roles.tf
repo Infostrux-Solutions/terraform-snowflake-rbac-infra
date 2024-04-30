@@ -68,11 +68,3 @@ resource "snowflake_role" "tag_admin" {
   depends_on = [snowflake_tag.tag]
 }
 
-resource "snowflake_role" "tag_securityadmin" {
-  count    = length(var.tags) > 0 ? 1 : 0
-  provider = snowflake.securityadmin
-
-  name = "TAG_SECURITYADMIN"
-
-  depends_on = [snowflake_tag.tag]
-}
