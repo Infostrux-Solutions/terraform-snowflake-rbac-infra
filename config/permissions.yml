@@ -19,7 +19,6 @@ permissions:
         - modify
         - create schema
         - monitor
-        - ownership
       schemas:
         - usage
         - create table
@@ -31,23 +30,18 @@ permissions:
         - create stage
         - create dynamic table
         - create materialized view
-        - ownership
       tables:
         - select
         - insert
         - update
         - delete
         - truncate
-        - ownership
       dynamic_tables:
         - select
         - operate
-        - ownership
       views:
         - select
         - references
-        - ownership
       materialized_views:
         - select
         - references
-        - ownership
