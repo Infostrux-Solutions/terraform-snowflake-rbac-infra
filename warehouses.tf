@@ -10,7 +10,7 @@ locals {
         warehouse = warehouse
         role      = upper(join("_", [local.object_prefix, role]))
         privilege = sort([for p in setintersection(privilege, ["ownership"]) : upper(p)])
-      }
+      } if contains(privilege, "ownership")
     ]
   ])
 

@@ -6,7 +6,7 @@ locals {
         database  = database
         role      = upper(join("_", [local.object_prefix, database, role]))
         privilege = sort([for p in setintersection(local.permissions_yml.permissions.database[role].views, ["ownership"]) : upper(p)])
-      }
+      } if contains(local.permissions_yml.permissions.database[role].views, "ownership")
     ]
   ])
 
