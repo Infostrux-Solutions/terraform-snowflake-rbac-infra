@@ -19,10 +19,10 @@ Once the above is complete, you must set up an environment in GitHub Settings (d
 <br>
 In Terraform, each <a href="https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs">provider</a> requires credentials to manage resources on our behalf. Below, you will find the variables we use to connect to Snowflake.
 
-- **account** - (required) Both the name and the region (ex: corp.us-east-1). It can also come from the SNOWFLAKE_ACCOUNT environment variable.
-- **user** - (required) It can come from the SNOWFLAKE_USER environment variable.
-- **private_key** - (required) A private key for using keypair authentication. It can be a source from the SNOWFLAKE_PRIVATE_KEY environment variable.
-- **role** - (optional) Snowflake role to use for operations. If left unset, the user's default role will be used. It can come from the SNOWFLAKE_ROLE environment variable.
+- **account** - (required) Both the name and the region (ex: corp.us-east-1). It can also come from the `SNOWFLAKE_ACCOUNT` environment variable.
+- **user** - (required) It can come from the `SNOWFLAKE_USER` environment variable.
+- **private_key** - (required) A private key for using keypair authentication. It can be a source from the `SNOWFLAKE_PRIVATE_KEY` environment variable.
+- **role** - (optional) Snowflake role to use for operations. If left unset, the user's default role will be used. It can come from the `SNOWFLAKE_ROLE` environment variable.
 - **authenticator** - (required) When using `private_key` you must specify `authenticator = "JWT"` otherwise Terraform will return `Error: 260002: password is empty`.
 
 The developer will configure the account, username, role, and authenticator in the terraform `.tfvars` file.
@@ -44,7 +44,7 @@ openssl rsa -in terraform.p8 -pubout -out terraform.pub
 ```
 
 The next step is to associate the public key with your snowflake user.
-In the Snowflake user console, execute the following command and Exclude the public key delimiters in the SQL statement:
+In the Snowflake console, execute the `create user` command with the `USERADMIN` role, exclude the public key delimiters in the SQL statement. Execute the `grant role` commands with the `SECURITYADMIN` role.
 
 ```SQL
 create user TERRAFORM rsa_public_key='MIIBIjANBgkqh...';
