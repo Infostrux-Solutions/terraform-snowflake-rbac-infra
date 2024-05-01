@@ -1,5 +1,5 @@
 # terraform-snowflake-rbac-infra
-The infrastructure stack deploys snowflake databases, warehouses, and grants based on the configuration in the `./config` directory. See `Configuration` below.
+The infrastructure stack deploys snowflake databases, warehouses, roles, and grants based on the configuration in the `./config` directory. See `Configuration` below.
 
 ## Prerequisites
 
