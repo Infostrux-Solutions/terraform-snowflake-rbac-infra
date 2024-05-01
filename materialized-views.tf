@@ -1,7 +1,7 @@
 locals {
   materialized_view_grants = flatten([
     for database, grants in local.databases : [
-      for role in grants : {
+      for role in grants.roles : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
         privilege = sort([for p in local.permissions_yml.permissions.database[role].materialized_views : upper(p)])
@@ -12,7 +12,7 @@ locals {
 
   materialized_view_grants_wo_ownership = flatten([
     for database, grants in local.databases : [
-      for role in grants : {
+      for role in grants.roles : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
         privilege = sort([for p in local.permissions_yml.permissions.database[role].materialized_views : upper(p)])
