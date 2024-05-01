@@ -5,7 +5,7 @@ locals {
 
   warehouse_grants = flatten([
     for warehouse, grants in local.warehouses : [
-      for role, privilege in grants : {
+      for role, privilege in grants.roles : {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
         privilege = sort([for p in setsubtract(privilege, ["ownership"]) : upper(p)])

@@ -1,16 +1,21 @@
 databases:
   raw: 
-    - r
-    - rw
+    roles:
+      - r
+      - rw
   prepare:
-    - r
-    - rw
+    roles:
+      - r
+      - rw
   normalize:
-    - r
-    - rw
+    roles:
+      - r
+      - rw
   integrate:
-    - r
-    - rw
+    roles:
+      - r
+      - rw
   analyze:
-    - r
-    - rw
+    roles:
+      - r
+      - rw

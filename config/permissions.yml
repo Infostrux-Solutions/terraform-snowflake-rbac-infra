@@ -29,6 +29,7 @@ permissions:
         - create task
         - create stage
         - create dynamic table
+        - create materialized views
       tables:
         - select
         - insert

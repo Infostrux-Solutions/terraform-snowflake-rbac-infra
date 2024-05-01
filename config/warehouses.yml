@@ -1,27 +1,28 @@
 warehouses:
   ingestion:
-    ingestion: 
-      - usage
-      - operate
-    monitoring:
-      - monitor
-
+    roles:
+      ingestion: 
+        - usage
+        - operate
+      monitoring:
+        - monitor
   developer:
-    developer:
-      - usage
-      - operate
-    monitoring:
-      - monitor
-
+    roles:
+      developer:
+        - usage
+        - operate
+      monitoring:
+        - monitor
   reporting:
-    analyst: 
-      - usage
-      - operate
-    monitoring:
-      - monitor
-
+    roles:
+      analyst: 
+        - usage
+        - operate
+      monitoring:
+        - monitor
   monitoring:
-    monitoring:
-      - usage
-      - monitor
-      - operate
+    roles:
+      monitoring:
+        - usage
+        - monitor
+        - operate
