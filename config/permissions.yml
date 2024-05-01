@@ -39,3 +39,6 @@ permissions:
       views:
         - select
         - references
+      materialized_views:
+        - select
+        - references

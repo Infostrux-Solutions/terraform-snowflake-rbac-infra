@@ -71,10 +71,42 @@ The private key must be created as an GitHub environment secret with the name `S
 | config/databases.yml    | The databases file is used to specify the databases to be created and the object access roles that should be created under each database.                                                                      |
 | config/warehouses.yml   | The warehouses file is used to specify the warehouses to be created, as well as the environment functional role permissions to be granted to the warehouse.                                                    |
 
+## Variables
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_always_apply"></a> [always\_apply](#input\_always\_apply) | Toggle to always apply on all objects. Used for when there are changes to the grants that need to be retroatively granted to roles | `bool` | `false` | no |
+| <a name="input_comment"></a> [comment](#input\_comment) | A comment to apply to all resources | `string` | `"Created by terraform"` | no |
+| <a name="input_create_datadog_user"></a> [create\_datadog\_user](#input\_create\_datadog\_user) | Create the datadog user (true\|false) | `bool` | `false` | no |
+| <a name="input_create_fivetran_user"></a> [create\_fivetran\_user](#input\_create\_fivetran\_user) | Create the fivetran user (true\|false) | `bool` | `false` | no |
+| <a name="input_create_parent_roles"></a> [create\_parent\_roles](#input\_create\_parent\_roles) | Whether or not you want to create the parent roles (for production deployment only) | `bool` | `false` | no |
+| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Default tags to apply to all Snowflake resources | `map(string)` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | The name of the environment we are deploying, for environment separation and naming purposes | `string` | n/a | yes |
+| <a name="input_governance_database_name"></a> [governance\_database\_name](#input\_governance\_database\_name) | The name to set for governance database | `string` | `"GOVERNANCE"` | no |
+| <a name="input_project"></a> [project](#input\_project) | The name of the project, for naming and tagging purposes | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The AWS region that we will deploy into, as well as for naming purposes | `string` | n/a | yes |
+| <a name="input_snowflake_account"></a> [snowflake\_account](#input\_snowflake\_account) | The name of the Snowflake account that we will be deploying into | `string` | n/a | yes |
+| <a name="input_snowflake_datadog_password"></a> [snowflake\_datadog\_password](#input\_snowflake\_datadog\_password) | The snowflake user password to set for datadog monitoring | `string` | `""` | no |
+| <a name="input_snowflake_fivetran_password"></a> [snowflake\_fivetran\_password](#input\_snowflake\_fivetran\_password) | The snowflake user password to set for fivetran ingestion | `string` | `""` | no |
+| <a name="input_snowflake_role"></a> [snowflake\_role](#input\_snowflake\_role) | The role in Snowflake that we will use to deploy by default | `string` | n/a | yes |
+| <a name="input_snowflake_username"></a> [snowflake\_username](#input\_snowflake\_username) | The name of the Snowflake user that we will be utilizing to deploy into the snowflake\_account | `string` | n/a | yes |
+| <a name="input_snowflake_warehouse_size"></a> [snowflake\_warehouse\_size](#input\_snowflake\_warehouse\_size) | The size of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags and their allowed values to create in Snowflake. This will also create a database and schema to house the tags | `map(list(string))` | `{}` | no |
+| <a name="input_tags_schema_name"></a> [tags\_schema\_name](#input\_tags\_schema\_name) | The name to set for tags schema | `string` | `"TAGS"` | no |
+| <a name="input_warehouse_auto_suspend"></a> [warehouse\_auto\_suspend](#input\_warehouse\_auto\_suspend) | The auto\_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `map(number)` | n/a | yes |
 
 ## Deployment
 
-1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required).
-2. Update the `tfvars` file with any variable changes that may be required.
-3. Navigate to `GitHub Actions` and trigger `Plan Snowflake Infra` to verify that the plan is showing what we want to deploy is expected.
-4. Again in  `GitHub Actions` trigger `Deploy Snowflake Infra` to deploy the infrastructure to Snowflake.
+1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required)
+2. Update the `tfvars` file with any variable changes that may be required
+3. Navigate to `GitHub Actions` and trigger `Plan Snowflake Infra`
+    1. Select `Run Workflow`
+    2. From the drop down menu choose the target environment from `Plan to`
+    3. Select `Run Workflow` and verify that the plan is showing what we want to deploy is expected
+4. Navigate to `GitHub Actions` and trigger `Deploy Snowflake Infra`
+    1. Select `Run Workflow`
+    2. From the drop down menu choose the target environment from `Plan to`
+    3. (Optional) If you have added a new role which requires grants to all existing objects, you can set `Re-run all grants` to `true`
+    4. Select `Run Workflow` and to deploy the changes verified above
+
+

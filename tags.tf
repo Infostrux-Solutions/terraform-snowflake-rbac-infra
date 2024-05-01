@@ -23,14 +23,14 @@ locals {
 }
 
 resource "snowflake_database" "tags" {
-  count = length(var.tags) > 0 ? 1 : 0
+  count = local.create_tags
 
   name    = var.governance_database_name
   comment = var.comment
 }
 
 resource "snowflake_schema" "tags" {
-  count = length(var.tags) > 0 ? 1 : 0
+  count = local.create_tags
 
   database = snowflake_database.tags[0].id
   name     = var.tags_schema_name

@@ -15,8 +15,8 @@ resource "snowflake_user" "fivetran" {
   comment      = var.comment
   disabled     = false
 
-  default_warehouse = upper(join("_", [local.object_prefix, "ingest_wh"]))
-  default_role      = upper(join("_", [local.object_prefix, "ingestion"]))
+  default_warehouse = snowflake_warehouse.warehouse["ingestion"].name
+  default_role      = snowflake_role.environment_role["ingestion"].name
 
   must_change_password = false
 }
@@ -33,8 +33,8 @@ resource "snowflake_user" "datadog" {
   comment      = var.comment
   disabled     = false
 
-  default_warehouse = upper(join("_", [local.object_prefix, "monitoring_wh"]))
-  default_role      = upper(join("_", [local.object_prefix, "monitoring"]))
+  default_warehouse = snowflake_warehouse.warehouse["monitoring"].name
+  default_role      = snowflake_role.environment_role["monitoring"].name
 
   must_change_password = false
 }

@@ -64,10 +64,10 @@ resource "snowflake_grant_account_role" "datadog" {
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_database" {
-  count    = length(var.tags) > 0 ? 1 : 0
+  count    = local.create_tags
   provider = snowflake.securityadmin
 
-  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
+  account_role_name = local.tag_admin
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
@@ -76,10 +76,10 @@ resource "snowflake_grant_privileges_to_account_role" "tag_database" {
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_schema" {
-  count    = length(var.tags) > 0 ? 1 : 0
+  count    = local.create_tags
   provider = snowflake.securityadmin
 
-  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
+  account_role_name = local.tag_admin
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
@@ -88,19 +88,19 @@ resource "snowflake_grant_privileges_to_account_role" "tag_schema" {
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_admin" {
-  count    = length(var.tags) > 0 ? 1 : 0
+  count    = local.create_tags
   provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
-  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
+  account_role_name = local.tag_admin
   on_account        = true
 }
 
 resource "snowflake_grant_account_role" "tag_admin" {
-  count = length(var.tags) > 0 ? 1 : 0
+  count = local.create_tags
 
   provider = snowflake.securityadmin
 
-  role_name        = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
+  role_name        = local.tag_admin
   parent_role_name = "SYSADMIN"
 }

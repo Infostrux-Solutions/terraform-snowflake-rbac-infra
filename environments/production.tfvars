@@ -1,6 +1,5 @@
 # Common
 project     = "marketing"
-domain      = "snowflake"
 environment = "prod"
 region      = "us-east-2"
 

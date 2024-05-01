@@ -58,7 +58,7 @@ resource "snowflake_role" "account_role" {
 }
 
 resource "snowflake_role" "tag_admin" {
-  count    = length(var.tags) > 0 ? 1 : 0
+  count    = local.create_tags
   provider = snowflake.securityadmin
 
   name = "TAG_ADMIN"
