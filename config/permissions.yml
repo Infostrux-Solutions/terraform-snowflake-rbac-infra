@@ -19,6 +19,7 @@ permissions:
         - modify
         - create schema
         - monitor
+        - ownership
       schemas:
         - usage
         - create table
