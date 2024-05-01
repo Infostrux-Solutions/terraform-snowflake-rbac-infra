@@ -53,7 +53,7 @@ resource "snowflake_grant_privileges_to_account_role" "all_schemas" {
 
 resource "snowflake_grant_ownership" "schemas" {
   for_each = {
-    for uni in local.schema_grants : uni.unique => uni if contains(uni.privilege, "ownership")
+    for uni in local.schema_grants : uni.unique => uni if contains(uni.privilege, upper("ownership"))
   }
 
   provider = snowflake.securityadmin

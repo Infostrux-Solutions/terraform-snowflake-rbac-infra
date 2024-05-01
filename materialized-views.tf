@@ -59,7 +59,7 @@ resource "snowflake_grant_privileges_to_account_role" "all_materialized_views" {
 
 resource "snowflake_grant_ownership" "materialized_views" {
   for_each = {
-    for uni in local.materialized_view_grants : uni.unique => uni if contains(uni.privilege, "ownership")
+    for uni in local.materialized_view_grants : uni.unique => uni if contains(uni.privilege, upper("ownership"))
   }
 
   provider = snowflake.securityadmin
