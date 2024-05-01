@@ -61,7 +61,7 @@ resource "snowflake_role" "tag_admin" {
   count    = local.create_tags
   provider = snowflake.securityadmin
 
-  name = "TAG_ADMIN"
+  name = var.tag_admin_role
 
   depends_on = [snowflake_tag.tag]
 }
