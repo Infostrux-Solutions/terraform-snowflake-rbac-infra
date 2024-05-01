@@ -3,7 +3,7 @@ locals {
     for warehouse, specs in local.warehouse_yml.warehouses : warehouse => specs
   }
 
-  warehouse_grants = flatten([
+  warehouse_ownership = flatten([
     for warehouse, specs in local.warehouses : [
       for role, privilege in specs.roles : {
         unique    = join("_", [warehouse, trimspace(role)])
@@ -38,7 +38,7 @@ resource "snowflake_warehouse" "warehouse" {
 
 resource "snowflake_grant_privileges_to_account_role" "warehouse" {
   for_each = {
-    for uni in local.warehouse_grants : uni.unique => uni
+    for uni in local.warehouse_grants_wo_ownership : uni.unique => uni
   }
 
   provider = snowflake.securityadmin
@@ -53,7 +53,7 @@ resource "snowflake_grant_privileges_to_account_role" "warehouse" {
 
 resource "snowflake_grant_ownership" "warehouse" {
   for_each = {
-    for uni in local.warehouse_grants : uni.unique => uni
+    for uni in local.warehouse_ownership : uni.unique => uni
   }
 
   provider = snowflake.securityadmin

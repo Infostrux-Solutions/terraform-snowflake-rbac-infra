@@ -1,5 +1,5 @@
 locals {
-  view_grants = flatten([
+  view_ownership = flatten([
     for database, grants in local.databases : [
       for role in grants.roles : {
         unique    = join("_", [database, trimspace(role)])
@@ -59,7 +59,7 @@ resource "snowflake_grant_privileges_to_account_role" "all_views" {
 
 resource "snowflake_grant_ownership" "views" {
   for_each = {
-    for uni in local.view_grants : uni.unique => uni
+    for uni in local.view_ownership : uni.unique => uni
   }
 
   provider = snowflake.securityadmin
