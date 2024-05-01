@@ -64,14 +64,16 @@ variable "snowflake_username" {
   description = "The name of the Snowflake user that we will be utilizing to deploy into the snowflake_account"
 }
 
-variable "snowflake_warehouse_size" {
+variable "default_warehouse_size" {
   type        = string
   description = "The size of the Snowflake warehouse that we will be utilizing to run queries in the snowflake_account"
+  default     = "xsmall"
 }
 
-variable "warehouse_auto_suspend" {
-  type        = map(number)
+variable "default_warehouse_auto_suspend" {
+  type        = number
   description = "The auto_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake_account"
+  default     = 600
 }
 
 variable "create_fivetran_user" {

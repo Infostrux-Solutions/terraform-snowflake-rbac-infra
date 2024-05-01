@@ -1,5 +1,6 @@
 warehouses:
   ingestion:
+    auto_suspend: 60
     roles:
       ingestion: 
         - usage
@@ -21,6 +22,7 @@ warehouses:
       monitoring:
         - monitor
   monitoring:
+    auto_suspend: 60
     roles:
       monitoring:
         - usage

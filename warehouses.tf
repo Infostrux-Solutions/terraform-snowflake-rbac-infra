@@ -1,26 +1,26 @@
 locals {
   warehouses = {
-    for warehouse, grants in local.warehouse_yml.warehouses : warehouse => grants
+    for warehouse, specs in local.warehouse_yml.warehouses : warehouse => specs
   }
 
   warehouse_grants = flatten([
-    for warehouse, grants in local.warehouses : [
-      for role, privilege in grants.roles : {
+    for warehouse, specs in local.warehouses : [
+      for role, privilege in specs.roles : {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
-        privilege = sort([for p in setsubtract(privilege, ["ownership"]) : upper(p)])
         role      = upper(join("_", [local.object_prefix, role]))
+        privilege = sort([for p in setintersection(privilege, ["ownership"]) : upper(p)])
       }
     ]
   ])
 
   warehouse_grants_wo_ownership = flatten([
-    for warehouse, grants in local.warehouses : [
-      for role, privilege in grants.roles : {
+    for warehouse, specs in local.warehouses : [
+      for role, privilege in specs.roles : {
         unique    = join("_", [warehouse, trimspace(role)])
         warehouse = warehouse
-        privilege = sort([for p in privilege : upper(p)])
         role      = upper(join("_", [local.object_prefix, role]))
+        privilege = sort([for p in setsubtract(privilege, ["ownership"]) : upper(p)])
       }
     ]
   ])
@@ -32,8 +32,8 @@ resource "snowflake_warehouse" "warehouse" {
 
   name           = upper(join("_", [local.object_prefix, each.key]))
   comment        = var.comment
-  warehouse_size = var.snowflake_warehouse_size
-  auto_suspend   = try(var.warehouse_auto_suspend[each.key], 600)
+  warehouse_size = try(each.value.size, var.default_warehouse_size)
+  auto_suspend   = try(each.value.auto_suspend, var.default_warehouse_auto_suspend)
 }
 
 resource "snowflake_grant_privileges_to_account_role" "warehouse" {
@@ -53,7 +53,7 @@ resource "snowflake_grant_privileges_to_account_role" "warehouse" {
 
 resource "snowflake_grant_ownership" "warehouse" {
   for_each = {
-    for uni in local.warehouse_grants : uni.unique => uni if contains(uni.privilege, upper("ownership"))
+    for uni in local.warehouse_grants : uni.unique => uni
   }
 
   provider = snowflake.securityadmin

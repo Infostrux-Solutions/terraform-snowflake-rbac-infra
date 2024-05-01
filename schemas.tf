@@ -4,8 +4,8 @@ locals {
       for role in grants.roles : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
-        privilege = sort([for p in local.permissions_yml.permissions.database[role].schemas : upper(p)])
         role      = upper(join("_", [local.object_prefix, database, role]))
+        privilege = sort([for p in setintersection(local.permissions_yml.permissions.database[role].schemas, ["ownership"]) : upper(p)])
       }
     ]
   ])
@@ -15,8 +15,8 @@ locals {
       for role in grants.roles : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
-        privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].schemas, ["ownership"]) : upper(p)])
         role      = upper(join("_", [local.object_prefix, database, role]))
+        privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].schemas, ["ownership"]) : upper(p)])
       }
     ]
   ])
@@ -53,7 +53,7 @@ resource "snowflake_grant_privileges_to_account_role" "all_schemas" {
 
 resource "snowflake_grant_ownership" "schemas" {
   for_each = {
-    for uni in local.schema_grants : uni.unique => uni if contains(uni.privilege, upper("ownership"))
+    for uni in local.schema_grants : uni.unique => uni
   }
 
   provider = snowflake.securityadmin

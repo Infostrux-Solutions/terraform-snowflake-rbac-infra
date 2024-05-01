@@ -80,6 +80,8 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 | <a name="input_create_fivetran_user"></a> [create\_fivetran\_user](#input\_create\_fivetran\_user) | Create the fivetran user (true\|false) | `bool` | `false` | no |
 | <a name="input_create_parent_roles"></a> [create\_parent\_roles](#input\_create\_parent\_roles) | Whether or not you want to create the parent roles (for production deployment only) | `bool` | `false` | no |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Default tags to apply to all Snowflake resources | `map(string)` | n/a | yes |
+| <a name="input_default_warehouse_auto_suspend"></a> [default\_warehouse\_auto\_suspend](#input\_default\_warehouse\_auto\_suspend) | The auto\_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `number` | `600` | no |
+| <a name="input_default_warehouse_size"></a> [default\_warehouse\_size](#input\_default\_warehouse\_size) | The size of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `string` | `"xsmall"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the environment we are deploying, for environment separation and naming purposes | `string` | n/a | yes |
 | <a name="input_governance_database_name"></a> [governance\_database\_name](#input\_governance\_database\_name) | The name to set for governance database | `string` | `"GOVERNANCE"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The name of the project, for naming and tagging purposes | `string` | n/a | yes |
@@ -89,11 +91,9 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 | <a name="input_snowflake_fivetran_password"></a> [snowflake\_fivetran\_password](#input\_snowflake\_fivetran\_password) | The snowflake user password to set for fivetran ingestion | `string` | `""` | no |
 | <a name="input_snowflake_role"></a> [snowflake\_role](#input\_snowflake\_role) | The role in Snowflake that we will use to deploy by default | `string` | n/a | yes |
 | <a name="input_snowflake_username"></a> [snowflake\_username](#input\_snowflake\_username) | The name of the Snowflake user that we will be utilizing to deploy into the snowflake\_account | `string` | n/a | yes |
-| <a name="input_snowflake_warehouse_size"></a> [snowflake\_warehouse\_size](#input\_snowflake\_warehouse\_size) | The size of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `string` | n/a | yes |
 | <a name="input_tag_admin_role"></a> [tag\_admin\_role](#input\_tag\_admin\_role) | The name to set for the tag admin | `string` | `"TAG_ADMIN"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags and their allowed values to create in Snowflake. This will also create a database and schema to house the tags | `map(list(string))` | `{}` | no |
 | <a name="input_tags_schema_name"></a> [tags\_schema\_name](#input\_tags\_schema\_name) | The name to set for tags schema | `string` | `"TAGS"` | no |
-| <a name="input_warehouse_auto_suspend"></a> [warehouse\_auto\_suspend](#input\_warehouse\_auto\_suspend) | The auto\_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `map(number)` | n/a | yes |
 
 ## Deployment
 
