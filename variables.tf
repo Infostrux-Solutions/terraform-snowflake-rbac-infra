@@ -43,6 +43,12 @@ variable "tags_schema_name" {
   default     = "TAGS"
 }
 
+variable "tag_admin_role" {
+  description = "The name to set for the tag admin"
+  type        = string
+  default     = "TAG_ADMIN"
+}
+
 # Snowflake
 variable "snowflake_role" {
   type        = string

@@ -11,6 +11,8 @@ permissions:
         - select
       views:
         - select
+      materialized_views:
+        - select
     rw:
       databases:
         - usage
