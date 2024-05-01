@@ -6,11 +6,11 @@ The infrastructure stack deploys snowflake databases, warehouses, roles, and gra
 <details>
 <summary>AWS Authentication Requirements</summary>
 <br>
-Terraform needs credentials for connecting to the remote backend. Multiples configuration are available, and the AWS provides full documentation can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
+Terraform needs credentials to connect to the remote backend. Multiple configurations are available, and the AWS provides full documentation, which can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
 
-Whenever possible, it's best practices to used temporary credentials. The most ideal approach when connecting to GitHub Actions would be to use the instructions found <a href="https://benoitboure.com/securely-access-your-aws-resources-from-github-actions">here</a> to create a role that will be assumed by GitHub.
+Whenever possible, it's best practice to use temporary credentials. The ideal approach when connecting to GitHub Actions would be to use the instructions found <a href="https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/">here</a> to create a role that GitHub will assume.
 
-Once the above is complete you must setup an environment in GitHub Settings (development, production) and add a secret to it `AWS_ROLE_ARN` with the role ARN created during the instructions above.
+Once the above is complete, you must set up an environment in GitHub Settings (development, production) and add a secret to it, `AWS_ROLE_ARN,` with the role ARN created during the instructions above.
 </details>
 <br/>
 
@@ -19,47 +19,43 @@ Once the above is complete you must setup an environment in GitHub Settings (dev
 <br>
 In Terraform, each provider needs credentials to manage resources on our behalf. In the case of the Snowflake provider, the following environment variables are required:
 
-- **account** - (required) Both the name and the region (ex:corp.us-east-1). It can also come from the SNOWFLAKE_ACCOUNT environment variable.
-- **username** - (required) Can come from the SNOWFLAKE_USER environment variable.
-- **private_key** - (required) A private key for using keypair authentication. Can be a source from SNOWFLAKE_PRIVATE_KEY environment variable.
-- **role** - (optional) Snowflake role to use for operations. If left unset, the user’s default role will be used. It can come from the SNOWFLAKE_ROLE environment variable.
+- **account** - (required) Both the name and the region (ex: corp.us-east-1). It can also come from the SNOWFLAKE_ACCOUNT environment variable.
+- **username** - (required) It can come from the SNOWFLAKE_USER environment variable.
+- **private_key** - (required) A private key for using keypair authentication. It can be a source from the SNOWFLAKE_PRIVATE_KEY environment variable.
+- **role** - (optional) Snowflake role to use for operations. If left unset, the user's default role will be used. It can come from the SNOWFLAKE_ROLE environment variable.
 
-The account, username, and role can be configured in the terraform `.tfvars` file.
+The developer will configure the account, username, and role in the terraform `.tfvars` file.
 </details>
 <br/>
 
 <details>
 <summary>Snowflake User key Creation</summary>
 <br>
-If your snowflake don't already have an SSH key associated with it, the following
-the command will ensure you are correctly set up.
-
-Only the ciphers aes-128-cbc, aes-128-gcm, aes-192-cbc, aes-192-gcm, aes-256-cbc, aes-256-gcm, and des-ede3-cbc are supported by the Snowflake Terraform provider.
+If your snowflake doesn't already have an SSH key associated with it, please see the <a href="https://docs.snowflake.com/en/user-guide/key-pair-auth">offical documentation</a> up-to-date instructions.
 
 In your development environment, run the following command to generate a key pair:
 
 ```bash
-openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out infx_terraform.p8 -nocrypt
-openssl rsa -in infx_terraform.p8 -pubout -out infx_terraform.pub
+openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out terraform.p8 -nocrypt
+openssl rsa -in terraform.p8 -pubout -out terraform.pub
 ```
 
 The next step is to associate the public key with your snowflake user.
-Only a role with SECURITYADMIN admin privilege or higher can alter a user.
-In the Snowflake user console, execute the following command and Exclude the public key delimiters in the SQL statement.:
+In the Snowflake user console, execute the following command and Exclude the public key delimiters in the SQL statement:
 
 ```SQL
-alter user INFX_TERRAFORM set rsa_public_key='MIIBIjANBgkqh...';
-grant role SYSADMIN to user INFX_TERRAFORM;
-grant role ACCOUNTADMIN to user INFX_TERRAFORM;
+create user TERRAFORM rsa_public_key='MIIBIjANBgkqh...';
+grant role SYSADMIN to user TERRAFORM;
+grant role SECURITYADMIN to user TERRAFORM;
 ```
 
-You can execute a DESCRIBE USER command to verify the user’s public key.
+You can execute a DESCRIBE USER command to verify the user's public key.
 
 ```SQL
-desc user INFX_TERRAFORM;
+desc user TERRAFORM;
 ```
 
-The private key must be created as an GitHub environment secret with the name `SNOWFLAKE_PRIVATE_KEY`.
+The private key must be created as a GitHub environment secret named `SNOWFLAKE_PRIVATE_KEY` in each environment.
 </details>
 
 ## Configuration
@@ -91,6 +87,7 @@ The private key must be created as an GitHub environment secret with the name `S
 | <a name="input_snowflake_role"></a> [snowflake\_role](#input\_snowflake\_role) | The role in Snowflake that we will use to deploy by default | `string` | n/a | yes |
 | <a name="input_snowflake_username"></a> [snowflake\_username](#input\_snowflake\_username) | The name of the Snowflake user that we will be utilizing to deploy into the snowflake\_account | `string` | n/a | yes |
 | <a name="input_snowflake_warehouse_size"></a> [snowflake\_warehouse\_size](#input\_snowflake\_warehouse\_size) | The size of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `string` | n/a | yes |
+| <a name="input_tag_admin_role"></a> [tag\_admin\_role](#input\_tag\_admin\_role) | The name to set for the tag admin | `string` | `"TAG_ADMIN"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags and their allowed values to create in Snowflake. This will also create a database and schema to house the tags | `map(list(string))` | `{}` | no |
 | <a name="input_tags_schema_name"></a> [tags\_schema\_name](#input\_tags\_schema\_name) | The name to set for tags schema | `string` | `"TAGS"` | no |
 | <a name="input_warehouse_auto_suspend"></a> [warehouse\_auto\_suspend](#input\_warehouse\_auto\_suspend) | The auto\_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake\_account | `map(number)` | n/a | yes |
