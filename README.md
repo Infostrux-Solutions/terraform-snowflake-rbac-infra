@@ -6,9 +6,9 @@ The infrastructure stack deploys snowflake databases, warehouses, roles, and gra
 <details>
 <summary>AWS Authentication Requirements</summary>
 <br>
-Terraform needs credentials to connect to the remote backend. Multiple configurations are available, and the AWS provides full documentation, which can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
 
-Whenever possible, it's best practice to use temporary credentials. The ideal approach when connecting to GitHub Actions would be to use the instructions found <a href="https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/">here</a> to create a role that GitHub will assume.
+Terraform needs credentials to connect to the remote backend. Multiple configurations are available, and Terraform provides <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs">complete documentation</a>  on how to set up the credentials. It's best practice to use <a href="https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/">temporary credentials</a> to connect GitHub with AWS.
+<br>
 
 Once the above is complete, you must set up an environment in GitHub Settings (development, production) and add a secret to it, `AWS_ROLE_ARN,` with the role ARN created during the instructions above.
 </details>
@@ -17,21 +17,24 @@ Once the above is complete, you must set up an environment in GitHub Settings (d
 <details>
 <summary>Snowflake Authentication provider requirements</summary>
 <br>
-In Terraform, each provider needs credentials to manage resources on our behalf. In the case of the Snowflake provider, the following environment variables are required:
+In Terraform, each <a href="https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs">provider</a> requires credentials to manage resources on our behalf. Below, you will find the variables we use to connect to Snowflake.
 
 - **account** - (required) Both the name and the region (ex: corp.us-east-1). It can also come from the SNOWFLAKE_ACCOUNT environment variable.
-- **username** - (required) It can come from the SNOWFLAKE_USER environment variable.
+- **user** - (required) It can come from the SNOWFLAKE_USER environment variable.
 - **private_key** - (required) A private key for using keypair authentication. It can be a source from the SNOWFLAKE_PRIVATE_KEY environment variable.
 - **role** - (optional) Snowflake role to use for operations. If left unset, the user's default role will be used. It can come from the SNOWFLAKE_ROLE environment variable.
+- **authenticator** - (required) When using `private_key` you must specify `authenticator = "JWT"` otherwise Terraform will return `Error: 260002: password is empty`.
 
-The developer will configure the account, username, and role in the terraform `.tfvars` file.
+The developer will configure the account, username, role, and authenticator in the terraform `.tfvars` file.
 </details>
 <br/>
 
 <details>
 <summary>Snowflake User key Creation</summary>
 <br>
-If your snowflake doesn't already have an SSH key associated with it, please see the <a href="https://docs.snowflake.com/en/user-guide/key-pair-auth">offical documentation</a> up-to-date instructions.
+If you don't already have a dedicated user in your Snowflake account for running Terraform, see the <a href="https://docs.snowflake.com/en/user-guide/key-pair-auth">offical documentation</a> for up-to-date instructions.
+
+<br>
 
 In your development environment, run the following command to generate a key pair:
 
@@ -94,8 +97,8 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 
 ## Deployment
 
-1. Update the `backend tfvars` file to point to the appropriate S3 backend (if required)
-2. Update the `tfvars` file with any variable changes that may be required
+1. Update the `backends/backend-{env}.tfvars` file to point to the appropriate S3 backend (if required)
+2. Update the `environments/{env}.tfvars` file with any variable changes that may be required
 3. Navigate to `GitHub Actions` and trigger `Plan Snowflake Infra`
     1. Select `Run Workflow`
     2. From the drop down menu choose the target environment from `Plan to`
