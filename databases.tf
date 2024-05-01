@@ -54,8 +54,7 @@ resource "snowflake_grant_ownership" "database" {
     for uni in local.database_grants : uni.unique => uni if contains(uni.privilege, "ownership")
   }
 
-  provider   = snowflake.securityadmin
-  depends_on = [snowflake_grant_account_role.role]
+  provider = snowflake.securityadmin
 
   account_role_name = each.value.role
   on {
