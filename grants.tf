@@ -1,33 +1,73 @@
 locals {
-  roles_yml = yamldecode(file("config/roles.yml"))
+  environment_role_grants = flatten([
+    for parent, children in local.environment_roles : [
+      for child in children : {
+        unique = join("_", [parent, child])
+        parent = upper(join("_", [local.object_prefix, parent]))
+        child  = upper(join("_", [local.object_prefix, child]))
+      }
+    ]
+  ])
 
-  role_grants = flatten([
-    for role, parents in local.roles : [
-      for parent in parents : {
-        unique = join("_", [role, parent])
-        role   = upper(join("_", [local.object_prefix, role]))
+  account_role_grants = flatten([
+    for parent, children in local.account_roles : [
+      for child in children : {
+        unique = join("_", [parent, child])
         parent = upper(parent)
+        child  = upper(join("_", [local.object_prefix, child]))
       }
     ]
   ])
 }
 
-resource "snowflake_grant_account_role" "role" {
+resource "snowflake_grant_account_role" "environment_role" {
   for_each = {
-    for uni in local.role_grants : uni.unique => uni
+    for uni in local.environment_role_grants : uni.unique => uni
   }
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.roles, snowflake_role.parent_roles]
+  depends_on = [snowflake_role.environment_role, snowflake_role.account_role]
 
-  role_name        = each.value.role
+  role_name        = each.value.child
   parent_role_name = each.value.parent
 }
 
-resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {
+resource "snowflake_grant_account_role" "account_role" {
+  for_each = {
+    for uni in local.account_role_grants : uni.unique => uni
+  }
+
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_role.environment_role, snowflake_role.account_role]
+
+  role_name        = each.value.child
+  parent_role_name = each.value.parent
+}
+
+resource "snowflake_grant_account_role" "fivetran" {
+  count = var.create_fivetran_user ? 1 : 0
+
   provider = snowflake.securityadmin
 
-  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
+  role_name = snowflake_role.environment_role["ingestion"].name
+  user_name = snowflake_user.fivetran[0].name
+}
+
+resource "snowflake_grant_account_role" "datadog" {
+  count = var.create_datadog_user ? 1 : 0
+
+  provider   = snowflake.securityadmin
+  depends_on = [snowflake_role.environment_role]
+
+  role_name = snowflake_role.environment_role["monitoring"].name
+  user_name = snowflake_user.datadog[0].name
+}
+
+resource "snowflake_grant_privileges_to_account_role" "tag_database" {
+  count    = local.create_tags
+  provider = snowflake.securityadmin
+
+  account_role_name = var.tag_admin_role
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
@@ -35,21 +75,11 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage" {
   }
 }
 
-resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_usage" {
+resource "snowflake_grant_privileges_to_account_role" "tag_schema" {
+  count    = local.create_tags
   provider = snowflake.securityadmin
 
-  account_role_name = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
-  privileges        = ["USAGE"]
-  on_account_object {
-    object_type = "DATABASE"
-    object_name = try(snowflake_database.tags[0].name, var.governance_database_name)
-  }
-}
-
-resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage_create" {
-  provider = snowflake.securityadmin
-
-  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
+  account_role_name = var.tag_admin_role
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
@@ -57,47 +87,20 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin_usage_create" {
   }
 }
 
-resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_usage_create" {
-  provider = snowflake.securityadmin
-
-  account_role_name = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
-  privileges        = ["USAGE", "CREATE TAG"]
-
-  on_schema {
-    schema_name = "\"${try(snowflake_database.tags[0].name, var.governance_database_name)}\".\"${try(snowflake_schema.tags[0].name, var.tags_schema_name)}\""
-  }
-}
-
-resource "snowflake_grant_privileges_to_account_role" "tag_admin_apply" {
+resource "snowflake_grant_privileges_to_account_role" "tag_admin" {
+  count    = local.create_tags
   provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
-  account_role_name = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
-  on_account        = true
-}
-
-resource "snowflake_grant_privileges_to_account_role" "tag_securityadmin_apply" {
-  provider = snowflake.accountadmin
-
-  privileges        = ["APPLY TAG"]
-  account_role_name = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
+  account_role_name = var.tag_admin_role
   on_account        = true
 }
 
 resource "snowflake_grant_account_role" "tag_admin" {
-  count = length(var.tags) > 0 ? 1 : 0
+  count = local.create_tags
 
   provider = snowflake.securityadmin
 
-  role_name        = try(snowflake_role.tag_admin[0].name, "TAG_ADMIN")
+  role_name        = var.tag_admin_role
   parent_role_name = "SYSADMIN"
-}
-
-resource "snowflake_grant_account_role" "tag_securityadmin" {
-  count = length(var.tags) > 0 ? 1 : 0
-
-  provider = snowflake.securityadmin
-
-  role_name        = try(snowflake_role.tag_securityadmin[0].name, "TAG_SECURITYADMIN")
-  parent_role_name = "SECURITYADMIN"
 }

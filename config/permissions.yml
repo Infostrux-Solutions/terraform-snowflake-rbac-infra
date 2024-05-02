@@ -1,0 +1,47 @@
+permissions:
+  database:
+    r:
+      databases:
+        - usage
+      schemas:
+        - usage
+      tables:
+        - select
+      dynamic_tables:
+        - select
+      views:
+        - select
+      materialized_views:
+        - select
+    rw:
+      databases:
+        - usage
+        - modify
+        - create schema
+        - monitor
+      schemas:
+        - usage
+        - create table
+        - create view
+        - create function
+        - create procedure
+        - create stream
+        - create task
+        - create stage
+        - create dynamic table
+        - create materialized view
+      tables:
+        - select
+        - insert
+        - update
+        - delete
+        - truncate
+      dynamic_tables:
+        - select
+        - operate
+      views:
+        - select
+        - references
+      materialized_views:
+        - select
+        - references

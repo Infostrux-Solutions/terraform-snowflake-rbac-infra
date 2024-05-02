@@ -1,30 +1,30 @@
 locals {
-  table_ownership = flatten([
+  materialized_view_ownership = flatten([
     for database, grants in local.databases : [
       for role in grants.roles : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
         role      = upper(join("_", [local.object_prefix, database, role]))
-        privilege = sort([for p in setintersection(local.permissions_yml.permissions.database[role].tables, ["ownership"]) : upper(p)])
-      } if contains(local.permissions_yml.permissions.database[role].tables, "ownership")
+        privilege = sort([for p in setintersection(local.permissions_yml.permissions.database[role].materialized_views, ["ownership"]) : upper(p)])
+      } if contains(local.permissions_yml.permissions.database[role].materialized_views, "ownership")
     ]
   ])
 
-  table_grants_wo_ownership = flatten([
+  materialized_view_grants_wo_ownership = flatten([
     for database, grants in local.databases : [
       for role in grants.roles : {
         unique    = join("_", [database, trimspace(role)])
         database  = database
         role      = upper(join("_", [local.object_prefix, database, role]))
-        privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].tables, ["ownership"]) : upper(p)])
+        privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].materialized_views, ["ownership"]) : upper(p)])
       }
     ]
   ])
 }
 
-resource "snowflake_grant_privileges_to_account_role" "future_tables" {
+resource "snowflake_grant_privileges_to_account_role" "future_materialized_views" {
   for_each = {
-    for uni in local.table_grants_wo_ownership : uni.unique => uni
+    for uni in local.materialized_view_grants_wo_ownership : uni.unique => uni
   }
 
   provider = snowflake.securityadmin
@@ -33,15 +33,15 @@ resource "snowflake_grant_privileges_to_account_role" "future_tables" {
   privileges        = each.value.privilege
   on_schema_object {
     future {
-      object_type_plural = "TABLES"
+      object_type_plural = "MATERIALIZED VIEWS"
       in_database        = snowflake_database.database[each.value.database].id
     }
   }
 }
 
-resource "snowflake_grant_privileges_to_account_role" "all_tables" {
+resource "snowflake_grant_privileges_to_account_role" "all_materialized_views" {
   for_each = {
-    for uni in local.table_grants_wo_ownership : uni.unique => uni
+    for uni in local.materialized_view_grants_wo_ownership : uni.unique => uni
   }
 
   provider = snowflake.securityadmin
@@ -51,15 +51,15 @@ resource "snowflake_grant_privileges_to_account_role" "all_tables" {
   always_apply      = var.always_apply
   on_schema_object {
     all {
-      object_type_plural = "TABLES"
+      object_type_plural = "MATERIALIZED VIEWS"
       in_database        = snowflake_database.database[each.value.database].id
     }
   }
 }
 
-resource "snowflake_grant_ownership" "tables" {
+resource "snowflake_grant_ownership" "materialized_views" {
   for_each = {
-    for uni in local.table_ownership : uni.unique => uni
+    for uni in local.materialized_view_ownership : uni.unique => uni
   }
 
   provider = snowflake.securityadmin
@@ -68,7 +68,7 @@ resource "snowflake_grant_ownership" "tables" {
   outbound_privileges = "REVOKE"
   on {
     future {
-      object_type_plural = "TABLES"
+      object_type_plural = "MATERIALIZED VIEWS"
       in_database        = snowflake_database.database[each.value.database].id
     }
   }

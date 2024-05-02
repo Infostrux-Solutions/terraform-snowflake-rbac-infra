@@ -1,6 +1,5 @@
 # Common
 project     = "marketing"
-domain      = "snowflake"
 environment = "dev"
 region      = "us-east-2"
 
@@ -14,14 +13,8 @@ default_tags = {
 # Snowflake
 snowflake_role           = "SYSADMIN"
 snowflake_account        = "aua12673"
-snowflake_username       = "INFX_TERRAFORM"
-snowflake_warehouse_size = "xsmall"
+snowflake_username       = "TERRAFORM"
 
 # User Creation
 create_fivetran_user = true
 create_datadog_user  = true
-
-warehouse_auto_suspend = {
-  "INGEST_WH"     = 120
-  "MONITORING_WH" = 60
-}

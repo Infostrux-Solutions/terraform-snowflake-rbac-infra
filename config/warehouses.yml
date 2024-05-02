@@ -1,51 +1,30 @@
 warehouses:
-  ingest:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
-    monitoring:
-      - monitor
-    ingestion: 
-      - usage
-      - operate
-
+  ingestion:
+    auto_suspend: 60
+    roles:
+      ingestion: 
+        - usage
+        - operate
+      monitoring:
+        - monitor
   developer:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
-    developer:
-      - usage
-      - operate
-    monitoring:
-      - monitor
-
+    roles:
+      developer:
+        - usage
+        - operate
+      monitoring:
+        - monitor
   reporting:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
-    analyst: 
-      - usage
-      - operate
-    monitoring:
-      - monitor
-
+    roles:
+      analyst: 
+        - usage
+        - operate
+      monitoring:
+        - monitor
   monitoring:
-    sysadmin:
-      - usage
-      - monitor
-      - modify
-      - operate
-      - ownership
-    monitoring:
-      - usage
-      - monitor
-      - operate
+    auto_suspend: 60
+    roles:
+      monitoring:
+        - usage
+        - monitor
+        - operate

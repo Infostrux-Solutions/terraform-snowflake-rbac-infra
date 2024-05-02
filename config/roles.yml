@@ -1,13 +1,25 @@
-roles:
-  # Child role
+environment_roles:
   analyst:
-    # Parent role
-    - analyst
-  ingestion:
-    - sysadmin
+    - raw_r
+    - prepare_r
+    - normalize_r
+    - integrate_r
+    - analyze_r
   developer:
+    - raw_r
+    - prepare_rw
+    - normalize_rw
+    - integrate_rw
+    - analyze_rw
+  ingestion:
+    - raw_rw
+  sysadmin:
+    - raw_rw
+    - ingestion
     - developer
+  monitoring:
+    - analyst
+
+account_roles:
   sysadmin:
     - sysadmin
-  monitoring:
-    - monitoring

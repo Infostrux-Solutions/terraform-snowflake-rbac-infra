@@ -2,17 +2,18 @@ locals {
   database_tags = flatten([
     for database in snowflake_database.database : [
       for tag, value in var.default_tags : {
-        key       = upper(join("_", [database.name, tag]))
+        key       = join("_", [database.name, tag])
         database  = database.name
         tag_name  = "${try(snowflake_database.tags[0].name, var.governance_database_name)}.${try(snowflake_schema.tags[0].name, var.tags_schema_name)}.${tag}"
         tag_value = value
       }
     ]
   ])
+
   warehouse_tags = flatten([
     for warehouse in snowflake_warehouse.warehouse : [
       for tag, value in var.default_tags : {
-        key       = upper(join("_", [warehouse.name, tag]))
+        key       = join("_", [warehouse.name, tag])
         warehouse = warehouse.name
         tag_name  = "${try(snowflake_database.tags[0].name, var.governance_database_name)}.${try(snowflake_schema.tags[0].name, var.tags_schema_name)}.${tag}"
         tag_value = value
@@ -22,14 +23,14 @@ locals {
 }
 
 resource "snowflake_database" "tags" {
-  count = length(var.tags) > 0 ? 1 : 0
+  count = local.create_tags
 
   name    = var.governance_database_name
   comment = var.comment
 }
 
 resource "snowflake_schema" "tags" {
-  count = length(var.tags) > 0 ? 1 : 0
+  count = local.create_tags
 
   database = snowflake_database.tags[0].id
   name     = var.tags_schema_name
