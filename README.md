@@ -90,7 +90,7 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 | <a name="input_snowflake_datadog_password"></a> [snowflake\_datadog\_password](#input\_snowflake\_datadog\_password) | The snowflake user password to set for datadog monitoring | `string` | `""` | no |
 | <a name="input_snowflake_fivetran_password"></a> [snowflake\_fivetran\_password](#input\_snowflake\_fivetran\_password) | The snowflake user password to set for fivetran ingestion | `string` | `""` | no |
 | <a name="input_snowflake_role"></a> [snowflake\_role](#input\_snowflake\_role) | The role in Snowflake that we will use to deploy by default | `string` | n/a | yes |
-| <a name="input_snowflake_username"></a> [snowflake\_username](#input\_snowflake\_username) | The name of the Snowflake user that we will be utilizing to deploy into the snowflake\_account | `string` | n/a | yes |
+| <a name="input_snowflake_user"></a> [snowflake\_user](#input\_snowflake\_user) | The name of the Snowflake user that we will be utilizing to deploy into the snowflake\_account | `string` | n/a | yes |
 | <a name="input_tag_admin_role"></a> [tag\_admin\_role](#input\_tag\_admin\_role) | The name to set for the tag admin | `string` | `"TAG_ADMIN"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags and their allowed values to create in Snowflake. This will also create a database and schema to house the tags | `map(list(string))` | `{}` | no |
 | <a name="input_tags_schema_name"></a> [tags\_schema\_name](#input\_tags\_schema\_name) | The name to set for tags schema | `string` | `"TAGS"` | no |

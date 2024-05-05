@@ -54,12 +54,13 @@ variable "snowflake_role" {
   type        = string
   description = "The role in Snowflake that we will use to deploy by default"
 }
+
 variable "snowflake_account" {
   type        = string
   description = "The name of the Snowflake account that we will be deploying into"
 }
 
-variable "snowflake_username" {
+variable "snowflake_user" {
   type        = string
   description = "The name of the Snowflake user that we will be utilizing to deploy into the snowflake_account"
 }

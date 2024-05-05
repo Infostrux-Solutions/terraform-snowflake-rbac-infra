@@ -33,3 +33,9 @@ output "account_role_grants" {
     for role in snowflake_grant_account_role.account_role : join("", [role.role_name, " ▶ ", role.parent_role_name])
   ]
 }
+
+output "access_roles" {
+  value = [
+    for role in snowflake_role.access_role : role.name
+  ]
+}

@@ -62,3 +62,13 @@ resource "snowflake_grant_ownership" "database" {
     object_name = snowflake_database.database[each.value.database].id
   }
 }
+
+resource "snowflake_grant_privileges_to_account_role" "snowflake_datadog" {
+  count             = var.create_datadog_user ? 1 : 0
+  account_role_name = snowflake_role.environment_role["monitoring"].name
+  privileges        = ["IMPORTED PRIVILEGES"]
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = "SNOWFLAKE"
+  }
+}
