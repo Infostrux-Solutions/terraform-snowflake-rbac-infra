@@ -65,7 +65,7 @@ resource "snowflake_grant_ownership" "database" {
 
 resource "snowflake_grant_privileges_to_account_role" "snowflake_datadog" {
   count             = var.create_datadog_user ? 1 : 0
-  account_role_name = snowflake_role.account_role["monitoring"].name
+  account_role_name = snowflake_role.environment_role["monitoring"].name
   privileges        = ["IMPORTED PRIVILEGES"]
   on_account_object {
     object_type = "DATABASE"
