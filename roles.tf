@@ -11,13 +11,11 @@ locals {
     for role, roles in local.account_roles : role => roles if !contains([role], "sysadmin")
   }
 
-  access_roles = distinct(flatten([
-    for parent, children in local.environment_roles : [
-      for child in setsubtract(children, [for role, roles in local.environment_roles : role]) : {
-        child = child
-      }
+  access_roles = flatten([
+    for database, specs in local.databases : [
+      for role in specs.roles : join("_", [database, role])
     ]
-  ]))
+  ])
 
   tags_list = flatten([
     for key, value in var.default_tags : {
@@ -30,13 +28,11 @@ locals {
 }
 
 resource "snowflake_role" "access_role" {
-  for_each = {
-    for uni in local.access_roles : uni.child => uni
-  }
+  for_each = toset(local.access_roles)
 
   provider = snowflake.securityadmin
 
-  name    = upper(join("_", [local.object_prefix, each.value.child]))
+  name    = upper(join("_", [local.object_prefix, each.key]))
   comment = var.comment
 }
 
