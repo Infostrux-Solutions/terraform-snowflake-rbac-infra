@@ -7,7 +7,7 @@ locals {
 resource "snowflake_user" "user" {
   for_each = local.users
 
-  provider = snowflake.securityadmin
+  provider = snowflake.useradmin
 
   name         = each.key
   login_name   = each.key
