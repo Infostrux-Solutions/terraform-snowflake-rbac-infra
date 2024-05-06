@@ -14,6 +14,3 @@ default_tags = {
 snowflake_role    = "SYSADMIN"
 snowflake_account = "aua12673"
 snowflake_user    = "TERRAFORM"
-
-# User Creation
-create_fivetran_user = true

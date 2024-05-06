@@ -14,6 +14,13 @@ warehouses:
         - operate
       monitoring:
         - monitor
+  transform:
+    roles:
+      transform:
+        - usage
+        - operate
+      monitoring:
+        - monitor
   reporting:
     roles:
       analyst: 

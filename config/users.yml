@@ -1,0 +1,10 @@
+users:
+  dbt:
+    role: transform
+    warehouse: transform
+  fivetran:
+    role: ingestion
+    warehouse: ingestion
+  reporting:
+    role: analyst
+    warehouse: reporting

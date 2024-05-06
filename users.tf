@@ -1,40 +1,29 @@
 locals {
-  fivetran_username = upper(join("_", [local.object_prefix, "fivetran"]))
-  datadog_username  = upper(join("_", [local.object_prefix, "datadog"]))
+  users = {
+    for user, specs in local.users_yml.users : upper(join("_", [local.object_prefix, user])) => specs
+  }
 }
 
-resource "snowflake_user" "fivetran" {
-  count = var.create_fivetran_user ? 1 : 0
+resource "snowflake_user" "user" {
+  for_each = local.users
 
-  provider = snowflake.securityadmin
+  provider = snowflake.useradmin
 
-  name         = local.fivetran_username
-  login_name   = local.fivetran_username
-  password     = var.snowflake_fivetran_password
-  display_name = local.fivetran_username
+  name         = each.key
+  login_name   = each.key
+  display_name = each.key
   comment      = var.comment
   disabled     = false
 
-  default_warehouse = snowflake_warehouse.warehouse["ingestion"].name
-  default_role      = snowflake_role.environment_role["ingestion"].name
-
+  default_warehouse    = snowflake_warehouse.warehouse[each.value.warehouse].name
+  default_role         = snowflake_role.environment_role[each.value.role].name
   must_change_password = false
-}
 
-resource "snowflake_user" "datadog" {
-  count = var.create_datadog_user ? 1 : 0
-
-  provider = snowflake.securityadmin
-
-  name         = local.datadog_username
-  login_name   = local.datadog_username
-  password     = var.snowflake_datadog_password
-  display_name = local.datadog_username
-  comment      = var.comment
-  disabled     = false
-
-  default_warehouse = snowflake_warehouse.warehouse["monitoring"].name
-  default_role      = snowflake_role.environment_role["monitoring"].name
-
-  must_change_password = false
+  lifecycle {
+    ignore_changes = [
+      password,
+      rsa_public_key,
+      rsa_public_key_2
+    ]
+  }
 }

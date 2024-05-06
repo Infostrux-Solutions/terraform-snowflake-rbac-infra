@@ -2,6 +2,7 @@
 variable "project" {
   type        = string
   description = "The name of the project, for naming and tagging purposes"
+  default     = ""
 }
 
 variable "environment" {
@@ -75,32 +76,6 @@ variable "default_warehouse_auto_suspend" {
   type        = number
   description = "The auto_suspend (seconds) of the Snowflake warehouse that we will be utilizing to run queries in the snowflake_account"
   default     = 600
-}
-
-variable "create_fivetran_user" {
-  type        = bool
-  description = "Create the fivetran user (true|false)"
-  default     = false
-}
-
-variable "snowflake_fivetran_password" {
-  type        = string
-  description = "The snowflake user password to set for fivetran ingestion"
-  default     = ""
-  sensitive   = true
-}
-
-variable "create_datadog_user" {
-  type        = bool
-  description = "Create the datadog user (true|false)"
-  default     = false
-}
-
-variable "snowflake_datadog_password" {
-  type        = string
-  description = "The snowflake user password to set for datadog monitoring"
-  default     = ""
-  sensitive   = true
 }
 
 variable "always_apply" {
