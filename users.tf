@@ -28,12 +28,12 @@ resource "snowflake_user" "fivetran" {
 
   provider = snowflake.securityadmin
 
-  name         = local.fivetran_username
-  login_name   = local.fivetran_username
-  rsa_public_key     = var.snowflake_fivetran_private_key
-  display_name = local.fivetran_username
-  comment      = var.comment
-  disabled     = false
+  name           = local.fivetran_username
+  login_name     = local.fivetran_username
+  rsa_public_key = var.snowflake_fivetran_private_key
+  display_name   = local.fivetran_username
+  comment        = var.comment
+  disabled       = false
 
   default_warehouse = snowflake_warehouse.warehouse["ingestion"].name
   default_role      = snowflake_role.environment_role["ingestion"].name
@@ -46,12 +46,12 @@ resource "snowflake_user" "datadog" {
 
   provider = snowflake.securityadmin
 
-  name         = local.datadog_username
-  login_name   = local.datadog_username
-  rsa_public_key     = var.snowflake_datadog_private_key
-  display_name = local.datadog_username
-  comment      = var.comment
-  disabled     = false
+  name           = local.datadog_username
+  login_name     = local.datadog_username
+  rsa_public_key = var.snowflake_datadog_private_key
+  display_name   = local.datadog_username
+  comment        = var.comment
+  disabled       = false
 
   default_warehouse = snowflake_warehouse.warehouse["monitoring"].name
   default_role      = snowflake_role.environment_role["monitoring"].name
@@ -64,14 +64,14 @@ resource "snowflake_user" "reporting" {
 
   provider = snowflake.securityadmin
 
-  name         = local.dbt_username
-  login_name   = local.dbt_username
-  rsa_public_key     = var.snowflake_reporting_private_key
-  display_name = local.dbt_username
-  comment      = var.comment
-  disabled     = false
+  name           = local.dbt_username
+  login_name     = local.dbt_username
+  rsa_public_key = var.snowflake_reporting_private_key
+  display_name   = local.dbt_username
+  comment        = var.comment
+  disabled       = false
 
-  default_warehouse = snowflake_warehouse.warehouse["analyst"].name
+  default_warehouse = snowflake_warehouse.warehouse["reporting"].name
   default_role      = snowflake_role.environment_role["analyst"].name
 
   must_change_password = false
