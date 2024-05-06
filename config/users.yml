@@ -8,4 +8,6 @@ users:
 #  reporting:
 #    role: analyst
 #    warehouse: reporting
-
+   test:
+     role: analyst
+     warehouse: reporting
