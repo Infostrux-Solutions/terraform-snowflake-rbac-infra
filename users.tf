@@ -1,6 +1,6 @@
 locals {
   users = {
-    for user, specs in local.users_yml.users : join("_", [local.object_prefix, user]) => specs
+    for user, specs in local.users_yml.users : upper(join("_", [local.object_prefix, user])) => specs
   }
 }
 
