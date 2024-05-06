@@ -17,3 +17,5 @@ snowflake_user    = "TERRAFORM"
 
 # User Creation
 create_fivetran_user = true
+create_dbt_user = true
+create_reporting_user = true

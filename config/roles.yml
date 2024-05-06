@@ -13,9 +13,13 @@ environment_roles:
     - analyze_rw
   ingestion:
     - raw_rw
+  transform:
+    - developer
   sysadmin:
+    - analyst
     - ingestion
     - developer
+    - transform
   monitoring:
     - analyst
 

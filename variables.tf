@@ -2,6 +2,7 @@
 variable "project" {
   type        = string
   description = "The name of the project, for naming and tagging purposes"
+  default     = ""
 }
 
 variable "environment" {
@@ -83,9 +84,9 @@ variable "create_fivetran_user" {
   default     = false
 }
 
-variable "snowflake_fivetran_password" {
+variable "snowflake_fivetran_private_key" {
   type        = string
-  description = "The snowflake user password to set for fivetran ingestion"
+  description = "The snowflake user private key to set for fivetran ingestion"
   default     = ""
   sensitive   = true
 }
@@ -96,9 +97,35 @@ variable "create_datadog_user" {
   default     = false
 }
 
-variable "snowflake_datadog_password" {
+variable "snowflake_datadog_private_key" {
   type        = string
-  description = "The snowflake user password to set for datadog monitoring"
+  description = "The snowflake user private key to set for datadog monitoring"
+  default     = ""
+  sensitive   = true
+}
+
+variable "create_dbt_user" {
+  type        = bool
+  description = "Create the dbt user (true|false)"
+  default     = false
+}
+
+variable "snowflake_dbt_private_key" {
+  type        = string
+  description = "The snowflake user private key to set for dbt transformations"
+  default     = ""
+  sensitive   = true
+}
+
+variable "create_reporting_user" {
+  type        = bool
+  description = "Create the reporting user (true|false)"
+  default     = false
+}
+
+variable "snowflake_reporting_private_key" {
+  type        = string
+  description = "The snowflake user private key to set for reporting user (bi)"
   default     = ""
   sensitive   = true
 }
