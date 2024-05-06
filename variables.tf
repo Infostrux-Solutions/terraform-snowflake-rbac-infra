@@ -78,58 +78,6 @@ variable "default_warehouse_auto_suspend" {
   default     = 600
 }
 
-variable "create_fivetran_user" {
-  type        = bool
-  description = "Create the fivetran user (true|false)"
-  default     = false
-}
-
-variable "snowflake_fivetran_private_key" {
-  type        = string
-  description = "The snowflake user private key to set for fivetran ingestion"
-  default     = ""
-  sensitive   = true
-}
-
-variable "create_datadog_user" {
-  type        = bool
-  description = "Create the datadog user (true|false)"
-  default     = false
-}
-
-variable "snowflake_datadog_private_key" {
-  type        = string
-  description = "The snowflake user private key to set for datadog monitoring"
-  default     = ""
-  sensitive   = true
-}
-
-variable "create_dbt_user" {
-  type        = bool
-  description = "Create the dbt user (true|false)"
-  default     = false
-}
-
-variable "snowflake_dbt_private_key" {
-  type        = string
-  description = "The snowflake user private key to set for dbt transformations"
-  default     = ""
-  sensitive   = true
-}
-
-variable "create_reporting_user" {
-  type        = bool
-  description = "Create the reporting user (true|false)"
-  default     = false
-}
-
-variable "snowflake_reporting_private_key" {
-  type        = string
-  description = "The snowflake user private key to set for reporting user (bi)"
-  default     = ""
-  sensitive   = true
-}
-
 variable "always_apply" {
   type        = bool
   description = "Toggle to always apply on all objects. Used for when there are changes to the grants that need to be retroatively granted to roles"
