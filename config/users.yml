@@ -1,13 +1,10 @@
 users:
-#  dbt:
-#    role: transform
-#    warehouse: transform
-#  fivetran:
-#    role: ingestion
-#    warehouse: ingestion
-#  reporting:
-#    role: analyst
-#    warehouse: reporting
-   test:
-     role: analyst
-     warehouse: reporting
+  dbt:
+    role: transform
+    warehouse: transform
+  fivetran:
+    role: ingestion
+    warehouse: ingestion
+  reporting:
+    role: analyst
+    warehouse: reporting
