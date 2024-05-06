@@ -39,3 +39,9 @@ output "access_roles" {
     for role in snowflake_role.access_role : role.name
   ]
 }
+
+output "users" {
+  value = [
+    for user in snowflake_user.user : user.login_name
+  ]
+}
