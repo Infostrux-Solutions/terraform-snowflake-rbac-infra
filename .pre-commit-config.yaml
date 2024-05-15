@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/bridgecrewio/checkov.git
-    rev: 3.2.79 # change to tag or sha
+    rev: 3.2.79
     hooks:
       - id: checkov
         entry: checkov --directory . --quiet
