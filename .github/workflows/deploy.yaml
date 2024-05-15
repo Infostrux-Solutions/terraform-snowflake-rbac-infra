@@ -73,12 +73,6 @@ jobs:
       run: |
         terraform init -backend-config="./backends/backend-$ENVIRONMENT.tfvars"
 
-    - name: Format terraform
-      run: terraform fmt -check
-
-    - name: Validate terraform
-      run: terraform validate
-
     - name: Plan terraform
       run: |
         terraform plan --var-file=./environments/$ENVIRONMENT.tfvars -var always_apply=${{ github.event.inputs.alwaysApplyGrants }} -out=./output.tfplan

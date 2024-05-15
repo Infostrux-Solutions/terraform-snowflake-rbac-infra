@@ -1,0 +1,11 @@
+repos:
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 3.2.79 # change to tag or sha
+    hooks:
+      - id: checkov
+        entry: checkov --directory . --quiet
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: "v1.74.1"
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
