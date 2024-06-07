@@ -71,6 +71,51 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 | config/warehouses.yml   | The warehouses file is used to specify the warehouses to be created, as well as the environment functional role permissions to be granted to the warehouse      
 | config/users.yml        | The users file is used to specify the users to be created, as well as to set the default warehouse, default role and grant the default role to the user |
 
+## Adding roles
+### Functional roles
+1. Navigate to the `config/roles.yml` file
+2. If creating an environment level role add a new `key:value` sequences under `environment_roles`
+    1. The key should be the name of the role (terraform will prepend the environment and project)
+    2. The value should be a list of object access roles defined in `config/databases.yml`
+3. If creating an account level role add a new `key:value` sequences under `account_roles`
+    1. The key should be the name of the role you would like to create
+    2. The value should be the `function roles` that you would like to grant to the account level role (Do not grant object level roles)
+### Object roles
+1. Navigate to the `config/databases.yml` file
+2. We create either a read (`r`) or a read/write (`rw`) role under each named database. We have a `key:value` sequences under each database name, the `key` is `roles` the value is an sequences of role names (`r, rw`)
+3. For each of the roles we defined in `step 2` we must create a lookup to define the permissions we want to set to the `r` and `rw` roles, we define the permissions in `config/permissions.yml`
+    1. Navigate to `config/permissions.yml`
+    2. Each object `database, warehouse, etc` has its own `key:value` sequences to define the object we want to grant permissions on `key` and the permissions we want to grant `value` this is repeated for each role we defined in `step 2`
+## Adding Databases
+1. Navigate to the `config/databases.yml` file
+2. Add a new block with the name of the new database (terraform will prepend the environment and project) and the object roles you would like to create under the new database name (`r, rw`)
+```
+  database_name: 
+    roles:
+      - r
+      - rw
+```
+## Adding Warehouses
+1. Navigate to the `config/warehouses.yml` file
+2. Add a new block with the name of the new warehouse (terraform will prepend the environment and project) under the `key:value` mapping
+    1. Under the new `key` you can add a `key:value` literal to set the `auto_suspend` or `size` on the warehouse
+    2. Under the new `key` you can add a `key:value` mapping called `roles` to grant permissions to functional roles defined in `config/roles.yml`. The `key` is the role name and the `value` is a sequences of permissions on the warehouse to grant
+```
+  warehouse_name:
+    auto_suspend: 60
+    roles:
+      analyst:
+        - usage
+        - operate
+```
+## Adding Users
+1. Navigate to the `config/users.yml` file
+2. Under the `key:value` mapping `users` you can define the name of the role `key` (terraform will prepend the environment and project)
+3. The `value` under the mapping created on `step 2` can be either the role or the warehouse to assign to the user
+    1. To grant a role to the user add a `key:value` literal with `role: name_of_role`
+    2. To grant access to use a warehouse to the user add a `key:value` literal with `warehouse: name_of_warehouse`
+
+
 ## Variables
 
 | Name | Description | Type | Default | Required |
