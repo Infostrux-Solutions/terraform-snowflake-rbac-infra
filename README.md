@@ -1,5 +1,6 @@
 # terraform-snowflake-rbac-infra
-https://github.com/Infostrux-Solutions/terraform-snowflake-rbac-infra/actions/workflows/deploy.yaml/badge.svg
+![Deploy](https://github.com/Infostrux-Solutions/terraform-snowflake-rbac-infra/actions/workflows/deploy.yaml/badge.svg)
+
 The infrastructure stack deploys snowflake databases, warehouses, roles, and grants based on the configuration in the `./config` directory. See `Configuration` below.
 
 ## Prerequisites
