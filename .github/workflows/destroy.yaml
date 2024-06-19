@@ -69,7 +69,7 @@ jobs:
       run: |
         TF_WORKSPACE=`git rev-parse --show-toplevel`
         terraform init -backend-config="./backends/backend-$ENVIRONMENT.tfvars"
-        terraform workspace create ${TF_WORKSPACE} || echo "Workspace ${TF_WORKSPACE} already exists or cannot be created"
+        terraform workspace new ${TF_WORKSPACE} || echo "Workspace ${TF_WORKSPACE} already exists or cannot be created"
 
     - name: Format terraform
       run: terraform fmt -check
