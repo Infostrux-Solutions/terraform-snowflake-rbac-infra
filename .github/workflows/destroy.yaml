@@ -67,7 +67,7 @@ jobs:
 
     - name: Initialize Terraform
       run: |
-        TF_WORKSPACE=`git rev-parse --show-toplevel`
+        TF_WORKSPACE=`basename $(git remote get-url origin)`
         terraform init -backend-config="./backends/backend-$ENVIRONMENT.tfvars"
         terraform workspace new ${TF_WORKSPACE} || echo "Workspace ${TF_WORKSPACE} already exists or cannot be created"
 
