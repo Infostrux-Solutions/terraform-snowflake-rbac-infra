@@ -46,7 +46,7 @@ resource "snowflake_tag" "tag" {
   schema   = snowflake_schema.tags[0].name
 
   comment        = var.comment
-  allowed_values = each.value
+  allowed_values = sort(each.value)
 }
 
 resource "snowflake_tag_association" "database_tags" {
