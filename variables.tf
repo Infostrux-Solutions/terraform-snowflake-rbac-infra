@@ -66,6 +66,12 @@ variable "snowflake_user" {
   description = "The name of the Snowflake user that we will be utilizing to deploy into the snowflake_account"
 }
 
+variable "snowflake_allowed_ip_list" {
+  description = "List of IPs allowed by Snowflake"
+  type        = list(string)
+  default     = []
+}
+
 variable "default_warehouse_size" {
   type        = string
   description = "The size of the Snowflake warehouse that we will be utilizing to run queries in the snowflake_account"

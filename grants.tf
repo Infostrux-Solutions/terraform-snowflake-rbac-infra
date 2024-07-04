@@ -58,7 +58,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_database" {
   count    = local.create_tags
   provider = snowflake.securityadmin
 
-  account_role_name = var.tag_admin_role
+  account_role_name = snowflake_role.tag_admin[0].name
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
@@ -70,7 +70,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_schema" {
   count    = local.create_tags
   provider = snowflake.securityadmin
 
-  account_role_name = var.tag_admin_role
+  account_role_name = snowflake_role.tag_admin[0].name
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
@@ -83,7 +83,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin" {
   provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
-  account_role_name = var.tag_admin_role
+  account_role_name = snowflake_role.tag_admin[0].name
   on_account        = true
 }
 
@@ -92,6 +92,6 @@ resource "snowflake_grant_account_role" "tag_admin" {
 
   provider = snowflake.securityadmin
 
-  role_name        = var.tag_admin_role
+  role_name        = snowflake_role.tag_admin[0].name
   parent_role_name = "SYSADMIN"
 }
