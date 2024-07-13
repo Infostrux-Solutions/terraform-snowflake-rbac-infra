@@ -154,3 +154,14 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
     4. Select `Run Workflow` and to deploy the changes verified above
 
 
+### Pre-commit 
+
+In order to streamline the development of infrastructure as code via Terraform, we installed a [pre-commit](https://pre-commit.com/) feature, leveraging the [Checkov checks](https://www.checkov.io/4.Integrations/pre-commit.html) and `terraform fmt` and `terrraform validate` on the Terraform Code.
+
+In order to have that working on your KASM instance, you'll need to run the following commands to install it -and its hooks- and modifying the PATH environment variable.
+
+```bash
+pip install pre-commit
+export PATH=$PATH:/home/kasm-user/.local/bin
+pre-commit install --install-hooks
+```
