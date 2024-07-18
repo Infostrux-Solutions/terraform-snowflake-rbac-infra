@@ -139,6 +139,17 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags and their allowed values to create in Snowflake. This will also create a database and schema to house the tags | `map(list(string))` | `{}` | no |
 | <a name="input_tags_schema_name"></a> [tags\_schema\_name](#input\_tags\_schema\_name) | The name to set for tags schema | `string` | `"TAGS"` | no |
 
+## Tagging
+Tags are created in `var.tags` where we define the tag key (string) and the allowed tag values (list), this variable must only be defined once, it is recommended to define this variable in the `environments/production.tfvars` file to maintain control of approved values within the production environment.
+
+The tags that we apply to Snowflake objects (databases and warehouses) are defined in the `var.default_tags`. The database and schema where the tags are stored are defined within the `tags.tf` file and are only created if the `var.tags` variable `length()` is greater than `0`.
+
+### Adding a tag
+To add a tag, navigate to the `environments/production.tfvars` file and add a `key:value` pair containing the tag name in capital letters and list of approved values to the `var.tags` variable.
+
+### Applying a tag
+To apply a tag to databases and warehouses, in the environment of your choice, `environments/production.tfvars` or `environments/development.tfvars`, add the tag `key:value` pair to `var.default_tags`, ensure that this tag has been added to `var.tags` and has been deployed to Snowflake before proceeding with the deployment of the tag association.
+
 ## Deployment
 
 1. Update the `backends/backend-{env}.tfvars` file to point to the appropriate S3 backend (if required)
