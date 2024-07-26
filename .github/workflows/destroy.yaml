@@ -67,9 +67,10 @@ jobs:
 
     - name: Initialize Terraform
       run: |
-        TF_WORKSPACE=`basename $(git remote get-url origin)`
         terraform init -backend-config="./backends/backend-$ENVIRONMENT.tfvars"
-        terraform workspace new ${TF_WORKSPACE} || echo "Workspace ${TF_WORKSPACE} already exists or cannot be created"
+        TF_WORKSPACE=`basename $(git remote get-url origin)`
+        terraform workspace select -or-create ${TF_WORKSPACE}
+        terraform init -backend-config="./backends/backend-$ENVIRONMENT.tfvars"
 
     - name: Format terraform
       run: terraform fmt -check
