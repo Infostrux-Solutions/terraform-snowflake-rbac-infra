@@ -50,6 +50,12 @@ variable "tag_admin_role" {
   default     = "TAG_ADMIN"
 }
 
+# Configuration
+variable "config_dir" {
+  type        = string
+  description = "The path to your configuration `.yml` files. (databases.yml, permissions.yml, roles.yml, users.yml, warehouses.yml)"
+}
+
 # Snowflake
 variable "snowflake_role" {
   type        = string
