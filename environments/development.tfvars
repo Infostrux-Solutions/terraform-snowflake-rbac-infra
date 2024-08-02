@@ -14,3 +14,6 @@ default_tags = {
 snowflake_role    = "SYSADMIN"
 snowflake_account = "aua12673"
 snowflake_user    = "TERRAFORM"
+
+# Configuration
+config_dir = "./config"
