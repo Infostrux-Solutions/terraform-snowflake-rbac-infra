@@ -10,15 +10,15 @@ output "warehouses" {
   ]
 }
 
-output "environment_roles" {
+output "functional_roles" {
   value = [
-    for role in snowflake_role.environment_role : role.name
+    for role in snowflake_role.functional_role : role.name
   ]
 }
 
-output "environment_role_grants" {
+output "functional_role_grants" {
   value = [
-    for role in snowflake_grant_account_role.environment_role : join("", [role.role_name, " ▶ ", role.parent_role_name])
+    for role in snowflake_grant_account_role.functional_role : join("", [role.role_name, " ▶ ", role.parent_role_name])
   ]
 }
 
@@ -34,9 +34,9 @@ output "account_role_grants" {
   ]
 }
 
-output "access_roles" {
+output "object_roles" {
   value = [
-    for role in snowflake_role.access_role : role.name
+    for role in snowflake_role.object_role : role.name
   ]
 }
 

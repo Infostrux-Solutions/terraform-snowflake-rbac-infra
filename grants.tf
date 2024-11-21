@@ -1,6 +1,6 @@
 locals {
-  environment_role_grants = flatten([
-    for parent, children in local.environment_roles : [
+  functional_role_grants = flatten([
+    for parent, children in local.functional_roles : [
       for child in children : {
         unique = join("_", [parent, child])
         parent = upper(join("_", [local.object_prefix, parent]))
@@ -20,13 +20,13 @@ locals {
   ])
 }
 
-resource "snowflake_grant_account_role" "environment_role" {
+resource "snowflake_grant_account_role" "functional_role" {
   for_each = {
-    for uni in local.environment_role_grants : uni.unique => uni
+    for uni in local.functional_role_grants : uni.unique => uni
   }
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.environment_role, snowflake_role.account_role]
+  depends_on = [snowflake_role.functional_role, snowflake_role.account_role]
 
   role_name        = each.value.child
   parent_role_name = each.value.parent
@@ -38,7 +38,7 @@ resource "snowflake_grant_account_role" "account_role" {
   }
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.environment_role, snowflake_role.account_role]
+  depends_on = [snowflake_role.functional_role, snowflake_role.account_role]
 
   role_name        = each.value.child
   parent_role_name = each.value.parent
@@ -48,9 +48,9 @@ resource "snowflake_grant_account_role" "user" {
   for_each = local.users
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.environment_role]
+  depends_on = [snowflake_role.functional_role]
 
-  role_name = snowflake_role.environment_role[each.value.role].name
+  role_name = snowflake_role.functional_role[each.value.role].name
   user_name = snowflake_user.user[each.key].name
 }
 

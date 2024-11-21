@@ -1,6 +1,6 @@
 locals {
-  environment_roles = {
-    for role, roles in local.roles_yml.environment_roles : role => roles
+  functional_roles = {
+    for role, roles in local.roles_yml.functional_roles : role => roles
   }
 
   account_roles = {
@@ -11,7 +11,7 @@ locals {
     for role, roles in local.account_roles : role => roles if !contains([role], "sysadmin")
   }
 
-  access_roles = flatten([
+  object_roles = flatten([
     for database, specs in local.databases : [
       for role in specs.roles : join("_", [database, role])
     ]
@@ -27,8 +27,8 @@ locals {
   ])
 }
 
-resource "snowflake_role" "access_role" {
-  for_each = toset(local.access_roles)
+resource "snowflake_role" "object_role" {
+  for_each = toset(local.object_roles)
 
   provider = snowflake.securityadmin
 
@@ -36,8 +36,8 @@ resource "snowflake_role" "access_role" {
   comment = var.comment
 }
 
-resource "snowflake_role" "environment_role" {
-  for_each = local.environment_roles
+resource "snowflake_role" "functional_role" {
+  for_each = local.functional_roles
 
   provider = snowflake.securityadmin
 
