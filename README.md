@@ -67,7 +67,7 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 
 | File                    | Description |
 | ----------------------- | ------------- |
-| config/roles.yml        | The roles file is used to grant access roles to the environment functional roles (`environment_roles`) as well as to grant the environment functional roles to the top-level account roles. (`account_roles`) |
+| config/roles.yml        | The roles file is used to grant access roles to the environment functional roles (`functional_roles`) as well as to grant the environment functional roles to the top-level account roles. (`account_roles`) |
 | config/permissions.yml  | The permissions file is used to specify the grants that are to be assigned to the corresponding object access roles, it is a lookup for the object-level grants                                               |
 | config/databases.yml    | The databases file is used to specify the databases to be created and the object access roles that should be created under each database                                                                     |
 | config/warehouses.yml   | The warehouses file is used to specify the warehouses to be created, as well as the environment functional role permissions to be granted to the warehouse      
@@ -76,7 +76,7 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 ## Adding roles
 ### Functional roles
 1. Navigate to the `config/roles.yml` file
-2. If creating an environment level role add a new `key:value` sequences under `environment_roles`
+2. If creating an environment level role add a new `key:value` sequences under `functional_roles`
     1. The key should be the name of the role (terraform will prepend the environment and project)
     2. The value should be a list of object access roles defined in `config/databases.yml`
 3. If creating an account level role add a new `key:value` sequences under `account_roles`

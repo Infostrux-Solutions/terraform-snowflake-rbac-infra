@@ -1,4 +1,4 @@
-environment_roles:
+functional_roles:
   analyst:
     - raw_r
     - prepare_r
