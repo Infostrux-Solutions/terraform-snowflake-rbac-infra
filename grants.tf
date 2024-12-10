@@ -26,7 +26,7 @@ resource "snowflake_grant_account_role" "functional_role" {
   }
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.functional_role, snowflake_role.account_role]
+  depends_on = [snowflake_account_role.functional_role, snowflake_account_role.account_role]
 
   role_name        = each.value.child
   parent_role_name = each.value.parent
@@ -38,7 +38,7 @@ resource "snowflake_grant_account_role" "account_role" {
   }
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.functional_role, snowflake_role.account_role]
+  depends_on = [snowflake_account_role.functional_role, snowflake_account_role.account_role]
 
   role_name        = each.value.child
   parent_role_name = each.value.parent
@@ -48,9 +48,9 @@ resource "snowflake_grant_account_role" "user" {
   for_each = local.users
 
   provider   = snowflake.securityadmin
-  depends_on = [snowflake_role.functional_role]
+  depends_on = [snowflake_account_role.functional_role]
 
-  role_name = snowflake_role.functional_role[each.value.role].name
+  role_name = snowflake_account_role.functional_role[each.value.role].name
   user_name = snowflake_user.user[each.key].name
 }
 
@@ -58,7 +58,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_database" {
   count    = local.create_tags
   provider = snowflake.securityadmin
 
-  account_role_name = snowflake_role.tag_admin[0].name
+  account_role_name = snowflake_account_role.tag_admin[0].name
   privileges        = ["USAGE"]
   on_account_object {
     object_type = "DATABASE"
@@ -70,7 +70,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_schema" {
   count    = local.create_tags
   provider = snowflake.securityadmin
 
-  account_role_name = snowflake_role.tag_admin[0].name
+  account_role_name = snowflake_account_role.tag_admin[0].name
   privileges        = ["USAGE", "CREATE TAG"]
 
   on_schema {
@@ -83,7 +83,7 @@ resource "snowflake_grant_privileges_to_account_role" "tag_admin" {
   provider = snowflake.accountadmin
 
   privileges        = ["APPLY TAG"]
-  account_role_name = snowflake_role.tag_admin[0].name
+  account_role_name = snowflake_account_role.tag_admin[0].name
   on_account        = true
 }
 
@@ -92,6 +92,6 @@ resource "snowflake_grant_account_role" "tag_admin" {
 
   provider = snowflake.securityadmin
 
-  role_name        = snowflake_role.tag_admin[0].name
+  role_name        = snowflake_account_role.tag_admin[0].name
   parent_role_name = "SYSADMIN"
 }

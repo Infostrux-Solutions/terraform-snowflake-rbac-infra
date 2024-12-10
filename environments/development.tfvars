@@ -12,7 +12,8 @@ default_tags = {
 
 # Snowflake
 snowflake_role    = "SYSADMIN"
-snowflake_account = "aua12673"
+snowflake_account = "IAA23611"
+snowflake_org     = "UMNXXYZ"
 snowflake_user    = "TERRAFORM"
 
 # Configuration

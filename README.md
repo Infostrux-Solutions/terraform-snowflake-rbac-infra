@@ -49,9 +49,10 @@ The next step is to associate the public key with your snowflake user.
 In the Snowflake console, execute the `create user` command with the `USERADMIN` role, exclude the public key delimiters in the SQL statement. Execute the `grant role` commands with the `SECURITYADMIN` role.
 
 ```SQL
-create user TERRAFORM rsa_public_key='MIIBIjANBgkqh...';
+create user TERRAFORM rsa_public_key='MIIBIjANBgkqh...' TYPE = SERVICE;
 grant role SYSADMIN to user TERRAFORM;
 grant role SECURITYADMIN to user TERRAFORM;
+grant role ACCOUNTADMIN to user TERRAFORM;
 ```
 
 You can execute a DESCRIBE USER command to verify the user's public key.
