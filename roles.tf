@@ -27,7 +27,7 @@ locals {
   ])
 }
 
-resource "snowflake_role" "object_role" {
+resource "snowflake_account_role" "object_role" {
   for_each = toset(local.object_roles)
 
   provider = snowflake.securityadmin
@@ -36,7 +36,7 @@ resource "snowflake_role" "object_role" {
   comment = var.comment
 }
 
-resource "snowflake_role" "functional_role" {
+resource "snowflake_account_role" "functional_role" {
   for_each = local.functional_roles
 
   provider = snowflake.securityadmin
@@ -45,7 +45,7 @@ resource "snowflake_role" "functional_role" {
   comment = var.comment
 }
 
-resource "snowflake_role" "account_role" {
+resource "snowflake_account_role" "account_role" {
   for_each = local.account_roles_wo_sysadmin
   provider = snowflake.securityadmin
 
@@ -53,7 +53,7 @@ resource "snowflake_role" "account_role" {
   comment = var.comment
 }
 
-resource "snowflake_role" "tag_admin" {
+resource "snowflake_account_role" "tag_admin" {
   count    = local.create_tags
   provider = snowflake.securityadmin
 

@@ -67,6 +67,11 @@ variable "snowflake_account" {
   description = "The name of the Snowflake account that we will be deploying into"
 }
 
+variable "snowflake_org" {
+  type        = string
+  description = "The name of the Snowflake Organization we will be deploying into"
+}
+
 variable "snowflake_user" {
   type        = string
   description = "The name of the Snowflake user that we will be utilizing to deploy into the snowflake_account"
