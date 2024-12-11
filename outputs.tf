@@ -12,7 +12,7 @@ output "warehouses" {
 
 output "functional_roles" {
   value = [
-    for role in snowflake_role.functional_role : role.name
+    for role in snowflake_account_role.functional_role : role.name
   ]
 }
 
@@ -24,7 +24,7 @@ output "functional_role_grants" {
 
 output "account_roles" {
   value = [
-    for role in snowflake_role.account_role : role.name
+    for role in snowflake_account_role.account_role : role.name
   ]
 }
 
@@ -36,7 +36,7 @@ output "account_role_grants" {
 
 output "object_roles" {
   value = [
-    for role in snowflake_role.object_role : role.name
+    for role in snowflake_account_role.object_role : role.name
   ]
 }
 
@@ -44,4 +44,5 @@ output "users" {
   value = [
     for user in snowflake_user.user : user.login_name
   ]
+  sensitive = true
 }

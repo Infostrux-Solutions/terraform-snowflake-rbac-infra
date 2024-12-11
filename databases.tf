@@ -28,7 +28,7 @@ locals {
 
 resource "snowflake_database" "database" {
   for_each   = local.databases
-  depends_on = [snowflake_grant_account_role.functional_role, snowflake_role.functional_role, snowflake_role.account_role, snowflake_role.object_role]
+  depends_on = [snowflake_grant_account_role.functional_role, snowflake_account_role.functional_role, snowflake_account_role.account_role, snowflake_account_role.object_role]
 
   name    = upper(join("_", [local.object_prefix, each.key]))
   comment = var.comment

@@ -16,7 +16,7 @@ resource "snowflake_user" "user" {
   disabled     = false
 
   default_warehouse    = snowflake_warehouse.warehouse[each.value.warehouse].name
-  default_role         = snowflake_role.functional_role[each.value.role].name
+  default_role         = snowflake_account_role.functional_role[each.value.role].name
   must_change_password = false
 
   lifecycle {

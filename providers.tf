@@ -2,45 +2,49 @@ terraform {
   required_providers {
     snowflake = {
       source  = "Snowflake-Labs/snowflake"
-      version = "0.88.0"
+      version = "0.99.0"
     }
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.0"
+      version = "~> 5.80"
     }
   }
 }
 
 # Primary provider
 provider "snowflake" {
-  role          = var.snowflake_role
-  account       = var.snowflake_account
-  user          = var.snowflake_user
-  authenticator = "JWT"
+  role              = var.snowflake_role
+  account_name      = var.snowflake_account
+  organization_name = var.snowflake_org
+  user              = var.snowflake_user
+  authenticator     = "JWT"
 }
 
 provider "snowflake" {
-  alias         = "accountadmin"
-  role          = "ACCOUNTADMIN"
-  account       = var.snowflake_account
-  user          = var.snowflake_user
-  authenticator = "JWT"
+  alias             = "accountadmin"
+  role              = "ACCOUNTADMIN"
+  account_name      = var.snowflake_account
+  organization_name = var.snowflake_org
+  user              = var.snowflake_user
+  authenticator     = "JWT"
 }
 
 provider "snowflake" {
-  alias         = "securityadmin"
-  role          = "SECURITYADMIN"
-  account       = var.snowflake_account
-  user          = var.snowflake_user
-  authenticator = "JWT"
+  alias             = "securityadmin"
+  role              = "SECURITYADMIN"
+  account_name      = var.snowflake_account
+  organization_name = var.snowflake_org
+  user              = var.snowflake_user
+  authenticator     = "JWT"
 }
 
 provider "snowflake" {
-  alias         = "useradmin"
-  role          = "USERADMIN"
-  account       = var.snowflake_account
-  user          = var.snowflake_user
-  authenticator = "JWT"
+  alias             = "useradmin"
+  role              = "USERADMIN"
+  account_name      = var.snowflake_account
+  organization_name = var.snowflake_org
+  user              = var.snowflake_user
+  authenticator     = "JWT"
 }
 
 provider "aws" {
