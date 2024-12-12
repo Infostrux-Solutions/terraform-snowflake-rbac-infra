@@ -14,16 +14,18 @@ locals {
     ]
   ])
 
-  database_grants_wo_ownership = flatten([
-    for database, grants in local.databases : [
-      for role in grants.roles : {
-        unique    = join("_", [database, trimspace(role)])
-        database  = database
-        role      = upper(join("_", [local.object_prefix, database, role]))
-        privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].databases, ["ownership"]) : upper(p)])
-      }
-    ]
-  ])
+  database_grants_wo_ownership = [
+    for grant in flatten([
+      for database, grants in local.databases : [
+        for role in grants.roles : {
+          unique    = join("_", [database, trimspace(role)])
+          database  = database
+          role      = upper(join("_", [local.object_prefix, database, role]))
+          privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].databases, ["ownership"]) : upper(p)])
+        }
+      ]
+    ]) : grant if length(grant.privilege) > 0
+  ]
 }
 
 resource "snowflake_database" "database" {
@@ -47,6 +49,10 @@ resource "snowflake_grant_privileges_to_account_role" "database" {
     object_type = "DATABASE"
     object_name = snowflake_database.database[each.value.database].id
   }
+
+  depends_on = [
+    snowflake_grant_ownership.database
+  ]
 }
 
 resource "snowflake_grant_ownership" "database" {

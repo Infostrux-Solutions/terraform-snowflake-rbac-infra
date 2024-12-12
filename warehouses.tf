@@ -14,16 +14,18 @@ locals {
     ]
   ])
 
-  warehouse_grants_wo_ownership = flatten([
-    for warehouse, specs in local.warehouses : [
-      for role, privilege in specs.roles : {
-        unique    = join("_", [warehouse, trimspace(role)])
-        warehouse = warehouse
-        role      = upper(join("_", [local.object_prefix, role]))
-        privilege = sort([for p in setsubtract(privilege, ["ownership"]) : upper(p)])
-      }
-    ]
-  ])
+  warehouse_grants_wo_ownership = [
+    for grant in flatten([
+      for warehouse, specs in local.warehouses : [
+        for role, privilege in specs.roles : {
+          unique    = join("_", [warehouse, trimspace(role)])
+          warehouse = warehouse
+          role      = upper(join("_", [local.object_prefix, role]))
+          privilege = sort([for p in setsubtract(privilege, ["ownership"]) : upper(p)])
+        }
+      ]
+    ]) : grant if length(grant.privilege) > 0
+  ]
 }
 
 resource "snowflake_warehouse" "warehouse" {
@@ -49,6 +51,10 @@ resource "snowflake_grant_privileges_to_account_role" "warehouse" {
     object_type = "WAREHOUSE"
     object_name = snowflake_warehouse.warehouse[each.value.warehouse].id
   }
+
+  depends_on = [
+    snowflake_grant_ownership.warehouse
+  ]
 }
 
 resource "snowflake_grant_ownership" "warehouse" {
