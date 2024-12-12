@@ -1,7 +1,7 @@
 locals {
   database_tags = flatten([
     for database in snowflake_database.database : [
-      for tag, value in var.default_tags : {
+      for tag, value in local.default_tags : {
         key       = join("_", [database.name, tag])
         database  = database.name
         tag_name  = "${try(snowflake_database.tags[0].name, var.governance_database_name)}.${try(snowflake_schema.tags[0].name, var.tags_schema_name)}.${tag}"
@@ -12,7 +12,7 @@ locals {
 
   warehouse_tags = flatten([
     for warehouse in snowflake_warehouse.warehouse : [
-      for tag, value in var.default_tags : {
+      for tag, value in local.default_tags : {
         key       = join("_", [warehouse.name, tag])
         warehouse = warehouse.name
         tag_name  = "${try(snowflake_database.tags[0].name, var.governance_database_name)}.${try(snowflake_schema.tags[0].name, var.tags_schema_name)}.${tag}"

@@ -18,6 +18,7 @@ variable "region" {
 variable "default_tags" {
   description = "Default tags to apply to all Snowflake resources"
   type        = map(string)
+  default     = null
 }
 
 variable "tags" {

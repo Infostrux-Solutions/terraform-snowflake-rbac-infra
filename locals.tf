@@ -6,4 +6,5 @@ locals {
   permissions_yml = yamldecode(file("${var.config_dir}/permissions.yml"))
   database_yml    = yamldecode(file("${var.config_dir}/databases.yml"))
   warehouse_yml   = yamldecode(file("${var.config_dir}/warehouses.yml"))
+  default_tags    = coalesce(var.default_tags, {})
 }

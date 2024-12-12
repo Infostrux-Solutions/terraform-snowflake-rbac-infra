@@ -10,16 +10,18 @@ locals {
     ]
   ])
 
-  materialized_view_grants_wo_ownership = flatten([
-    for database, grants in local.databases : [
-      for role in grants.roles : {
-        unique    = join("_", [database, trimspace(role)])
-        database  = database
-        role      = upper(join("_", [local.object_prefix, database, role]))
-        privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].materialized_views, ["ownership"]) : upper(p)])
-      }
-    ]
-  ])
+  materialized_view_grants_wo_ownership = [
+    for grant in flatten([
+      for database, grants in local.databases : [
+        for role in grants.roles : {
+          unique    = join("_", [database, trimspace(role)])
+          database  = database
+          role      = upper(join("_", [local.object_prefix, database, role]))
+          privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].materialized_views, ["ownership"]) : upper(p)])
+        }
+      ]
+    ]) : grant if length(grant.privilege) > 0
+  ]
 }
 
 resource "snowflake_grant_privileges_to_account_role" "future_materialized_views" {
@@ -37,6 +39,10 @@ resource "snowflake_grant_privileges_to_account_role" "future_materialized_views
       in_database        = snowflake_database.database[each.value.database].id
     }
   }
+
+  depends_on = [
+    snowflake_grant_ownership.materialized_views
+  ]
 }
 
 resource "snowflake_grant_privileges_to_account_role" "all_materialized_views" {
@@ -55,6 +61,10 @@ resource "snowflake_grant_privileges_to_account_role" "all_materialized_views" {
       in_database        = snowflake_database.database[each.value.database].id
     }
   }
+
+  depends_on = [
+    snowflake_grant_ownership.materialized_views
+  ]
 }
 
 resource "snowflake_grant_ownership" "materialized_views" {

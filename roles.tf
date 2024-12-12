@@ -18,7 +18,7 @@ locals {
   ])
 
   tags_list = flatten([
-    for key, value in var.default_tags : {
+    for key, value in local.default_tags : {
       name     = key
       value    = value
       database = try(snowflake_database.tags[0].name, "GOVERNANCE")
