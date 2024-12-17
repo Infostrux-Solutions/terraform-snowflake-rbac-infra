@@ -5,8 +5,8 @@ locals {
         unique    = join("_", [database, trimspace(role)])
         database  = database
         role      = upper(join("_", [local.object_prefix, database, role]))
-        privilege = sort([for p in setintersection(local.permissions_yml.permissions.database[role].materialized_views, ["ownership"]) : upper(p)])
-      } if contains(local.permissions_yml.permissions.database[role].materialized_views, "ownership")
+        privilege = sort([for p in setintersection(local.permissions_per_type[role].materialized_views, ["ownership"]) : upper(p)])
+      } if contains(local.permissions_per_type[role].materialized_views, "ownership")
     ]
   ])
 
@@ -17,7 +17,7 @@ locals {
           unique    = join("_", [database, trimspace(role)])
           database  = database
           role      = upper(join("_", [local.object_prefix, database, role]))
-          privilege = sort([for p in setsubtract(local.permissions_yml.permissions.database[role].materialized_views, ["ownership"]) : upper(p)])
+          privilege = sort([for p in setsubtract(local.permissions_per_type[role].materialized_views, ["ownership"]) : upper(p)])
         }
       ]
     ]) : grant if length(grant.privilege) > 0
