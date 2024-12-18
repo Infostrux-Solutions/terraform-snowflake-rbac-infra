@@ -2,9 +2,15 @@ users:
   dbt:
     role: transform
     warehouse: transform
+    type: service
   fivetran:
     role: ingestion
     warehouse: ingestion
+    type: legacy_service
   reporting:
     role: analyst
     warehouse: reporting
+  jsmith:
+    role: developer
+    warehouse: developer
+    type: person
