@@ -4,14 +4,22 @@ locals {
     service        = "SERVICE"
     legacy_service = "LEGACY_SERVICE"
   }
+  all_users = {
+    for user, specs in local.users_yml.users : upper(join("_", [local.object_prefix, user])) => merge(
+      specs,
+      {
+        type = upper(coalesce(lookup(specs, "type", null), "<EMPTY>"))
+      }
+    )
+  }
   users = {
-    for user, specs in local.users_yml.users : upper(join("_", [local.object_prefix, user])) => specs if !contains([local.user_type.service, local.user_type.legacy_service], upper(coalesce(lookup(specs, "type", null), "<EMPTY>")))
+    for user, specs in local.all_users : user => specs if !contains([local.user_type.service, local.user_type.legacy_service], specs.type)
   }
   service_users = {
-    for user, specs in local.users_yml.users : upper(join("_", [local.object_prefix, user])) => specs if upper(coalesce(lookup(specs, "type", null), "<EMPTY>")) == local.user_type.service
+    for user, specs in local.all_users : user => specs if specs.type == local.user_type.service
   }
   legacy_service_users = {
-    for user, specs in local.users_yml.users : upper(join("_", [local.object_prefix, user])) => specs if upper(coalesce(lookup(specs, "type", null), "<EMPTY>")) == local.user_type.legacy_service
+    for user, specs in local.users_yml.users : user => specs if specs.type == local.user_type.legacy_service
   }
 }
 

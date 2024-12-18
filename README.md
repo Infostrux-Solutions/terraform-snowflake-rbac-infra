@@ -115,8 +115,25 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 1. Navigate to the `config/users.yml` file
 2. Under the `key:value` mapping `users` you can define the name of the role `key` (terraform will prepend the environment and project)
 3. The `value` under the mapping created on `step 2` can be either the role or the warehouse to assign to the user
-    1. To grant a role to the user add a `key:value` literal with `role: name_of_role`
-    2. To grant access to use a warehouse to the user add a `key:value` literal with `warehouse: name_of_warehouse`
+   * To grant a role to the user add a `key:value` literal with `role: name_of_role`
+   * To grant access to use a warehouse to the user add a `key:value` literal with `warehouse: name_of_warehouse`
+   * To set the user type add a `key:value` literal with `type: type_name`, where `type_name` is one of (`person`, `service`, `legacy_service`). 
+       * When not specified it is the same as setting it to `person` i.e. `type: person`
+       * Unfortunately, at the moment [user_type](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/user#user_type-1) property of [snowflake_user](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/user) resource is read-only and cannot be set, therefore setting `type` to `person` is exactly the same as omitting the `type` altogether.
+```
+users:
+  dbt:
+    role: transform
+    warehouse: transform
+    type: service
+  jsmith:
+    role: developer
+    warehouse: developer
+  jdoe:
+    role: developer
+    warehouse: developer
+    type: person
+```
 
 
 ## Variables

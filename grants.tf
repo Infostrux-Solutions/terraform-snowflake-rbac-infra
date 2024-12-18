@@ -45,13 +45,18 @@ resource "snowflake_grant_account_role" "account_role" {
 }
 
 resource "snowflake_grant_account_role" "user" {
-  for_each = local.users
+  for_each = local.all_users
 
   provider   = snowflake.securityadmin
   depends_on = [snowflake_account_role.functional_role]
 
   role_name = snowflake_account_role.functional_role[each.value.role].name
-  user_name = snowflake_user.user[each.key].name
+  user_name = coalesce(
+    # must be one of snowflake_user, snowflake_service_user or snowflake_legacy_service_user
+    try(snowflake_user.user[each.key].name, null),
+    try(snowflake_service_user.user[each.key].name, null),
+    try(snowflake_legacy_service_user.user[each.key].name, null)
+  )
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_database" {
