@@ -19,7 +19,7 @@ locals {
     for user, specs in local.all_users : user => specs if specs.type == local.user_type.service
   }
   legacy_service_users = {
-    for user, specs in local.users_yml.users : user => specs if specs.type == local.user_type.legacy_service
+    for user, specs in local.all_users : user => specs if specs.type == local.user_type.legacy_service
   }
 }
 
