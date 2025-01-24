@@ -10,7 +10,7 @@ users:
   reporting:
     role: analyst
     warehouse: reporting
-  jsmith:
-    role: developer
-    warehouse: developer
-    type: person
+  trajche:
+    role: transformer
+    warehouse: transformer
+    existing: true

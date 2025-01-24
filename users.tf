@@ -5,26 +5,30 @@ locals {
     legacy_service = "LEGACY_SERVICE"
   }
   all_users = {
-    for user, specs in local.users_yml.users : upper(join("_", [local.object_prefix, user])) => merge(
-      specs,
-      {
-        type = upper(coalesce(lookup(specs, "type", null), "<EMPTY>"))
-      }
-    )
+    for entry in [
+      for user, specs in local.users_yml.users : merge(
+        specs,
+        {
+          type     = upper(coalesce(lookup(specs, "type", null), "<EMPTY>"))
+          existing = coalesce(lookup(specs, "existing", null), false)
+          username = upper(coalesce(lookup(specs, "existing", null), false) ? user : join("_", [local.object_prefix, user]))
+        }
+      )
+    ] : entry.username => entry ## enforce username to be unique
   }
-  users = {
-    for user, specs in local.all_users : user => specs if !contains([local.user_type.service, local.user_type.legacy_service], specs.type)
+  new_users = {
+    for user, specs in local.all_users : user => specs if !specs.existing && !contains([local.user_type.service, local.user_type.legacy_service], specs.type)
   }
-  service_users = {
-    for user, specs in local.all_users : user => specs if specs.type == local.user_type.service
+  new_service_users = {
+    for user, specs in local.all_users : user => specs if !specs.existing && specs.type == local.user_type.service
   }
-  legacy_service_users = {
-    for user, specs in local.all_users : user => specs if specs.type == local.user_type.legacy_service
+  new_legacy_service_users = {
+    for user, specs in local.all_users : user => specs if !specs.existing && specs.type == local.user_type.legacy_service
   }
 }
 
 resource "snowflake_user" "user" {
-  for_each = local.users
+  for_each = local.new_users
 
   provider = snowflake.useradmin
 
@@ -48,7 +52,7 @@ resource "snowflake_user" "user" {
 }
 
 resource "snowflake_service_user" "user" {
-  for_each = local.service_users
+  for_each = local.new_service_users
 
   provider = snowflake.useradmin
 
@@ -70,7 +74,7 @@ resource "snowflake_service_user" "user" {
 }
 
 resource "snowflake_legacy_service_user" "user" {
-  for_each = local.legacy_service_users
+  for_each = local.new_legacy_service_users
 
   provider = snowflake.useradmin
 
