@@ -11,6 +11,6 @@ users:
     role: analyst
     warehouse: reporting
   trajche:
-    role: transformer
-    warehouse: transformer
+    role: transform
+    warehouse: transform
     existing: true
