@@ -120,6 +120,7 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
    * To set the user type add a `key:value` literal with `type: type_name`, where `type_name` is one of (`person`, `service`, `legacy_service`). 
        * When not specified it is the same as setting it to `person` i.e. `type: person`
        * Unfortunately, at the moment [user_type](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/user#user_type-1) property of [snowflake_user](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/user) resource is read-only and cannot be set, therefore setting `type` to `person` is exactly the same as omitting the `type` altogether.
+   * To grant the roles to existing user add a `key:value` literal with `existing: true`. By default, the module will create new user. 
 ```
 users:
   dbt:
@@ -129,6 +130,7 @@ users:
   jsmith:
     role: developer
     warehouse: developer
+    existing: true
   jdoe:
     role: developer
     warehouse: developer
