@@ -18,6 +18,22 @@ locals {
       }
     ]
   ])
+
+  user_role_grants = flatten([
+    for username, user in local.all_users : [
+      for role in user.roles : {
+        unique = join("_", [username, role])
+        username = upper(coalesce(
+          # must be one of snowflake_user, snowflake_service_user, snowflake_legacy_service_user or existing user
+          try(snowflake_user.user[username].name, null),
+          try(snowflake_service_user.user[username].name, null),
+          try(snowflake_legacy_service_user.user[username].name, null),
+          user.username
+        ))
+        role = role
+      }
+    ]
+  ])
 }
 
 resource "snowflake_grant_account_role" "functional_role" {
@@ -45,19 +61,15 @@ resource "snowflake_grant_account_role" "account_role" {
 }
 
 resource "snowflake_grant_account_role" "user" {
-  for_each = local.all_users
+  for_each = {
+    for uni in local.user_role_grants : uni.unique => uni
+  }
 
   provider   = snowflake.securityadmin
   depends_on = [snowflake_account_role.functional_role]
 
   role_name = snowflake_account_role.functional_role[each.value.role].name
-  user_name = coalesce(
-    # must be one of snowflake_user, snowflake_service_user, snowflake_legacy_service_user or existing user
-    try(snowflake_user.user[each.key].name, null),
-    try(snowflake_service_user.user[each.key].name, null),
-    try(snowflake_legacy_service_user.user[each.key].name, null),
-    each.value.username
-  )
+  user_name = each.value.username
 }
 
 resource "snowflake_grant_privileges_to_account_role" "tag_database" {

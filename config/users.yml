@@ -1,16 +1,22 @@
 users:
   dbt:
-    role: transform
+    roles:
+      - transform
     warehouse: transform
     type: service
   fivetran:
-    role: ingestion
+    roles:
+      - ingestion
     warehouse: ingestion
     type: legacy_service
   reporting:
-    role: analyst
+    roles:
+      - analyst
     warehouse: reporting
   trajche:
-    role: transform
+    roles:
+      - transform
+      - analyst
+      - ingestion
     warehouse: transform
     existing: true
