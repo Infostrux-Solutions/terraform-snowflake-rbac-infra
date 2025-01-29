@@ -52,10 +52,11 @@ resource "snowflake_grant_account_role" "user" {
 
   role_name = snowflake_account_role.functional_role[each.value.role].name
   user_name = coalesce(
-    # must be one of snowflake_user, snowflake_service_user or snowflake_legacy_service_user
+    # must be one of snowflake_user, snowflake_service_user, snowflake_legacy_service_user or existing user
     try(snowflake_user.user[each.key].name, null),
     try(snowflake_service_user.user[each.key].name, null),
-    try(snowflake_legacy_service_user.user[each.key].name, null)
+    try(snowflake_legacy_service_user.user[each.key].name, null),
+    each.value.username
   )
 }
 
