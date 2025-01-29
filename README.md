@@ -115,7 +115,7 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 1. Navigate to the `config/users.yml` file
 2. Under the `key:value` mapping `users` you can define the name of the role `key` (terraform will prepend the environment and project)
 3. The `value` under the mapping created on `step 2` can be either the role or the warehouse to assign to the user
-   * To grant a role to the user add a `key:value` literal with `role: name_of_role`
+   * To grant the specified roles to the user add a `key:value` literal with `roles: [name_of_role1, name_of_role2, ...]`
    * To grant access to use a warehouse to the user add a `key:value` literal with `warehouse: name_of_warehouse`
    * To set the user type add a `key:value` literal with `type: type_name`, where `type_name` is one of (`person`, `service`, `legacy_service`). 
        * When not specified it is the same as setting it to `person` i.e. `type: person`
@@ -124,15 +124,20 @@ The private key must be created as a GitHub environment secret named `SNOWFLAKE_
 ```
 users:
   dbt:
-    role: transform
+    roles: 
+      - transform
     warehouse: transform
     type: service
   jsmith:
-    role: developer
+    roles: 
+      - analyst
+      - developer
     warehouse: developer
     existing: true
   jdoe:
-    role: developer
+    roles: 
+      - analyst
+      - developer
     warehouse: developer
     type: person
 ```

@@ -9,9 +9,11 @@ locals {
       for user, specs in local.users_yml.users : merge(
         specs,
         {
-          type     = upper(coalesce(lookup(specs, "type", null), "<EMPTY>"))
-          existing = coalesce(lookup(specs, "existing", null), false)
-          username = upper(coalesce(lookup(specs, "existing", null), false) ? user : join("_", [local.object_prefix, user]))
+          type         = upper(coalesce(lookup(specs, "type", null), "<EMPTY>"))
+          existing     = coalesce(lookup(specs, "existing", null), false)
+          username     = upper(coalesce(lookup(specs, "existing", null), false) ? user : join("_", [local.object_prefix, user]))
+          roles        = coalescelist(coalesce(lookup(specs, "roles", null), []))
+          default_role = coalesce(lookup(specs, "roles", null)...) # take the first (not-empty) role
         }
       )
     ] : entry.username => entry ## enforce username to be unique
@@ -39,7 +41,7 @@ resource "snowflake_user" "user" {
   disabled     = false
 
   default_warehouse    = snowflake_warehouse.warehouse[each.value.warehouse].name
-  default_role         = snowflake_account_role.functional_role[each.value.role].name
+  default_role         = snowflake_account_role.functional_role[each.value.default_role].name
   must_change_password = false
 
   lifecycle {
@@ -63,7 +65,7 @@ resource "snowflake_service_user" "user" {
   disabled     = false
 
   default_warehouse = snowflake_warehouse.warehouse[each.value.warehouse].name
-  default_role      = snowflake_account_role.functional_role[each.value.role].name
+  default_role      = snowflake_account_role.functional_role[each.value.default_role].name
 
   lifecycle {
     ignore_changes = [
@@ -85,7 +87,7 @@ resource "snowflake_legacy_service_user" "user" {
   disabled     = false
 
   default_warehouse    = snowflake_warehouse.warehouse[each.value.warehouse].name
-  default_role         = snowflake_account_role.functional_role[each.value.role].name
+  default_role         = snowflake_account_role.functional_role[each.value.default_role].name
   must_change_password = false
 
   lifecycle {
