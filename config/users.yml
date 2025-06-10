@@ -13,10 +13,3 @@ users:
     roles:
       - analyst
     warehouse: reporting
-  trajche:
-    roles:
-      - transform
-      - analyst
-      - ingestion
-    warehouse: transform
-    existing: true
