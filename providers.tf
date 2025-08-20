@@ -1,12 +1,12 @@
 terraform {
   required_providers {
     snowflake = {
-      source  = "Snowflake-Labs/snowflake"
-      version = "0.99.0"
+      source  = "snowflakedb/snowflake"
+      version = "~>2.1.0"
     }
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.80"
+      version = "~> 5.100"
     }
   }
 }
@@ -17,7 +17,8 @@ provider "snowflake" {
   account_name      = var.snowflake_account
   organization_name = var.snowflake_org
   user              = var.snowflake_user
-  authenticator     = "JWT"
+  authenticator     = "SNOWFLAKE_JWT"
+  warehouse         = "COMPUTE_WH"
 }
 
 provider "snowflake" {
@@ -26,7 +27,8 @@ provider "snowflake" {
   account_name      = var.snowflake_account
   organization_name = var.snowflake_org
   user              = var.snowflake_user
-  authenticator     = "JWT"
+  authenticator     = "SNOWFLAKE_JWT"
+  warehouse         = "COMPUTE_WH"
 }
 
 provider "snowflake" {
@@ -35,7 +37,8 @@ provider "snowflake" {
   account_name      = var.snowflake_account
   organization_name = var.snowflake_org
   user              = var.snowflake_user
-  authenticator     = "JWT"
+  authenticator     = "SNOWFLAKE_JWT"
+  warehouse         = "COMPUTE_WH"
 }
 
 provider "snowflake" {
@@ -44,7 +47,8 @@ provider "snowflake" {
   account_name      = var.snowflake_account
   organization_name = var.snowflake_org
   user              = var.snowflake_user
-  authenticator     = "JWT"
+  authenticator     = "SNOWFLAKE_JWT"
+  warehouse         = "COMPUTE_WH"
 }
 
 provider "aws" {
