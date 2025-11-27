@@ -29,9 +29,7 @@ provider "snowflake" {
   user                     = var.snowflake_user
   authenticator            = "SNOWFLAKE_JWT"
   port                     = 443
-  preview_features_enabled = ["snowflake_git_repository_resource", "snowflake_failover_group_resource", "snowflake_email_notification_integration_resource"]
 }
-
 provider "snowflake" {
   alias             = "securityadmin"
   role              = "SECURITYADMIN"
