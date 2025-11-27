@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     snowflake = {
-      source  = "Snowflake-Labs/snowflake"
-      version = "0.99.0"
+      source  = "snowflakedb/snowflake"
+      version = "2.7.0"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -17,16 +17,19 @@ provider "snowflake" {
   account_name      = var.snowflake_account
   organization_name = var.snowflake_org
   user              = var.snowflake_user
-  authenticator     = "JWT"
+  authenticator     = "SNOWFLAKE_JWT"
+  port              = 443
 }
 
 provider "snowflake" {
-  alias             = "accountadmin"
-  role              = "ACCOUNTADMIN"
-  account_name      = var.snowflake_account
-  organization_name = var.snowflake_org
-  user              = var.snowflake_user
-  authenticator     = "JWT"
+  alias                    = "accountadmin"
+  role                     = "ACCOUNTADMIN"
+  account_name             = var.snowflake_account
+  organization_name        = var.snowflake_org
+  user                     = var.snowflake_user
+  authenticator            = "SNOWFLAKE_JWT"
+  port                     = 443
+  preview_features_enabled = ["snowflake_git_repository_resource", "snowflake_failover_group_resource", "snowflake_email_notification_integration_resource"]
 }
 
 provider "snowflake" {
@@ -35,7 +38,8 @@ provider "snowflake" {
   account_name      = var.snowflake_account
   organization_name = var.snowflake_org
   user              = var.snowflake_user
-  authenticator     = "JWT"
+  authenticator     = "SNOWFLAKE_JWT"
+  port              = 443
 }
 
 provider "snowflake" {
@@ -44,7 +48,8 @@ provider "snowflake" {
   account_name      = var.snowflake_account
   organization_name = var.snowflake_org
   user              = var.snowflake_user
-  authenticator     = "JWT"
+  authenticator     = "SNOWFLAKE_JWT"
+  port              = 443
 }
 
 provider "aws" {
