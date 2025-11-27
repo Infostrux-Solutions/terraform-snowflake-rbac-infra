@@ -42,13 +42,17 @@ resource "snowflake_user" "user" {
 
   default_warehouse    = snowflake_warehouse.warehouse[each.value.warehouse].name
   default_role         = snowflake_account_role.functional_role[each.value.default_role].name
+
+  # Do we really need to set this to ALL? Or should we set it to NONE?
+  default_secondary_roles_option = "ALL"
   must_change_password = false
 
   lifecycle {
     ignore_changes = [
       password,
       rsa_public_key,
-      rsa_public_key_2
+      rsa_public_key_2 # Should we add changes to the public key? As a GH secret?
+      # What about private key? Should we add changes to the private key? As a GH secret?
     ]
   }
 }
