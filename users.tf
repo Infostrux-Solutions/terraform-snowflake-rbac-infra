@@ -40,12 +40,12 @@ resource "snowflake_user" "user" {
   comment      = var.comment
   disabled     = false
 
-  default_warehouse    = snowflake_warehouse.warehouse[each.value.warehouse].name
-  default_role         = snowflake_account_role.functional_role[each.value.default_role].name
+  default_warehouse = snowflake_warehouse.warehouse[each.value.warehouse].name
+  default_role      = snowflake_account_role.functional_role[each.value.default_role].name
 
   # Do we really need to set this to ALL? Or should we set it to NONE?
   default_secondary_roles_option = "ALL"
-  must_change_password = false
+  must_change_password           = false
 
   lifecycle {
     ignore_changes = [
