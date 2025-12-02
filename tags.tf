@@ -56,12 +56,10 @@ resource "snowflake_tag_association" "database_tags" {
 
   depends_on = [snowflake_tag.tag]
 
-  object_identifier {
-    name = each.value.database
-  }
-  object_type = "DATABASE"
-  tag_id      = each.value.tag_name
-  tag_value   = each.value.tag_value
+  object_identifiers = [each.value.database]
+  object_type        = "DATABASE"
+  tag_id             = each.value.tag_name
+  tag_value          = each.value.tag_value
 }
 
 resource "snowflake_tag_association" "warehouse_tags" {
@@ -71,10 +69,8 @@ resource "snowflake_tag_association" "warehouse_tags" {
 
   depends_on = [snowflake_tag.tag]
 
-  object_identifier {
-    name = each.value.warehouse
-  }
-  object_type = "WAREHOUSE"
-  tag_id      = each.value.tag_name
-  tag_value   = each.value.tag_value
+  object_identifiers = [each.value.warehouse]
+  object_type        = "WAREHOUSE"
+  tag_id             = each.value.tag_name
+  tag_value          = each.value.tag_value
 }
