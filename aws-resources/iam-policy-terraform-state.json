@@ -5,10 +5,7 @@
       "Sid": "TerraformStateBucketAccess",
       "Effect": "Allow",
       "Action": [
-        "s3:ListBucket",
-        "s3:GetBucketVersioning",
-        "s3:GetBucketAcl",
-        "s3:GetBucketLocation"
+        "s3:ListBucket"
       ],
       "Resource": "arn:aws:s3:::infostrux-sandbox-terraform-state-us-west-2"
     },

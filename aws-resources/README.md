@@ -5,7 +5,7 @@ This directory contains IAM policies required for managing Terraform state in an
 ## Files
 
 - `iam-policy-terraform-state.json`: Full access policy for Terraform state operations (read/write)
-- `iam-policy-terraform-state-readonly.json`: Read-only policy for CI/CD pipelines or read-only access
+- `iam-trust-policy.json`: Trust policy for IAM role to allow GitHub Actions OIDC authentication
 
 ## Policy Details
 
@@ -16,81 +16,105 @@ This policy grants the following permissions:
 - **S3 Object Access**: Get, put, and delete objects in the state bucket
 
 **Resources:**
-- S3 Bucket: `infx-dev-terraform-state-us-west-2`
+- S3 Bucket: `infostrux-sandbox-terraform-state-us-west-2`
 
-### Read-Only Policy (`iam-policy-terraform-state-readonly.json`)
+### Trust Policy (`iam-trust-policy.json`)
 
-This policy grants read-only access for:
-- Viewing Terraform state files
-- Listing bucket contents
-- Useful for CI/CD pipelines that only need to read state
+This trust policy allows GitHub Actions to assume an IAM role using OIDC authentication:
+- **Principal**: GitHub Actions OIDC provider
+- **Repository**: `Infostrux-Solutions/terraform-snowflake-rbac-infra`
+- **Branches**: All branches (no branch restriction)
 
-## How to Use
+## Prerequisites: Setting Up OIDC Identity Provider
 
-### Option 1: Using AWS CLI
+Before creating IAM roles for GitHub Actions, you need to configure an OIDC identity provider in AWS IAM.
 
-#### Create the IAM Policy
+### Step 1: Create OIDC Identity Provider
+
+The OIDC identity provider allows GitHub Actions to authenticate with AWS using temporary credentials.
+
+**Note**: If you already have an OIDC identity provider for GitHub Actions in your AWS account, you can skip this step. You can check if it exists via AWS using:
 
 ```bash
-# Create the full access policy
-aws iam create-policy \
-  --policy-name TerraformStateAccess \
-  --policy-document file://iam-policy-terraform-state.json \
-  --description "Policy for Terraform state management in S3"
-
-# Create the read-only policy
-aws iam create-policy \
-  --policy-name TerraformStateReadOnly \
-  --policy-document file://iam-policy-terraform-state-readonly.json \
-  --description "Read-only policy for Terraform state access"
+aws iam list-open-id-connect-providers
 ```
 
-#### Attach Policy to IAM User
+#### Using AWS CLI
 
 ```bash
+# Create the OIDC identity provider for GitHub Actions
+aws iam create-open-id-connect-provider \
+  --url https://token.actions.githubusercontent.com \
+  --client-id-list sts.amazonaws.com \
+  --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1 \
+  --region us-west-2
+```
+
+**Note**: The thumbprint may change. If you encounter issues, you can get the current thumbprint using:
+
+```bash
+# Get the current thumbprint from GitHub's OIDC endpoint
+echo | openssl s_client -servername token.actions.githubusercontent.com -showcerts -connect token.actions.githubusercontent.com:443 2>/dev/null | \
+  sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | \
+  openssl x509 -fingerprint -noout -sha1 | \
+  sed 's/.*=//' | tr '[:upper:]' '[:lower:]'
+```
+
+#### Using AWS Console
+
+1. Navigate to IAM → Identity providers → Add provider
+2. Select **OpenID Connect**
+3. Provider URL: `https://token.actions.githubusercontent.com`
+4. Audience: `sts.amazonaws.com`
+5. Click **Add provider**
+
+### Step 2: Create IAM Role for GitHub Actions
+
+After creating the OIDC identity provider, create an IAM role that GitHub Actions can assume.
+
+#### Using AWS CLI
+
+```bash
+# Create the IAM role with the trust policy
+aws iam create-role \
+  --role-name GitHubActionsTerraformRole \
+  --assume-role-policy-document file://iam-trust-policy.json \
+  --description "IAM role for GitHub Actions to access Terraform state in S3" \
+  --region us-west-2
+
 # Get the policy ARN (replace ACCOUNT_ID with your AWS account ID)
 POLICY_ARN="arn:aws:iam::ACCOUNT_ID:policy/TerraformStateAccess"
 
-# Attach to a user
-aws iam attach-user-policy \
-  --user-name terraform-user \
-  --policy-arn $POLICY_ARN
-```
-
-#### Attach Policy to IAM Role
-
-```bash
-# Attach to a role (e.g., for EC2 instances or CI/CD)
+# Attach the Terraform state policy to the role
 aws iam attach-role-policy \
-  --role-name terraform-role \
+  --role-name GitHubActionsTerraformRole \
   --policy-arn $POLICY_ARN
 ```
 
-### Option 2: Using Terraform
+#### Using AWS Console
 
-You can also manage these policies using Terraform. Here's an example:
+1. Navigate to IAM → Roles → Create role
+2. Select **Web identity**
+3. Identity provider: Choose `token.actions.githubusercontent.com`
+4. Audience: `sts.amazonaws.com`
+5. Click **Next**
+6. In the permissions section, attach the `TerraformStateAccess` policy (create it first using the steps below)
+7. Role name: `GitHubActionsTerraformRole`
+8. Description: "IAM role for GitHub Actions to access Terraform state in S3"
+9. Create the role
+10. After creating the role, edit the trust relationship and replace it with the contents of `iam-trust-policy.json`
 
-```hcl
-resource "aws_iam_policy" "terraform_state" {
-  name        = "TerraformStateAccess"
-  description = "Policy for Terraform state management in S3"
-  policy      = file("${path.module}/iam-policy-terraform-state.json")
-}
+### Step 3: Configure GitHub Secrets
 
-resource "aws_iam_user_policy_attachment" "terraform_state" {
-  user       = aws_iam_user.terraform.name
-  policy_arn = aws_iam_policy.terraform_state.arn
-}
-```
+Once the IAM role is created, add the role ARN to your GitHub repository secrets:
 
-### Option 3: Using AWS Console
+1. Navigate to your GitHub repository → Settings → Secrets and variables → Actions
+2. For each environment (development, production), add:
+   - Secret name: `AWS_ROLE_ARN`
+   - Secret value: `arn:aws:iam::ACCOUNT_ID:role/GitHubActionsTerraformRole`
 
-1. Navigate to IAM → Policies → Create Policy
-2. Click on the JSON tab
-3. Copy and paste the contents of `iam-policy-terraform-state.json`
-4. Review and name the policy (e.g., `TerraformStateAccess`)
-5. Create the policy
-6. Attach it to the desired IAM user or role
+**Note**: Replace `ACCOUNT_ID` with your AWS account ID (e.g., `531175092231`).
+
 
 ## Customization
 
@@ -140,4 +164,34 @@ If you encounter access denied errors:
 2. Check that the bucket name matches exactly
 3. Ensure the region is correct (us-west-2)
 4. Verify the IAM user/role has the correct trust relationships (for roles)
+
+### OIDC Authentication Issues
+
+If GitHub Actions cannot assume the IAM role:
+
+1. **Verify OIDC Provider Exists**:
+   ```bash
+   aws iam list-open-id-connect-providers
+   ```
+   Ensure `token.actions.githubusercontent.com` is listed.
+
+2. **Check Trust Policy**: Verify the trust policy on your IAM role matches `iam-trust-policy.json`:
+   ```bash
+   aws iam get-role --role-name GitHubActionsTerraformRole --query 'Role.AssumeRolePolicyDocument'
+   ```
+
+3. **Verify GitHub Secret**: Ensure `AWS_ROLE_ARN` is set correctly in GitHub repository secrets/environment secrets.
+
+4. **Check Repository Name**: Verify the repository name in the trust policy matches your actual repository:
+   - Current: `Infostrux-Solutions/terraform-snowflake-rbac-infra`
+   - Update if your repository name differs
+
+5. **Verify GitHub Actions Permissions**: Ensure your GitHub Actions workflow has the required permissions:
+   ```yaml
+   permissions:
+     id-token: write  # Required for OIDC
+     contents: read  # Required to checkout code
+   ```
+
+6. **Check AWS Region**: Ensure the OIDC provider and IAM role are in the same region as your S3 bucket (us-west-2).
 
