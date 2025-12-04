@@ -10,7 +10,7 @@
         "s3:GetBucketAcl",
         "s3:GetBucketLocation"
       ],
-      "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2"
+      "Resource": "arn:aws:s3:::infostrux-sandbox-terraform-state-us-west-2"
     },
     {
       "Sid": "TerraformStateObjectAccess",
@@ -20,7 +20,7 @@
         "s3:PutObject",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::infx-dev-terraform-state-us-west-2/*"
+      "Resource": "arn:aws:s3:::infostrux-sandbox-terraform-state-us-west-2/*"
     }
   ]
 }
