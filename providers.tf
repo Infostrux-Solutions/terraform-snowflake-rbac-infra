@@ -22,13 +22,13 @@ provider "snowflake" {
 }
 
 provider "snowflake" {
-  alias                    = "accountadmin"
-  role                     = "ACCOUNTADMIN"
-  account_name             = var.snowflake_account
-  organization_name        = var.snowflake_org
-  user                     = var.snowflake_user
-  authenticator            = "SNOWFLAKE_JWT"
-  port                     = 443
+  alias             = "accountadmin"
+  role              = "ACCOUNTADMIN"
+  account_name      = var.snowflake_account
+  organization_name = var.snowflake_org
+  user              = var.snowflake_user
+  authenticator     = "SNOWFLAKE_JWT"
+  port              = 443
 }
 provider "snowflake" {
   alias             = "securityadmin"
